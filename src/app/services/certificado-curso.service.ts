@@ -4,9 +4,6 @@ import { Observable } from 'rxjs';
 import { CertificadoCurso } from '../models/certificadoEstudiante';
 import { CertificadoDocente } from '../models/certificadoDocente';
 
-
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +20,5 @@ export class CertificadoCursoService {
   listarCertificadosPorDocente(idDocente: number): Observable<CertificadoDocente[]> {
     return this.http.get<CertificadoDocente[]>(`${this.baseUrl}/docente/${idDocente}`);
   }
-
 
 }

@@ -1,9 +1,101 @@
-/* Color de fondo principal para las vistas del estudiante en Skillup */
-.bg-skillup-estudiante {
-    background-color: #0e1526 !important; /* Este es el azul oscuro exacto de tu imagen */
+* {
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
-/* Color para las tarjetas o paneles internos (un poco más claro para que resalten) */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #FFFFFF;
+  color: #212121;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #1565C0;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0D47A1;
+}
+
+.bg-skillup-estudiante {
+  background-color: #FFFFFF !important;
+}
+
 .bg-skillup-tarjeta {
-    background-color: #1a233a !important; 
+  background-color: #FFFFFF !important;
+  border: 1px solid #E0E0E0;
+}
+
+.btn-primary {
+  background-color: #1565C0;
+  border-color: #1565C0;
+}
+
+.btn-primary:hover {
+  background-color: #0D47A1;
+  border-color: #0D47A1;
+}
+
+.btn-success {
+  background-color: #2E7D32;
+  border-color: #2E7D32;
+}
+
+.btn-success:hover {
+  background-color: #1B5E20;
+  border-color: #1B5E20;
+}
+
+.btn-danger {
+  background-color: #C62828;
+  border-color: #C62828;
+}
+
+.btn-danger:hover {
+  background-color: #B71C1C;
+  border-color: #B71C1C;
+}
+
+.btn-warning {
+  background-color: #F57F17;
+  border-color: #F57F17;
+  color: #FFFFFF;
+}
+
+.btn-warning:hover {
+  background-color: #E65100;
+  border-color: #E65100;
+  color: #FFFFFF;
+}
+
+.sidebar {
+  background-color: #FFFFFF;
+  border-right: 1px solid #E0E0E0;
+  min-height: 100vh;
+}
+
+.sidebar .nav-link {
+  color: #212121;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+  background-color: #1565C0;
+  color: #FFFFFF;
+}
+
+.table thead th {
+  background-color: #F5F5F5;
+  color: #212121;
+  font-weight: 600;
+  border-bottom: 2px solid #E0E0E0;
+}
+
+.card {
+  border: 1px solid #E0E0E0;
 }

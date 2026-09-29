@@ -1,0 +1,17 @@
+header {
+  background-color: #0D47A1;
+  color: #FFFFFF;
+}
+
+img {
+  border: 1px solid #E0E0E0;
+}
+
+a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

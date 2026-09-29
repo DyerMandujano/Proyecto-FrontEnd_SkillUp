@@ -1,4 +1,3 @@
-// --- Estos son los sub-objetos ---
 export interface Persona {
   nombres: string;
   apellidos: string;
@@ -21,7 +20,6 @@ export interface Docente {
   grado_academico: string;
 }
 
-// --- Este es el objeto principal que se envía ---
 export interface RegistroRequest {
   persona: Persona;
   usuario: Usuario;

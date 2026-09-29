@@ -1,0 +1,62 @@
+.container-custom {
+  background-color: #FFFFFF;
+}
+.sidebar {
+  background-color: #F5F5F5;
+  border-right: 1px solid #E0E0E0;
+}
+.btn-sidebar {
+  color: #212121;
+  border-radius: 0;
+}
+.btn-sidebar.active {
+  background-color: #1565C0 !important;
+  color: #FFFFFF !important;
+}
+.main-content {
+  background-color: #FFFFFF;
+}
+.custom-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.custom-card-header {
+  background-color: #1565C0;
+  color: #FFFFFF;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #E0E0E0;
+}
+.custom-card-body {
+  padding: 1.5rem;
+}
+.text-custom {
+  color: #212121;
+}
+.custom-input {
+  border: 1px solid #E0E0E0;
+  border-radius: 0;
+  background-color: #FFFFFF;
+  color: #212121;
+  box-shadow: none;
+}
+.custom-input:focus {
+  border-color: #1565C0;
+  box-shadow: none;
+}
+.custom-btn-primary {
+  background-color: #1565C0;
+  color: #FFFFFF;
+  border: 1px solid #1565C0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.custom-btn-secondary {
+  background-color: #F5F5F5;
+  color: #212121;
+  border: 1px solid #E0E0E0;
+  border-radius: 0;
+  box-shadow: none;
+}

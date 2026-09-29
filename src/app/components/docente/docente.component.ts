@@ -23,7 +23,6 @@ import { DocenteSessionService } from '../../services/docente-session.service';
 import { DocenteDashboardService } from '../../services/docente-dashboard.service';
 import Chart from 'chart.js/auto';
 
-// Paleta de colores compartida para todos los gráficos
 const COLORES_GRAFICOS = [
   '#4caf50', '#ff9800', '#2196f3', '#9c27b0',
   '#f44336', '#3f51b5', '#00bcd4', '#ff5722'
@@ -52,7 +51,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
   filtroCurso: string = 'todos';
   cursosNombre: string[] = [];
 
-  // Controla qué filtros aplican al dashboard activo (para el HTML)
   filtroAnioDeshabilitado: boolean = false;
   filtroCursoDeshabilitado: boolean = false;
 
@@ -71,14 +69,12 @@ export class DocenteComponent implements OnInit, AfterViewInit {
   configModal: any;
   private reseñas: any[] = [];
 
-  // Datos originales del backend (nunca se modifican al filtrar)
   private datosCertificados: any[] = [];
   private datosRanking: any[] = [];
   private datosTendenciaCert: any[] = [];
   private datosTendenciaMat: any[] = [];
   private datosEstudiantes: any[] = [];
 
-  // Copias de trabajo (resultado del filtro activo)
   private datosCertificadosFiltrados: any[] = [];
   private datosRankingFiltrados: any[] = [];
   private datosTendenciaCertFiltrados: any[] = [];
@@ -126,8 +122,7 @@ export class DocenteComponent implements OnInit, AfterViewInit {
     if (isPlatformBrowser(this.platformId)) {
       const modalElement = document.getElementById('configModal');
       if (modalElement) {
-        // @ts-ignore
-        this.configModal = new bootstrap.Modal(modalElement);
+        this.configModal = new (window as any).bootstrap.Modal(modalElement);
       }
     }
   }
@@ -146,15 +141,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
     this.cargarDashboard(numero);
   }
 
-  /**
-   * Habilita/deshabilita los selects de filtro según qué campos
-   * tiene disponibles el endpoint de cada dashboard.
-   *
-   * Dashboard 1 (Pie certificados): endpoint retorna {nombreCurso, cantidad} — solo curso
-   * Dashboard 2 (Ranking barras): endpoint retorna {nombreCurso, totalEstudiantes} — solo curso
-   * Dashboard 3 y 4 (Tendencias): endpoint retorna {anio, mes, cantidad} — solo año
-   * Dashboard 5 (Detalle): endpoint retorna {nombreCurso, totalEstudiantes, anio, mes} — ambos
-   */
   private actualizarEstadoFiltros(dashboard: number): void {
     switch (dashboard) {
       case 1:
@@ -198,18 +184,12 @@ export class DocenteComponent implements OnInit, AfterViewInit {
     if (!ctx) return;
     const { width, height } = this.canvasRef.nativeElement;
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = '#f8f9fa';
+    ctx.fillStyle = '#F5F5F5';
     ctx.fillRect(0, 0, width, height);
-    ctx.font = '48px Arial';
-    ctx.fillStyle = '#dee2e6';
-    ctx.textAlign = 'center';
-    ctx.fillText('📊', width / 2, height / 2 - 20);
     ctx.font = '16px Arial';
-    ctx.fillStyle = '#adb5bd';
-    ctx.fillText('No hay datos disponibles', width / 2, height / 2 + 40);
-    ctx.font = '12px Arial';
-    ctx.fillStyle = '#ced4da';
-    ctx.fillText('Agrega estudiantes y matrículas para ver estadísticas', width / 2, height / 2 + 70);
+    ctx.fillStyle = '#616161';
+    ctx.textAlign = 'center';
+    ctx.fillText('No hay datos disponibles', width / 2, height / 2);
   }
 
   private mostrarMensajeSinDatos(mensaje: string): void {
@@ -369,8 +349,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // ─── GRÁFICOS ─────────────────────────────────────────────────────────────
-
   private mostrarGraficoPie(): void {
     if (!this.canvasRef?.nativeElement || !this.datosCertificadosFiltrados.length) {
       this.limpiarCanvas();
@@ -383,7 +361,7 @@ export class DocenteComponent implements OnInit, AfterViewInit {
         datasets: [{
           data: this.datosCertificadosFiltrados.map((d: any) => d.cantidad),
           backgroundColor: COLORES_GRAFICOS,
-          borderColor: '#fff',
+          borderColor: '#FFFFFF',
           borderWidth: 2,
           hoverOffset: 8,
         }]
@@ -425,8 +403,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
           backgroundColor: colores,
           borderColor: colores,
           borderWidth: 1,
-          borderRadius: 6,
-          borderSkipped: false,
         }]
       },
       options: {
@@ -444,7 +420,7 @@ export class DocenteComponent implements OnInit, AfterViewInit {
           y: {
             beginAtZero: true,
             ticks: { precision: 0 },
-            grid: { color: '#f0f0f0' }
+            grid: { color: '#E0E0E0' }
           },
           x: { grid: { display: false } }
         }
@@ -465,14 +441,14 @@ export class DocenteComponent implements OnInit, AfterViewInit {
         datasets: [{
           label: 'Certificados emitidos',
           data: this.datosTendenciaCertFiltrados.map((d: any) => d.cantidad),
-          borderColor: '#4caf50',
-          backgroundColor: 'rgba(76,175,80,0.12)',
+          borderColor: '#2E7D32',
+          backgroundColor: 'rgba(46, 125, 50, 0.12)',
           borderWidth: 2,
           tension: 0.4,
           fill: true,
           pointRadius: 5,
-          pointBackgroundColor: '#4caf50',
-          pointBorderColor: '#fff',
+          pointBackgroundColor: '#2E7D32',
+          pointBorderColor: '#FFFFFF',
           pointBorderWidth: 2,
         }]
       },
@@ -488,7 +464,7 @@ export class DocenteComponent implements OnInit, AfterViewInit {
           y: {
             beginAtZero: true,
             ticks: { precision: 0 },
-            grid: { color: '#f0f0f0' }
+            grid: { color: '#E0E0E0' }
           },
           x: { grid: { display: false } }
         }
@@ -509,14 +485,14 @@ export class DocenteComponent implements OnInit, AfterViewInit {
         datasets: [{
           label: 'Matrículas',
           data: this.datosTendenciaMatFiltrados.map((d: any) => d.cantidad),
-          borderColor: '#ff9800',
-          backgroundColor: 'rgba(255,152,0,0.12)',
+          borderColor: '#F57F17',
+          backgroundColor: 'rgba(245, 127, 23, 0.12)',
           borderWidth: 2,
           tension: 0.4,
           fill: true,
           pointRadius: 5,
-          pointBackgroundColor: '#ff9800',
-          pointBorderColor: '#fff',
+          pointBackgroundColor: '#F57F17',
+          pointBorderColor: '#FFFFFF',
           pointBorderWidth: 2,
         }]
       },
@@ -532,7 +508,7 @@ export class DocenteComponent implements OnInit, AfterViewInit {
           y: {
             beginAtZero: true,
             ticks: { precision: 0 },
-            grid: { color: '#f0f0f0' }
+            grid: { color: '#E0E0E0' }
           },
           x: { grid: { display: false } }
         }
@@ -579,31 +555,31 @@ export class DocenteComponent implements OnInit, AfterViewInit {
           {
             label: 'Total Estudiantes',
             data: datosRadar.map(d => d.total),
-            backgroundColor: 'rgba(102, 126, 234, 0.2)',
-            borderColor: '#667eea',
+            backgroundColor: 'rgba(21, 101, 192, 0.2)',
+            borderColor: '#1565C0',
             borderWidth: 2,
-            pointBackgroundColor: '#667eea',
-            pointBorderColor: '#fff',
+            pointBackgroundColor: '#1565C0',
+            pointBorderColor: '#FFFFFF',
             pointRadius: 5,
           },
           {
             label: 'Crecimiento (%)',
             data: datosRadar.map(d => d.crecimiento),
-            backgroundColor: 'rgba(76, 175, 80, 0.2)',
-            borderColor: '#4caf50',
+            backgroundColor: 'rgba(46, 125, 50, 0.2)',
+            borderColor: '#2E7D32',
             borderWidth: 2,
-            pointBackgroundColor: '#4caf50',
-            pointBorderColor: '#fff',
+            pointBackgroundColor: '#2E7D32',
+            pointBorderColor: '#FFFFFF',
             pointRadius: 5,
           },
           {
             label: 'Satisfacción (%)',
             data: datosRadar.map(d => d.satisfaccion),
-            backgroundColor: 'rgba(255, 152, 0, 0.2)',
-            borderColor: '#ff9800',
+            backgroundColor: 'rgba(245, 127, 23, 0.2)',
+            borderColor: '#F57F17',
             borderWidth: 2,
-            pointBackgroundColor: '#ff9800',
-            pointBorderColor: '#fff',
+            pointBackgroundColor: '#F57F17',
+            pointBorderColor: '#FFFFFF',
             pointRadius: 5,
           }
         ]
@@ -619,8 +595,8 @@ export class DocenteComponent implements OnInit, AfterViewInit {
           r: {
             beginAtZero: true,
             ticks: { stepSize: 50, backdropColor: 'transparent' },
-            grid: { color: '#e2e8f0' },
-            angleLines: { color: '#e2e8f0' },
+            grid: { color: '#E0E0E0' },
+            angleLines: { color: '#E0E0E0' },
             pointLabels: { font: { size: 12, weight: 'bold' } }
           }
         }
@@ -628,14 +604,11 @@ export class DocenteComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // ─── FILTROS ───────────────────────────────────────────────────────────────
-
   aplicarFiltros(): void {
     this.destruirGrafico();
 
     switch (this.dashboardActivo) {
       case 1: {
-        // Endpoint no retorna año → solo filtro por curso
         let datos = [...this.datosCertificados];
         if (this.filtroCurso !== 'todos') {
           datos = datos.filter((item: any) => item.nombreCurso === this.filtroCurso);
@@ -650,7 +623,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
         break;
       }
       case 2: {
-        // Endpoint no retorna año → solo filtro por curso
         let datos = [...this.datosRanking];
         if (this.filtroCurso !== 'todos') {
           datos = datos.filter((item: any) => item.nombreCurso === this.filtroCurso);
@@ -665,7 +637,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
         break;
       }
       case 3: {
-        // Endpoint solo tiene año/mes, sin curso → solo filtro por año
         let datos = [...this.datosTendenciaCert];
         if (this.filtroAnio !== 'todos') {
           datos = datos.filter((item: any) => item.anio?.toString() === this.filtroAnio);
@@ -680,7 +651,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
         break;
       }
       case 4: {
-        // Endpoint solo tiene año/mes, sin curso → solo filtro por año
         let datos = [...this.datosTendenciaMat];
         if (this.filtroAnio !== 'todos') {
           datos = datos.filter((item: any) => item.anio?.toString() === this.filtroAnio);
@@ -713,7 +683,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
   resetearFiltros(): void {
     this.filtroAnio = 'todos';
     this.filtroCurso = 'todos';
-    // Restaurar copias de trabajo sin llamar al backend
     this.destruirGrafico();
     this.destruirGraficosAdicionales();
     switch (this.dashboardActivo) {
@@ -744,8 +713,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // ─── GRÁFICOS ADICIONALES (dashboard 5) ───────────────────────────────────
-
   private crearGraficoEvolucionAnual(datosEvolucion: any): void {
     const canvas = document.getElementById('graficoEvolucionAnual') as HTMLCanvasElement;
     if (!canvas) return;
@@ -768,7 +735,7 @@ export class DocenteComponent implements OnInit, AfterViewInit {
           fill: false,
           pointRadius: 4,
           pointBackgroundColor: COLORES_GRAFICOS[i % COLORES_GRAFICOS.length],
-          pointBorderColor: '#fff',
+          pointBorderColor: '#FFFFFF',
           pointBorderWidth: 2,
         })),
       },
@@ -777,7 +744,7 @@ export class DocenteComponent implements OnInit, AfterViewInit {
         maintainAspectRatio: true,
         plugins: { legend: { position: 'bottom' } },
         scales: {
-          y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#f0f0f0' } },
+          y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#E0E0E0' } },
           x: { grid: { display: false } }
         }
       },
@@ -800,8 +767,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
           backgroundColor: this.datosTablaAgrupados.map((_: any, i: number) =>
             COLORES_GRAFICOS[i % COLORES_GRAFICOS.length]
           ),
-          borderRadius: 6,
-          borderSkipped: false,
         }],
       },
       options: {
@@ -809,7 +774,7 @@ export class DocenteComponent implements OnInit, AfterViewInit {
         maintainAspectRatio: true,
         plugins: { legend: { display: false } },
         scales: {
-          y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#f0f0f0' } },
+          y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#E0E0E0' } },
           x: { grid: { display: false } }
         }
       },
@@ -895,13 +860,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
-  private mostrarError(mensaje: string): void {
-    this.errorMessage = mensaje;
-    setTimeout(() => (this.errorMessage = null), 5000);
-  }
-
-  // ─── CARGA DE DATOS BASE ──────────────────────────────────────────────────
-
   loadCursos(): void {
     if (this.idDocente && this.idDocente > 0) {
       this.cursoService.listarCursosPorDocente(this.idDocente).subscribe((data: Curso[]) => {
@@ -961,8 +919,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
     return (suma / this.reseñas.length).toFixed(1);
   }
 
-  // ─── ACCIONES ─────────────────────────────────────────────────────────────
-
   onUpdateProfile(): void {
     if (!this.profileData) return;
     this.usuarioService.actualizarPerfil(this.profileData.idPersona, this.profileData).subscribe(
@@ -991,7 +947,6 @@ export class DocenteComponent implements OnInit, AfterViewInit {
       this.errorMessage = 'El nombre de usuario no coincide.';
       return;
     }
-    alert('Funcionalidad de eliminar cuenta aún no conectada al backend.');
   }
 
   navegarRegistrarCurso(): void {
@@ -1012,13 +967,12 @@ export class DocenteComponent implements OnInit, AfterViewInit {
   }
 
   eliminarCurso(idCurso: number): void {
-    if (confirm('¿Estás seguro de eliminar este curso?')) {
+    if (confirm('Seguro que deseas eliminar este curso?')) {
       this.cursoService.eliminarCurso(idCurso).subscribe({
         next: () => {
-          alert('✅ Curso eliminado correctamente');
           this.loadCursos();
         },
-        error: () => alert('❌ No se pudo eliminar el curso'),
+        error: () => {}
       });
     }
   }

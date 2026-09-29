@@ -1,39 +1,34 @@
 <app-docente-header></app-docente-header>
 
-<!-- Layout principal -->
-<div class="container-fluid">
+<div class="container-fluid container-custom">
   <div class="row">
 
-    <!-- Sidebar -->
     <nav class="col-md-3 col-lg-2 sidebar d-md-block p-3">
-      <h5 class="fw-bold mb-4">Panel Docente</h5>
+      <h5 class="fw-bold mb-4 text-custom">Panel Docente</h5>
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <button class="nav-link active" id="v-pills-cursos-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cursos" type="button" role="tab">📚 Cursos Dictados</button>
-        <button class="nav-link" id="v-pills-comunicacion-tab" data-bs-toggle="pill" data-bs-target="#v-pills-comunicacion" type="button" role="tab">💬 Comunicación</button>
-        <button class="nav-link" id="v-pills-rendimiento-tab" data-bs-toggle="pill" data-bs-target="#v-pills-rendimiento" type="button" role="tab">📊 Rendimiento</button>
+        <button class="nav-link active btn-sidebar" id="v-pills-cursos-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cursos" type="button" role="tab">Cursos Dictados</button>
+        <button class="nav-link btn-sidebar" id="v-pills-comunicacion-tab" data-bs-toggle="pill" data-bs-target="#v-pills-comunicacion" type="button" role="tab">Comunicacion</button>
+        <button class="nav-link btn-sidebar" id="v-pills-rendimiento-tab" data-bs-toggle="pill" data-bs-target="#v-pills-rendimiento" type="button" role="tab">Rendimiento</button>
       </div>
     </nav>
 
-    <!-- Contenido -->
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4 main-content">
       <div class="tab-content" id="v-pills-tabContent">
 
-        <!-- Cursos Dictados -->
         <div class="tab-pane fade show active" id="v-pills-cursos" role="tabpanel">
-          <h4 class="mb-4">📚 Secciones del Curso</h4>
-          <div class="d-flex gap-3">
-            <button class="btn btn-primary mt-3" (click)="navegarRegistrarSeccion()">➕ Ingresar nueva seccion</button>
-            <button class="btn btn-info mt-3" (click)="volverAlPanelDeCursos()">Volver al Panel de Cursos</button>
+          <h4 class="mb-4 text-custom">Secciones del Curso</h4>
+          <div class="d-flex gap-3 mb-4">
+            <button class="btn custom-btn-primary mt-3" (click)="navegarRegistrarSeccion()">Ingresar nueva seccion</button>
+            <button class="btn custom-btn-info mt-3" (click)="volverAlPanelDeCursos()">Volver al Panel de Cursos</button>
           </div>
           
           <div class="table-responsive">
 
-            <div *ngIf="secciones.length === 0" class="mt-3 alert alert-info text-center">
+            <div *ngIf="secciones.length === 0" class="mt-3 alert custom-alert-info text-center">
               Actualmente el curso no cuenta con SECCIONES.
             </div>
 
-
-            <table *ngIf="secciones.length > 0" class="table table-striped align-middle">
+            <table *ngIf="secciones.length > 0" class="table custom-table align-middle">
               <thead>
                 <tr>
                   <th>Id Seccion</th>
@@ -49,16 +44,17 @@
                   <td>{{seccion.nombreSeccion}}</td>
                   <td>{{seccion.ordenSeccion}}</td>
                   <td>
-                    <span class="badge" [ngClass]="seccion.estado === 1 ? 'bg-success' : 'bg-danger'">
+                    <span class="badge custom-badge" [ngClass]="seccion.estado === 1 ? 'bg-custom-success' : 'bg-custom-danger'">
                       {{ seccion.estado === 1 ? 'Activo' : 'Inactivo' }}
                     </span>
                   </td>
-                  <div class="d-flex gap-2">
-                    <button class="btn btn-warning" (click)="navegarActualizarSeccion(seccion.idSeccion)">Actualizar</button>
-                    <button class="btn btn-danger" (click)="eliminarSeccion(seccion.idSeccion)">Eliminar</button>
-                    <button class="btn btn-primary" (click)="navegarLeccion(seccion.idSeccion)">Ingresar Leccion</button>
-                  </div>
-                  
+                  <td>
+                    <div class="d-flex gap-2">
+                      <button class="btn custom-btn-warning" (click)="navegarActualizarSeccion(seccion.idSeccion)">Actualizar</button>
+                      <button class="btn custom-btn-danger" (click)="eliminarSeccion(seccion.idSeccion)">Eliminar</button>
+                      <button class="btn custom-btn-primary" (click)="navegarLeccion(seccion.idSeccion)">Ingresar Leccion</button>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -66,158 +62,148 @@
           
         </div>
 
-        <!-- Comunicación -->
         <div class="tab-pane fade" id="v-pills-comunicacion" role="tabpanel">
-          <h4 class="mb-4">💬 Comunicación</h4>
+          <h4 class="mb-4 text-custom">Comunicacion</h4>
           <div class="list-group">
-            <div class="list-group-item">
-              <h6><strong>Estudiante:</strong> Juan Pérez</h6>
-              <p>¿Cómo se utiliza la herramienta en la práctica de carpintería?</p>
-              <textarea class="form-control mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm btn-success">Responder</button>
+            <div class="list-group-item custom-list-item">
+              <h6 class="text-custom"><strong>Estudiante:</strong> Juan Perez</h6>
+              <p class="text-custom">Como se utiliza la herramienta en la practica de carpinteria?</p>
+              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
+              <button class="btn btn-sm custom-btn-success">Responder</button>
             </div>
-            <div class="list-group-item">
-              <h6><strong>Estudiante:</strong> María López</h6>
-              <p>¿Cuál es el tiempo estimado de duración del curso de electricidad?</p>
-              <textarea class="form-control mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm btn-success">Responder</button>
+            <div class="list-group-item custom-list-item">
+              <h6 class="text-custom"><strong>Estudiante:</strong> Maria Lopez</h6>
+              <p class="text-custom">Cual es el tiempo estimado de duracion del curso de electricidad?</p>
+              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
+              <button class="btn btn-sm custom-btn-success">Responder</button>
             </div>
-             <div class="list-group-item">
-              <h6><strong>Estudiante:</strong> Juan Riquelme </h6>
-              <p>¿Cuál es el tiempo estimado de duración del curso de electricidad?</p>
-              <textarea class="form-control mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm btn-success">Responder</button>
+             <div class="list-group-item custom-list-item">
+              <h6 class="text-custom"><strong>Estudiante:</strong> Juan Riquelme </h6>
+              <p class="text-custom">Cual es el tiempo estimado de duracion del curso de electricidad?</p>
+              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
+              <button class="btn btn-sm custom-btn-success">Responder</button>
             </div>
-             <div class="list-group-item">
-              <h6><strong>Estudiante:</strong> Pedro López</h6>
-              <p>¿Cuál es el tiempo estimado de duración del curso de electricidad?</p>
-              <textarea class="form-control mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm btn-success">Responder</button>
+             <div class="list-group-item custom-list-item">
+              <h6 class="text-custom"><strong>Estudiante:</strong> Pedro Lopez</h6>
+              <p class="text-custom">Cual es el tiempo estimado de duracion del curso de electricidad?</p>
+              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
+              <button class="btn btn-sm custom-btn-success">Responder</button>
             </div>
-             <div class="list-group-item">
-              <h6><strong>Estudiante:</strong> Lorena Cardona</h6>
-              <p>¿Cuál es el tiempo estimado de duración del curso de electricidad?</p>
-              <textarea class="form-control mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm btn-success">Responder</button>
+             <div class="list-group-item custom-list-item">
+              <h6 class="text-custom"><strong>Estudiante:</strong> Lorena Cardona</h6>
+              <p class="text-custom">Cual es el tiempo estimado de duracion del curso de electricidad?</p>
+              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
+              <button class="btn btn-sm custom-btn-success">Responder</button>
             </div>
-             <div class="list-group-item">
-              <h6><strong>Estudiante:</strong> Soledad Machaca</h6>
-              <p>¿Cuál es el tiempo estimado de duración del curso de electricidad?</p>
-              <textarea class="form-control mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm btn-success">Responder</button>
+             <div class="list-group-item custom-list-item">
+              <h6 class="text-custom"><strong>Estudiante:</strong> Soledad Machaca</h6>
+              <p class="text-custom">Cual es el tiempo estimado de duracion del curso de electricidad?</p>
+              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
+              <button class="btn btn-sm custom-btn-success">Responder</button>
             </div>
           </div>
         </div>
 
-        <!-- Rendimiento -->
         <div class="tab-pane fade" id="v-pills-rendimiento" role="tabpanel">
           <div class="container-fluid py-4">
-  <h3 class="fw-bold mb-3">Rendimiento</h3>
-  <p class="text-muted">Métricas y estadísticas de tu desempeño como instructor</p>
+            <h3 class="fw-bold mb-3 text-custom">Rendimiento</h3>
+            <p class="text-custom-muted">Metricas y estadisticas de tu desempeno como instructor</p>
 
-  <!-- Métricas principales -->
-  <div class="row g-3 mb-4">
-    <div class="col-md-3">
-      <div class="metric-card">
-        <div class="fs-3">👥</div>
-        <h4>490</h4>
-        <small>Estudiantes Totales</small>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="metric-card">
-        <div class="fs-3 star">⭐</div>
-        <h4>4.8</h4>
-        <small>Calificación Promedio</small>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="metric-card">
-        <div class="fs-3 text-success">🎓</div>
-        <h4>48</h4>
-        <small>Certificados Emitidos</small>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="metric-card">
-        <div class="fs-3 text-primary">👁️</div>
-        <h4>3500</h4>
-        <small>Visualizaciones Totales</small>
-      </div>
-    </div>
-  </div>
+            <div class="row g-3 mb-4">
+              <div class="col-md-3">
+                <div class="metric-card">
+                  <h4 class="text-custom">490</h4>
+                  <small class="text-custom">Estudiantes Totales</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="metric-card">
+                  <h4 class="text-custom">4.8</h4>
+                  <small class="text-custom">Calificacion Promedio</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="metric-card">
+                  <h4 class="text-custom text-custom-success">48</h4>
+                  <small class="text-custom">Certificados Emitidos</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="metric-card">
+                  <h4 class="text-custom text-custom-primary">3500</h4>
+                  <small class="text-custom">Visualizaciones Totales</small>
+                </div>
+              </div>
+            </div>
 
-  <!-- Rendimiento por curso y actividades recientes -->
-  <div class="row g-3">
-    <!-- Rendimiento por curso -->
-    <div class="col-md-7">
-      <div class="course-performance">
-        <h5 class="fw-bold mb-3">Rendimiento por Curso</h5>
-        
-        <div class="mb-4">
-          <p class="mb-1 fw-semibold">Gasfitería Básica: Instalación y Reparación de Tuberías</p>
-          <div class="d-flex justify-content-between small mb-1">
-            <span class="star">⭐ 4.8</span>
-            <span>245 estudiantes</span>
-            <span>👁️ 2000</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-dark" style="width: 80%"></div>
-          </div>
-        </div>
+            <div class="row g-3">
+              <div class="col-md-7">
+                <div class="course-performance">
+                  <h5 class="fw-bold mb-3 text-custom">Rendimiento por Curso</h5>
+                  
+                  <div class="mb-4">
+                    <p class="mb-1 fw-semibold text-custom">Gasfiteria Basica: Instalacion y Reparacion de Tuberias</p>
+                    <div class="d-flex justify-content-between small mb-1">
+                      <span class="text-custom">4.8</span>
+                      <span class="text-custom">245 estudiantes</span>
+                      <span class="text-custom">2000</span>
+                    </div>
+                    <div class="progress custom-progress">
+                      <div class="progress-bar bg-custom-dark" style="width: 80%"></div>
+                    </div>
+                  </div>
 
-        <div class="mb-4">
-          <p class="mb-1 fw-semibold">Gasfitería Avanzada: Sistemas de Calefacción</p>
-          <div class="d-flex justify-content-between small mb-1">
-            <span class="star">⭐ 4.9</span>
-            <span>89 estudiantes</span>
-            <span>👁️ 500</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-dark" style="width: 60%"></div>
-          </div>
-        </div>
+                  <div class="mb-4">
+                    <p class="mb-1 fw-semibold text-custom">Gasfiteria Avanzada: Sistemas de Calefaccion</p>
+                    <div class="d-flex justify-content-between small mb-1">
+                      <span class="text-custom">4.9</span>
+                      <span class="text-custom">89 estudiantes</span>
+                      <span class="text-custom">500</span>
+                    </div>
+                    <div class="progress custom-progress">
+                      <div class="progress-bar bg-custom-dark" style="width: 60%"></div>
+                    </div>
+                  </div>
 
-        <div class="mb-2">
-          <p class="mb-1 fw-semibold">Reparación de Tuberías Especializadas</p>
-          <div class="d-flex justify-content-between small mb-1">
-            <span class="star">⭐ 4.7</span>
-            <span>156 estudiantes</span>
-            <span>👁️ 1000</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-dark" style="width: 70%"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+                  <div class="mb-2">
+                    <p class="mb-1 fw-semibold text-custom">Reparacion de Tuberias Especializadas</p>
+                    <div class="d-flex justify-content-between small mb-1">
+                      <span class="text-custom">4.7</span>
+                      <span class="text-custom">156 estudiantes</span>
+                      <span class="text-custom">1000</span>
+                    </div>
+                    <div class="progress custom-progress">
+                      <div class="progress-bar bg-custom-dark" style="width: 70%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-    <!-- Actividades recientes -->
-    <div class="col-md-5">
-      <div class="activity-card">
-        <h5 class="fw-bold mb-3">Actividades Recientes</h5>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item px-0">
-            <strong>Ana Torres</strong> se inscribió en <em>Gasfitería Básica</em>  
-            <div class="text-muted small">hace 30 min</div>
-          </li>
-          <li class="list-group-item px-0">
-            <strong>Miguel Santos</strong> completó el módulo de soldadura  
-            <div class="text-muted small">hace 1 hora</div>
-          </li>
-          <li class="list-group-item px-0">
-            Nueva pregunta en <em>Gasfitería Avanzada</em>  
-            <div class="text-muted small">hace 2 horas</div>
-          </li>
-          <li class="list-group-item px-0">
-            <strong>Juan Pérez</strong> obtuvo certificado en <em>Gasfitería Básica</em>  
-            <div class="text-muted small">hace 4 horas</div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+              <div class="col-md-5">
+                <div class="activity-card">
+                  <h5 class="fw-bold mb-3 text-custom">Actividades Recientes</h5>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item custom-list-item px-0">
+                      <strong class="text-custom">Ana Torres</strong> <span class="text-custom">se inscribio en</span> <em class="text-custom">Gasfiteria Basica</em>  
+                      <div class="text-custom-muted small">hace 30 min</div>
+                    </li>
+                    <li class="list-group-item custom-list-item px-0">
+                      <strong class="text-custom">Miguel Santos</strong> <span class="text-custom">completo el modulo de soldadura</span>  
+                      <div class="text-custom-muted small">hace 1 hora</div>
+                    </li>
+                    <li class="list-group-item custom-list-item px-0">
+                      <span class="text-custom">Nueva pregunta en</span> <em class="text-custom">Gasfiteria Avanzada</em>  
+                      <div class="text-custom-muted small">hace 2 horas</div>
+                    </li>
+                    <li class="list-group-item custom-list-item px-0">
+                      <strong class="text-custom">Juan Perez</strong> <span class="text-custom">obtuvo certificado en</span> <em class="text-custom">Gasfiteria Basica</em>  
+                      <div class="text-custom-muted small">hace 4 horas</div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>

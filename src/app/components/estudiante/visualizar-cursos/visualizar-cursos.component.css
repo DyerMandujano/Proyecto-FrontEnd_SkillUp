@@ -1,63 +1,35 @@
-/* Banner principal */
-.banner-container img {
-    height: 300px;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Imágenes de cursos - mismo tamaño para todas */
-.course-card img {
-    height: 160px;
-    object-fit: cover;
-}
-
-.card img {
-    height: 160px;
-    object-fit: cover;
-}
-
-/* Progress bar */
-.progress-bar {
-    background-color: #6610f2;
-}
-
-/* Títulos de sección */
-.section-title {
-    font-weight: 600;
-    margin: 20px 0 10px;
-    color: #0A192F;
-}
-
-/* Estilos para las tarjetas */
-.card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: none;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Botones */
-.btn-primary {
-    background-color: #0A192F;
-    border-color: #0A192F;
-}
-
-.btn-primary:hover {
-    background-color: #D4AF37;
-    border-color: #D4AF37;
-    color: #0A192F;
-}
-
-.btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-}
-
-.btn-success:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
-}
+.student-dashboard { min-height: 100vh; background-color: #FFFFFF; }
+.dashboard-navbar { background-color: #0D47A1; padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-brand { display: flex; align-items: center; gap: 0.5rem; }
+.brand-text { font-size: 1.25rem; font-weight: 700; color: #FFFFFF; text-decoration: none; }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-item { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 500; font-size: 0.9rem; padding: 4px 0; border-bottom: 2px solid transparent; }
+.nav-item:hover, .nav-item.active { color: #FFFFFF; border-bottom: 2px solid #FFFFFF; }
+.nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+.btn-profile, .btn-logout { background-color: transparent; border: 1px solid rgba(255,255,255,0.5); color: #FFFFFF; padding: 6px 16px; font-size: 0.85rem; cursor: pointer; }
+.btn-profile:hover, .btn-logout:hover { background-color: rgba(255,255,255,0.1); }
+.dashboard-content { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+.welcome-section h2 { color: #212121; font-weight: 700; }
+.welcome-section p { color: #616161; }
+.section-title { font-weight: 600; color: #212121; margin: 24px 0 12px; font-size: 1.2rem; }
+.courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+.course-card { border: 1px solid #E0E0E0; background-color: #FFFFFF; overflow: hidden; }
+.card-image { position: relative; overflow: hidden; }
+.card-image img { width: 100%; height: 180px; object-fit: cover; }
+.card-badge { position: absolute; top: 8px; right: 8px; background-color: #1565C0; color: #FFFFFF; padding: 4px 10px; font-size: 0.75rem; font-weight: 600; }
+.badge-enrolled { background-color: #2E7D32; }
+.card-content { padding: 1rem; }
+.card-title { font-size: 1rem; font-weight: 600; color: #212121; margin-bottom: 0.5rem; }
+.card-description { font-size: 0.85rem; color: #616161; margin-bottom: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: #9E9E9E; margin-bottom: 0.75rem; }
+.btn-continue { width: 100%; background-color: #1565C0; color: #FFFFFF; border: none; padding: 8px 16px; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+.btn-continue:hover { background-color: #0D47A1; }
+.empty-state { text-align: center; padding: 3rem; color: #616161; }
+.btn-explore { background-color: #1565C0; color: #FFFFFF; padding: 10px 24px; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 1rem; }
+.btn-explore:hover { background-color: #0D47A1; color: #FFFFFF; }
+.perfil-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; }
+.perfil-modal-card { background-color: #FFFFFF; border: 1px solid #E0E0E0; padding: 2rem; width: 400px; max-width: 90%; }
+.perfil-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.perfil-header h3 { margin: 0; font-weight: 600; color: #212121; }
+.btn-close-perfil { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #616161; }
+.perfil-info p { margin: 0.5rem 0; color: #212121; font-size: 0.9rem; }

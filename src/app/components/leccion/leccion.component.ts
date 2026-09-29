@@ -26,12 +26,11 @@ export class LeccionComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-ngOnInit(): void {
+  ngOnInit(): void {
     this.inicializarLeccion();
     this.idSeccion = Number(this.route.snapshot.paramMap.get('id'));
     
     if (isPlatformBrowser(this.platformId)) {
-      // 🔹 NUEVO: Guardamos el ID de la sección actual para que los hijos sepan a dónde volver
       localStorage.setItem('idSeccionActual', this.idSeccion.toString());
       
       const idCursoGuardado = localStorage.getItem('idCursoActual');
@@ -48,7 +47,7 @@ ngOnInit(): void {
       this.leccionService.listarLeccionesPorSeccion(this.idSeccion)
         .subscribe({
           next: (data: Leccion[]) => this.lecciones = data,
-          error: (err: any) => console.error('Error al cargar lecciones', err)
+          error: (err: any) => {}
         });
     }
   }
@@ -78,20 +77,18 @@ ngOnInit(): void {
     if (this.idCurso) {
       this.router.navigate([`/seccion/curso/${this.idCurso}`]);
     } else {
-      console.error('No se encontró el idCurso');
       this.router.navigate(['/panel-docente']); 
     }
   }
 
   eliminarLeccion(idLeccion: number): void {
-    if (confirm('¿Estás seguro de eliminar esta Leccion?')) {
+    if (confirm('Estas seguro de eliminar esta Leccion?')) {
       this.leccionService.eliminarLeccion(idLeccion).subscribe({
         next: (respuesta: any) => {
           this.cargarLecciones();
         },
         error: (err: any) => {
-          console.error('Error al eliminar leccion:', err);
-          alert('❌ No se pudo eliminar la leccion');
+          alert('No se pudo eliminar la leccion');
         }
       });
     }

@@ -46,10 +46,8 @@ export class ActualizarLeccionComponent implements OnInit {
             }
           }
         },
-        error: (err: any) => console.error('Error al cargar la lección:', err)
+        error: (err: any) => {}
       });
-    } else {
-      console.warn("No se encontró el ID en la URL.");
     }
   }
 
@@ -69,12 +67,11 @@ export class ActualizarLeccionComponent implements OnInit {
   actualizarSeccion(): void {
     this.leccionService.actualizarLeccion(this.leccion.idLeccion, this.leccion).subscribe({
       next: (res: any) => {
-        alert('✅ Lección y materiales actualizados correctamente');
+        alert('Leccion y materiales actualizados correctamente');
         this.regresarALista(); 
       },
       error: (err: any) => {
-        console.error('Error al actualizar:', err);
-        alert('❌ Ocurrió un error al actualizar la lección');
+        alert('Ocurrio un error al actualizar la leccion');
       }
     });
   }

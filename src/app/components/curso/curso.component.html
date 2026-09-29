@@ -1,21 +1,23 @@
-<h1>LISTADO DE DOCENTES</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Id_docente</th>
-            <th>Nombre</th>
-            <th>ACCION</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let docente of docentesC">
-            <td>{{docente.idDocente}}</td>
-            <td>{{docente.nombres}}</td>
-            <td>
-                <button class="btn btn-warning" (click)="ingresarDocente(docente.idDocente)">
-          INGRESAR CON DOCENTE
-        </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<h1 class="mb-4">LISTADO DE DOCENTES</h1>
+<div class="table-responsive">
+    <table class="table" style="border: 1px solid #E0E0E0; border-radius: 0; box-shadow: none;">
+        <thead>
+            <tr>
+                <th style="background-color: #1565C0; color: #FFFFFF;">Id_docente</th>
+                <th style="background-color: #1565C0; color: #FFFFFF;">Nombre</th>
+                <th style="background-color: #1565C0; color: #FFFFFF;">ACCION</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let docente of docentesC">
+                <td style="color: #212121; border-top: 1px solid #E0E0E0;">{{docente.idDocente}}</td>
+                <td style="color: #212121; border-top: 1px solid #E0E0E0;">{{docente.nombres}}</td>
+                <td style="border-top: 1px solid #E0E0E0;">
+                    <button class="btn" style="background-color: #F57F17; color: #FFFFFF; border-radius: 0; border: none;" (click)="ingresarDocente(docente.idDocente)">
+                        INGRESAR CON DOCENTE
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -14,7 +14,6 @@ export class EvaluacionCursoService {
 
   constructor(private http: HttpClient) { }
 
-  // Obtener la evaluación de una sección
   listarEvaluacion(idSeccion: number): Observable<EvaluacionCurso[]> {
     return this.http.get<EvaluacionCurso[]>(`${this.apiUrl}/seccion/${idSeccion}`);
   }

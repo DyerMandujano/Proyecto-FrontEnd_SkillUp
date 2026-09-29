@@ -39,49 +39,32 @@ export class AutenticacionComponent implements AfterViewInit {
   registroExitoso: string | null = null;
   registroError: string | null = null;
 
-
   constructor(
     private authService: AuthService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object 
   ) { }
 
-  
   onLoginSubmit() {
     this.loginError = null; 
     
     this.authService.login(this.loginData).subscribe(
       response => {
-
-
-        debugger;
-        console.log('Login exitoso!', response);
         this.authService.saveSession(response);
         
-        // ================================================================
-        // ¡ESTA ES LA CORRECCIÓN!
-        // Redirige según el rol del usuario
-        // ================================================================
         if (response.rol === 'docente') {
           this.router.navigate(['docente', response.idRolEspecifico]);
         } else if (response.rol === 'estudiante') {
-          // Si es estudiante, va al nuevo dashboard
           this.router.navigate(['/visualizar-cursos', response.idRolEspecifico]);
         } else {
-          // Una ruta por defecto si no es ninguno (o es admin, etc.)
           this.router.navigate(['/']);
         }
-        // ================================================================
-
       },
       error => {
-        console.error('Error en el login:', error);
-        //
         this.loginError = error.error?.message || 'Usuario o contraseña incorrectos.';
       }
     );
   }
-
  
   onRegisterSubmit() {
     this.registroError = null;
@@ -115,27 +98,18 @@ export class AutenticacionComponent implements AfterViewInit {
 
     this.authService.register(payload).subscribe(
       response => {
-        console.log('Registro exitoso!', response);
         this.registroExitoso = '¡Cuenta creada! Por favor, inicia sesión.';
         
-        // Esta línea también debe estar dentro del 'if' de abajo
         document.getElementById('botonInicioSesion')?.click();
       },
       error => {
-        console.error('Error en el registro:', error);
         this.registroError = error.error?.message || 'Error al crear la cuenta. Verifique los datos.';
       }
     );
   }
 
-
-  // --- LÓGICA DE ANIMACIÓN (del JSP original) ---
-  
   ngAfterViewInit(): void {
-    
     if (isPlatformBrowser(this.platformId)) {
-      
-      // --- CÓDIGO PARA LA ANIMACIÓN DEL PANEL ---
       const botonRegistro = document.getElementById('botonRegistro');
       const botonInicioSesion = document.getElementById('botonInicioSesion');
       const contenedorPrincipal = document.getElementById('contenedorPrincipal');
@@ -152,7 +126,6 @@ export class AutenticacionComponent implements AfterViewInit {
         contenedorPrincipal?.classList.add('panel-derecho-activo');
       }
 
-      // --- CÓDIGO PARA CAMPOS DINÁMICOS DE ROL ---
       const rolEstudianteRadio = document.getElementById('rolEstudiante') as HTMLInputElement;
       const rolDocenteRadio = document.getElementById('rolDocente') as HTMLInputElement;
       
@@ -173,9 +146,6 @@ export class AutenticacionComponent implements AfterViewInit {
 
       rolEstudianteRadio?.addEventListener('change', toggleRoleFields);
       rolDocenteRadio?.addEventListener('change', toggleRoleFields);
-
-    } // Fin del 'if (isPlatformBrowser)'
-
-  } // Fin de ngAfterViewInit
-
+    }
+  }
 }

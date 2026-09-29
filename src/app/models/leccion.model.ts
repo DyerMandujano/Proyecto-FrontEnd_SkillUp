@@ -1,4 +1,4 @@
-import { Material } from './material.model'; // 🔹 ESTO ES LO QUE FALTA
+import { Material } from './material.model';
 
 export interface Leccion {
   idLeccion: number;

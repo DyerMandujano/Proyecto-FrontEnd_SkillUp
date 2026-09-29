@@ -6,7 +6,6 @@ import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DocenteHeaderComponent } from '../../docente-header/docente-header.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { SafeUrlPipe } from '../../../pipes/safe-url.pipe';
 
 @Component({
   selector: 'app-registrar-leccion',
@@ -52,13 +51,11 @@ export class RegistrarLeccionComponent implements OnInit {
     this.nuevaLeccion.materiales.splice(index, 1);
   }
 
-  // 🔹 CLAVE: Guardamos el archivo físico directamente en el arreglo del material
   onFileSelected(event: any, index: number) {
     const file: File = event.target.files[0];
     if (file) {
       this.nuevaLeccion.materiales[index].archivoFisico = file;
       
-      // Autocompleta el nombre del input con el nombre del archivo si está vacío
       if (!this.nuevaLeccion.materiales[index].nombreArchivo) {
         this.nuevaLeccion.materiales[index].nombreArchivo = file.name;
       }
@@ -68,14 +65,12 @@ export class RegistrarLeccionComponent implements OnInit {
   registrarSeccion() {
     this.leccionService.insertarLeccion(this.nuevaLeccion).subscribe({
       next: (mensaje) => {
-        alert('✅ Lección creada correctamente');
-        // Redirige al panel correcto
+        alert('Leccion creada correctamente');
         const idSeccionGuardado = localStorage.getItem('idSeccionActual') || this.idSeccion;
         this.router.navigate([`/leccion/seccion/${idSeccionGuardado}`]);
       },
       error: (err) => {
-        console.error('Error al insertar leccion:', err);
-        alert('❌ Error al registrar la lección.');
+        alert('Error al registrar la leccion.');
       }
     });
   }

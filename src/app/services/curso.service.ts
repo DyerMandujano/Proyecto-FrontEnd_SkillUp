@@ -17,13 +17,7 @@ export class CursoService {
  private apiUrl4 = 'http://localhost:8888/api/cursos/no-matricula';
 
   constructor(private http: HttpClient) {}
-
-  /*
-  listarCursos(): Observable<Curso[]> {
-    return this.http.get<Curso[]>(this.apiUrl2);
-  }*/
  
-
     listarCursos(): Observable<Curso[]> {
     return this.http.get<Curso[]>(this.apiUrl3);
   }
@@ -31,7 +25,6 @@ export class CursoService {
   listarCursosSinMatriculaporEstu(id: number): Observable<CursoNoMatricula[]> {
     return this.http.get<CursoNoMatricula[]>(`${this.apiUrl4}/${id}`);
   }
-
 
   listarDocentes(): Observable<DocenteC[]> {
     return this.http.get<DocenteC[]>(this.apiUrl);
@@ -57,7 +50,4 @@ export class CursoService {
     return this.http.delete(`${this.apiUrl3}/${id}`, { responseType: 'text' });
   }
 
-
-
 }
-

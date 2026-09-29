@@ -1,0 +1,41 @@
+.card {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+}
+.card-header {
+    background-color: #1565C0;
+    color: #FFFFFF;
+}
+.form-label {
+    color: #212121;
+}
+.form-control, .form-select {
+    border: 1px solid #E0E0E0;
+    background-color: #FFFFFF;
+    color: #212121;
+}
+.form-control::placeholder {
+    color: #616161;
+}
+.btn-primary {
+    background-color: #1565C0;
+    color: #FFFFFF;
+    border: none;
+}
+.btn-secondary {
+    background-color: #F5F5F5;
+    color: #212121;
+    border: 1px solid #E0E0E0;
+}
+.sidebar {
+    background-color: #FFFFFF;
+    border-right: 1px solid #E0E0E0;
+    height: 100vh;
+}
+.nav-link {
+    color: #212121;
+}
+.nav-link.active {
+    background-color: #1565C0;
+    color: #FFFFFF;
+}

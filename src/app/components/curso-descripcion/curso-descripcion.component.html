@@ -1,7 +1,7 @@
-<div class="container-fluid min-vh-100 p-4" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff;">
+<div class="container-fluid min-vh-100 p-4" style="background-color: #FFFFFF; color: #212121;">
   
   <header class="text-center py-3 mb-4">
-    <h5 class="fw-bold text-uppercase tracking-widest text-primary">SkillUp</h5>
+    <h5 class="fw-bold text-uppercase text-primary" style="color: #1565C0;">SkillUp</h5>
   </header>
 
   <main class="px-md-4">
@@ -9,26 +9,26 @@
     @if (cargando) {
       <div class="text-center py-5">
         <div class="spinner-border text-primary" role="status"></div>
-        <p class="mt-2 text-white-50">Cargando curso...</p>
+        <p class="mt-2 text-muted" style="color: #616161;">Cargando curso...</p>
       </div>
     }
 
     @if (error && !cargando) {
-      <div class="alert alert-danger text-center">{{ error }}</div>
+      <div class="alert alert-danger text-center" style="background-color: #C62828; color: #FFFFFF; border-radius: 0;">{{ error }}</div>
     }
 
     @if (curso && !cargando) {
-      <div class="card border-0 shadow-lg p-4 rounded-4 mb-5" style="background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px);">
+      <div class="card p-4 mb-5" style="border: 1px solid #E0E0E0; border-radius: 0; background-color: #F5F5F5;">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <h1 class="text-white fw-bold display-5 mb-3">{{ curso.nombreCurso }}</h1>
-            <p class="lead text-white-50 mb-4">{{ curso.resumen }}</p>
+            <h1 class="text-dark fw-bold display-5 mb-3" style="color: #212121;">{{ curso.nombreCurso }}</h1>
+            <p class="lead text-muted mb-4" style="color: #616161;">{{ curso.resumen }}</p>
             
             <div class="d-flex gap-4 mb-3">
-              <span class="text-warning">★★★★☆ <span class="text-white ms-2">4.6 (920 reseñas)</span></span>
+              <span class="text-warning" style="color: #F57F17;">★★★★☆ <span class="text-muted ms-2" style="color: #616161;">4.6 (920 reseñas)</span></span>
             </div>
             
-            <div class="text-white-50">
+            <div class="text-muted" style="color: #616161;">
               <p><strong>Duración:</strong> {{ curso.duracionMin }} minutos</p>
               <p><strong>Nivel:</strong> {{ curso.nivel }}</p>
               <p><strong>Publicado:</strong> {{ curso.fechaPublicacion }}</p>
@@ -37,16 +37,16 @@
 
           <div class="col-md-4 text-center">
             @if (curso.imagenCurso1) {
-              <img src="/img/curso/{{ curso.imagenCurso1 }}" class="img-fluid rounded-3 shadow mb-3" style="max-height: 250px; width: 100%; object-fit: cover;">
+              <img src="/img/curso/{{ curso.imagenCurso1 }}" class="img-fluid mb-3" style="max-height: 250px; width: 100%; object-fit: cover; border-radius: 0; border: 1px solid #E0E0E0;">
             }
             
             <div class="mt-2">
               @if (estaMatriculado) {
-                <a [routerLink]="['/curso', cursoId, 'lecciones']" class="btn btn-success btn-lg w-100 rounded-pill shadow-sm">
+                <a [routerLink]="['/curso', cursoId, 'lecciones']" class="btn btn-success btn-lg w-100" style="background-color: #2E7D32; color: #FFFFFF; border-radius: 0; border: none;">
                   <i class="bi bi-play-fill me-2"></i>Continuar Curso
                 </a>
               } @else {
-                <button (click)="registrarMatricula()" class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm">
+                <button (click)="registrarMatricula()" class="btn btn-primary btn-lg w-100" style="background-color: #1565C0; color: #FFFFFF; border-radius: 0; border: none;">
                   <i class="bi bi-door-open me-2"></i>Matricularse al Curso
                 </button>
               }
@@ -57,21 +57,21 @@
 
       <div class="row g-5">
         <div class="col-lg-8">
-          <section class="card border-0 shadow-sm p-4 rounded-4 mb-5" style="background: rgba(255, 255, 255, 0.05);">
-            <h3 class="text-primary fw-bold mb-3">Lo que aprenderás</h3>
-            <p class="text-white-50 fs-5">{{ curso.descripcion }}</p>
+          <section class="card p-4 mb-5" style="border: 1px solid #E0E0E0; border-radius: 0; background-color: #FFFFFF;">
+            <h3 class="fw-bold mb-3" style="color: #1565C0;">Lo que aprenderás</h3>
+            <p class="text-muted fs-5" style="color: #616161;">{{ curso.descripcion }}</p>
           </section>
 
-          <section class="card border-0 shadow-sm p-4 rounded-4 mb-5" style="background: rgba(255, 255, 255, 0.05);">
-            <h3 class="text-primary fw-bold mb-4">Contenido del Curso</h3>
+          <section class="card p-4 mb-5" style="border: 1px solid #E0E0E0; border-radius: 0; background-color: #FFFFFF;">
+            <h3 class="fw-bold mb-4" style="color: #1565C0;">Contenido del Curso</h3>
             @for (seccion of secciones; track seccion.idSeccion) {
               <div class="mb-4">
-                <h5 class="text-white fw-bold mb-3 border-bottom border-secondary pb-2">{{ seccion.nombreSeccion }}</h5>
+                <h5 class="text-dark fw-bold mb-3 border-bottom pb-2" style="color: #212121; border-color: #E0E0E0;">{{ seccion.nombreSeccion }}</h5>
                 <ul class="list-unstyled">
                   @for (leccion of getLeccionesBySeccion(seccion.idSeccion); track leccion.idLeccion) {
-                    <li class="py-2 text-white-50">
-                      <i class="bi bi-play-circle me-2 text-primary"></i> {{ leccion.nombreLeccion }}
-                      <small class="text-white-50 float-end">({{ leccion.duracion }} min)</small>
+                    <li class="py-2 text-muted" style="color: #616161;">
+                      <i class="bi bi-play-circle me-2" style="color: #1565C0;"></i> {{ leccion.nombreLeccion }}
+                      <small class="float-end" style="color: #9E9E9E;">({{ leccion.duracion }} min)</small>
                     </li>
                   }
                 </ul>
@@ -79,15 +79,15 @@
             }
           </section>
 
-          <section class="card border-0 shadow-sm p-4 rounded-4 mb-5" style="background: rgba(255, 255, 255, 0.05);">
-            <h3 class="text-primary fw-bold mb-4">Instructor</h3>
+          <section class="card p-4 mb-5" style="border: 1px solid #E0E0E0; border-radius: 0; background-color: #FFFFFF;">
+            <h3 class="fw-bold mb-4" style="color: #1565C0;">Instructor</h3>
             <div class="d-flex align-items-start">
-              <img src="/img/docente/docente.jpg" class="rounded-circle me-4 border border-2 border-primary" style="width: 120px; height: 120px; object-fit: cover;">
-              <div class="text-white-50">
-                <h5 class="text-white fw-bold mb-1">Javier Garcia Montes</h5>
+              <img src="/img/docente/docente.jpg" class="me-4" style="width: 120px; height: 120px; object-fit: cover; border-radius: 0; border: 2px solid #1565C0;">
+              <div class="text-muted" style="color: #616161;">
+                <h5 class="text-dark fw-bold mb-1" style="color: #212121;">Javier Garcia Montes</h5>
                 <p class="mb-1"><strong>Experiencia:</strong> Formación técnica industrial</p>
                 <p class="mb-1"><strong>Grado Académico:</strong> Docente especializado</p>
-                <div class="text-warning mb-2">★★★★★ <span class="text-white">4.8</span></div>
+                <div class="text-warning mb-2" style="color: #F57F17;">★★★★★ <span class="text-muted" style="color: #616161;">4.8</span></div>
                 <p class="small">Profesional con amplia experiencia en la industria y dedicado a la enseñanza.</p>
               </div>
             </div>
@@ -95,17 +95,17 @@
         </div>
 
         <div class="col-lg-4">
-          <div class="card border-0 shadow-sm p-4 rounded-4" style="background: rgba(255, 255, 255, 0.05);">
-            <h4 class="text-primary fw-bold mb-4">Reseñas de Estudiantes</h4>
-            <div class="bg-dark bg-opacity-50 p-3 rounded-3 mb-3">
-              <div class="text-warning mb-1">★★★★★</div>
-              <p class="text-white small mb-1">"Excelente curso, muy práctico y accesible."</p>
-              <small class="text-white-50">- María López</small>
+          <div class="card p-4" style="border: 1px solid #E0E0E0; border-radius: 0; background-color: #FFFFFF;">
+            <h4 class="fw-bold mb-4" style="color: #1565C0;">Reseñas de Estudiantes</h4>
+            <div class="p-3 mb-3" style="background-color: #F5F5F5; border: 1px solid #E0E0E0; border-radius: 0;">
+              <div class="mb-1" style="color: #F57F17;">★★★★★</div>
+              <p class="text-dark small mb-1" style="color: #212121;">"Excelente curso, muy práctico y accesible."</p>
+              <small class="text-muted" style="color: #616161;">- María López</small>
             </div>
-            <div class="bg-dark bg-opacity-50 p-3 rounded-3">
-              <div class="text-warning mb-1">★★★★☆</div>
-              <p class="text-white small mb-1">"Buen contenido, muy bien explicado."</p>
-              <small class="text-white-50">- Carlos Rodríguez</small>
+            <div class="p-3" style="background-color: #F5F5F5; border: 1px solid #E0E0E0; border-radius: 0;">
+              <div class="mb-1" style="color: #F57F17;">★★★★☆</div>
+              <p class="text-dark small mb-1" style="color: #212121;">"Buen contenido, muy bien explicado."</p>
+              <small class="text-muted" style="color: #616161;">- Carlos Rodríguez</small>
             </div>
           </div>
         </div>

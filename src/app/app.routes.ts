@@ -10,35 +10,27 @@ import { LeccionComponent } from './components/leccion/leccion.component';
 import { RegistrarLeccionComponent } from './components/leccion/registrar-leccion/registrar-leccion.component';
 import { ActualizarLeccionComponent } from './components/leccion/actualizar-leccion/actualizar-leccion.component';
 
-// --- Imports de AMBOS (tu compañero y tú) ---
 import { AutenticacionComponent } from './components/autenticacion/autenticacion.component';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
 import { VisualizarCursosComponent } from './components/estudiante/visualizar-cursos/visualizar-cursos.component';
-// Asegúrate de que estos componentes existan (si te da error, verifica la ruta)
 import { CursoDescripcionComponent } from './components/curso-descripcion/curso-descripcion.component'; 
 import { CursoDetalleComponent } from './components/curso-detalle/curso-detalle.component';
 import { AuthGuard } from './guards/auth.guard';
 
-// --- ¡IMPORTANTE! Importar el Home ---
 import { HomeComponent } from './components/home/home.component';
 import { EvaluacionCursoComponent } from './components/evaluacion-curso/evaluacion-curso.component';
 import { MisCertificadosComponent } from './components/mis-certificados/mis-certificados.component';
 
 export const routes: Routes = [
-  // 1. CORRECCIÓN: La ruta raíz carga el Home
   {
     path: '',
     component: HomeComponent 
   },
-
-  // Rutas de visualización (Estudiante)
   {
     path: 'visualizar-cursos/:id',
     component: VisualizarCursosComponent,
-    canActivate: [AuthGuard] // Recomendado protegerla
+    canActivate: [AuthGuard]
   },
-
-  // Rutas de detalle de curso (Nuevas del merge)
   {
     path: 'curso/:id',
     component: CursoDescripcionComponent
@@ -46,10 +38,8 @@ export const routes: Routes = [
   {
     path: 'curso/:id/lecciones',
     component: CursoDetalleComponent,
-    canActivate: [AuthGuard] // Recomendado protegerla
+    canActivate: [AuthGuard]
   },
-
-  // Rutas de autenticación
   {
     path: 'login',
     component: AutenticacionComponent
@@ -58,8 +48,6 @@ export const routes: Routes = [
     path: 'registro',
     component: AutenticacionComponent
   },
-
-  // --- Rutas de gestión (Docente) ---
   {
     path: 'cursos',
     component: CursoComponent
@@ -108,15 +96,11 @@ export const routes: Routes = [
     path: 'certificados/estudiante/:id',
     component: MisCertificadosComponent
   },
-
-  // Ruta antigua de estudiante (si aún la usas)
   {
     path: 'estudiante/dashboard',
     component: EstudianteComponent,
     canActivate: [AuthGuard]
   },
-
-  // 2. CORRECCIÓN: Ruta comodín redirige a Home ('') en lugar de Login
   {
     path: '**',
     redirectTo: ''

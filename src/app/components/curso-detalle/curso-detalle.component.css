@@ -1,116 +1,16 @@
-/* --- COLORES BASE SKILLUP --- */
-.bg-skillup-estudiante {
-  background-color: #0b111e; /* Fondo oscuro principal de la pantalla */
-}
-
-.bg-skillup-tarjeta {
-  background-color: #1e2638; /* Azul grisáceo para las tarjetas */
-}
-
-.bg-dark-custom {
-  background-color: #151b2b !important; /* Aún más oscuro para cabeceras/footers */
-}
-
-/* --- BOTONES GLOBALES --- */
-.btn-yellow {
-  background-color: #ffc107;
-  color: #1a1a1a;
-  font-weight: 600;
-  border: none;
-  transition: all 0.2s ease;
-}
-
-.btn-yellow:hover {
-  background-color: #e0a800;
-  transform: translateY(-1px);
-}
-
-/* --- SISTEMA DE PESTAÑAS (TABS) --- */
-.custom-tabs-container {
-  background-color: #1e2638;
-  border-bottom: 1px solid #2d3748 !important;
-}
-
-.custom-tabs-nav {
-  gap: 8px;
-}
-
-.tab-btn {
-  background-color: transparent;
-  color: #9ca3af;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  font-weight: 500;
-  font-size: 0.95rem;
-  border-radius: 8px 8px 0 0;
-  border-bottom: 3px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.tab-btn:hover {
-  color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.03);
-}
-
-.tab-btn.active {
-  color: #ffc107; /* Amarillo activo */
-  border-bottom: 3px solid #ffc107;
-  background-color: rgba(255, 193, 7, 0.05);
-}
-
-.tab-content-box {
-  background-color: #1a2233; /* Un tono sutilmente diferente para el contenido de la pestaña */
-  min-height: 250px;
-}
-
-/* --- INPUTS Y TEXTAREAS OSCUROS --- */
-.custom-input, 
-.custom-textarea {
-  background-color: #0b111e;
-  border: 1px solid #2d3748;
-  color: #ffffff;
-}
-
-.custom-input:focus, 
-.custom-textarea:focus {
-  background-color: #151b2b;
-  border-color: #ffc107;
-  color: #ffffff;
-  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.15);
-}
-
-.custom-input::placeholder,
-.custom-textarea::placeholder {
-  color: #6c757d;
-}
-
-/* --- ESTADOS VACÍOS --- */
-.empty-state-box {
-  border: 1px dashed #2d3748;
-  background-color: rgba(11, 17, 30, 0.5);
-}
-
-/* --- ANIMACIONES --- */
-.fadeIn {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Barra de scroll personalizada para el sidebar (opcional pero queda bien) */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #0b111e; 
-}
-::-webkit-scrollbar-thumb {
-  background: #2d3748; 
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #4a5568; 
-}
+.bg-skillup-estudiante { background-color: #FFFFFF; }
+.bg-skillup-tarjeta { background-color: #FFFFFF; border: 1px solid #E0E0E0; }
+.bg-dark-custom { background-color: #F5F5F5 !important; }
+.btn-yellow { background-color: #F57F17; color: #FFFFFF; font-weight: 600; border: none; }
+.btn-yellow:hover { background-color: #E65100; }
+.custom-tabs-container { background-color: #FFFFFF; border-bottom: 1px solid #E0E0E0 !important; }
+.tab-btn { background-color: transparent; color: #616161; border: none; padding: 0.8rem 1.5rem; font-weight: 500; border-bottom: 3px solid transparent; }
+.tab-btn:hover { color: #212121; }
+.tab-btn.active { color: #1565C0; border-bottom: 3px solid #1565C0; }
+.tab-content-box { background-color: #FFFFFF; min-height: 250px; }
+.custom-input, .custom-textarea { background-color: #F5F5F5; border: 1px solid #E0E0E0; color: #212121; }
+.custom-input:focus, .custom-textarea:focus { border-color: #1565C0; }
+.custom-input::placeholder, .custom-textarea::placeholder { color: #9E9E9E; }
+.empty-state-box { border: 1px dashed #E0E0E0; background-color: #F5F5F5; }
+.fadeIn { animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

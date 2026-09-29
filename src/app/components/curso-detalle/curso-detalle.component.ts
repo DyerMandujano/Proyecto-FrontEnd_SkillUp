@@ -8,15 +8,12 @@ import { Curso } from '../../models/curso.model';
 import { Seccion } from '../../models/seccion.model';
 import { Leccion } from '../../models/leccion.model';
 import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
-
-// 🔹 NUEVO: Importamos FormsModule para leer los inputs (ngModel)
 import { FormsModule } from '@angular/forms'; 
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-curso-detalle',
   standalone: true,
-  // 🔹 NUEVO: Añadimos FormsModule a los imports
   imports: [CommonModule, SafeUrlPipe, FormsModule], 
   templateUrl: './curso-detalle.component.html',
   styleUrls: ['./curso-detalle.component.css'],
@@ -32,7 +29,6 @@ export class CursoDetalleComponent implements OnInit {
   error: string = '';
   isBrowser: boolean; 
   
-  // Estado para acordeones y progreso
   expandedSections: { [key: number]: boolean } = {};
   expandedResources: { [key: number]: boolean } = {};
   completedLessons: Set<number> = new Set();
@@ -43,11 +39,9 @@ export class CursoDetalleComponent implements OnInit {
   esPdf: boolean = false;
   pestanaActiva: string = 'descripcion';
 
-  // 🔹 NUEVO: Variables para controlar los inputs y el historial del foro/notas
   nuevaPregunta: string = '';
   nuevaNota: string = '';
   
-  // Listas temporales para mostrar los datos en la vista (simulación frontend)
   preguntasForo: { autor: string, texto: string, fecha: Date }[] = [];
   misNotas: { texto: string, fecha: Date }[] = [];
 
@@ -85,7 +79,6 @@ export class CursoDetalleComponent implements OnInit {
         this.cargarSecciones();
       },
       error: (error) => {
-        console.error('Error cargando curso:', error);
         this.error = 'Error al cargar el curso';
         this.cargando = false;
       }
@@ -249,7 +242,6 @@ export class CursoDetalleComponent implements OnInit {
     this.esPdf = urlMinuscula.endsWith('.pdf');
     let urlCompleta = '';
 
-    // ⚠️ REEMPLAZA ESTE LINK POR TU TÚNEL DE CLOUDFLARE ACTIVO ⚠️
     if (urlNormalizada.startsWith('uploads/')) {
       urlCompleta = `https://servers-argument-recognize-alphabetical.trycloudflare.com/${urlNormalizada}`;
     } else if (urlNormalizada.startsWith('http')) {
@@ -283,7 +275,7 @@ export class CursoDetalleComponent implements OnInit {
 
       fetch(url)
         .then(response => {
-          if (!response.ok) throw new Error('Error de red al intentar descargar el recurso');
+          if (!response.ok) throw new Error('Error');
           return response.blob();
         })
         .then(blob => {
@@ -308,28 +300,23 @@ export class CursoDetalleComponent implements OnInit {
     }
   }
 
-  // 🔹 NUEVO: Funciones para interactuar con los foros y notas
   enviarPregunta(): void {
     if (this.nuevaPregunta.trim().length > 0) {
-      // Guardamos la pregunta en nuestra lista local
       this.preguntasForo.unshift({
-        autor: 'Tú (Estudiante)', // Esto luego vendrá del usuario logueado
+        autor: 'Tú (Estudiante)', 
         texto: this.nuevaPregunta,
         fecha: new Date()
       });
-      // Limpiamos el input
       this.nuevaPregunta = '';
     }
   }
 
   guardarNota(): void {
     if (this.nuevaNota.trim().length > 0) {
-      // Guardamos la nota
       this.misNotas.unshift({
         texto: this.nuevaNota,
         fecha: new Date()
       });
-      // Limpiamos el textarea
       this.nuevaNota = '';
     }
   }

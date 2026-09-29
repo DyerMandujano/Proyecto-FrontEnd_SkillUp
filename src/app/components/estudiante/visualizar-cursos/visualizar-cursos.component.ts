@@ -3,13 +3,11 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
-// Modelos
 import { CursoMatricula } from '../../../models/CursoMatricula';
 import { CursoNoMatricula } from '../../../models/CursoNoMatricula';
 import { Persona } from '../../../models/persona.model';
 import { LoginResponse } from '../../../models/login-response.model';
 
-// Servicios
 import { EstudianteService } from '../../../services/estudiante.service';
 import { AuthService } from '../../../services/auth.service';
 import { UsuarioService } from '../../../services/usuario.service';
@@ -70,7 +68,6 @@ export class VisualizarCursosComponent implements OnInit {
       if (id) {
         this.idEstudiante = +id;
         
-        // 🔹 CORRECCIÓN: Protegemos localStorage con isPlatformBrowser
         if (isPlatformBrowser(this.platformId)) {
           localStorage.setItem('idEstudiante', this.idEstudiante.toString());
         }
@@ -91,26 +88,24 @@ export class VisualizarCursosComponent implements OnInit {
   obtenerCursosPorEstudiante(id: number): void {
     this.estudianteService.obtenerCursosMatricula(id).subscribe({
       next: (data) => { this.cursos = data; },
-      error: (err) => { console.error('Error al obtener los cursos:', err); }
+      error: (err) => { }
     });
   }
 
   obtenerCursosSinMatricula(id: number): void {
     this.cursoService.listarCursosSinMatriculaporEstu(id).subscribe({
       next: (data) => { this.cursosNoM = data; },
-      error: (err) => { console.error('Error al obtener los cursos:', err); }
+      error: (err) => { }
     });
   }
 
   irAMisCertificados(): void {
-    // 🔹 CORRECCIÓN: Protegemos el acceso a localStorage
     let idEstudiante = 0;
     if (isPlatformBrowser(this.platformId)) {
        idEstudiante = Number(localStorage.getItem('idEstudiante'));
     }
 
     if (!idEstudiante) {
-      console.error("No existe idEstudiante en el almacenamiento");
       return;
     }
     this.router.navigate(['/certificados/estudiante', idEstudiante]);
@@ -157,6 +152,5 @@ export class VisualizarCursosComponent implements OnInit {
           this.errorMessage = "El usuario no coincide.";
           return;
       }
-      alert('Funcionalidad pendiente de conexión.');
   }
 }

@@ -8,19 +8,19 @@ import { DocenteHeaderComponent } from '../../docente-header/docente-header.comp
 
 @Component({
   selector: 'app-actualizar-seccion',
-  imports: [CommonModule, FormsModule,DocenteHeaderComponent],
+  imports: [CommonModule, FormsModule, DocenteHeaderComponent],
   templateUrl: './actualizar-seccion.component.html',
   styleUrl: './actualizar-seccion.component.css'
 })
-export class ActualizarSeccionComponent implements OnInit{
+export class ActualizarSeccionComponent implements OnInit {
 
   idSeccion!: number;
   seccion: Seccion = {
-    idSeccion:0,
-    idCurso:0,
-    nombreSeccion:'',
-    ordenSeccion:0,
-    estado:1
+    idSeccion: 0,
+    idCurso: 0,
+    nombreSeccion: '',
+    ordenSeccion: 0,
+    estado: 1
   };
 
   constructor(
@@ -31,17 +31,13 @@ export class ActualizarSeccionComponent implements OnInit{
 
   ngOnInit(): void {
     this.idSeccion = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('🟢 ID de seccion recibido:', this.idSeccion);
 
-    // 🔹 Obtener seccion por ID al cargar la página
     this.seccionService.obtenerSeccionPorId(this.idSeccion).subscribe({
       next: (data) => {
         this.seccion = data;
-        console.log('📘 Datos de seccion cargados:', data);
       },
       error: (err) => {
-        console.error('❌ Error al obtener seccion:', err);
-        alert('No se pudo cargar la información de seccion.');
+        alert('No se pudo cargar la informacion de seccion.');
       }
     });
   }
@@ -53,8 +49,7 @@ export class ActualizarSeccionComponent implements OnInit{
         this.router.navigate(['/seccion/curso', this.seccion.idCurso]);
       },
       error: (err) => {
-        console.error(err);
-        alert('❌ Error al actualizar la seccion');
+        alert('Error al actualizar la seccion');
       }
     });
   }

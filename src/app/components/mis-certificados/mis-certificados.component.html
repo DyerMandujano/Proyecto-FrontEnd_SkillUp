@@ -1,20 +1,20 @@
-<div class="certificados-wrapper min-vh-100">
+<div class="certificados-wrapper">
   <div class="container py-5">
-    <h2 class="text-center mb-5 text-white fw-bold">
-      🎓 Mis Certificados y Logros
+    <h2 class="text-center mb-5 text-dark fw-bold" style="color: #212121;">
+      Mis Certificados y Logros
     </h2>
 
     <div *ngIf="loading" class="text-center p-5">
-      <div class="spinner-border text-warning" role="status">
+      <div class="spinner-border" style="color: #1565C0;" role="status">
         <span class="visually-hidden">Cargando...</span>
       </div>
     </div>
 
-    <div *ngIf="!loading && certificados.length === 0" class="alert alert-dark-custom text-center shadow-sm">
-      <i class="fas fa-info-circle me-2"></i> Aún no tienes certificados. ¡Completa tus cursos para obtenerlos!
+    <div *ngIf="!loading && certificados.length === 0" class="alert alert-dark-custom text-center">
+      <i class="bi bi-info-circle me-2"></i> Aún no tienes certificados. ¡Completa tus cursos para obtenerlos!
     </div>
 
-    <div *ngIf="!loading && certificados.length > 0" class="card dark-card shadow-lg border-0 rounded-4 overflow-hidden">
+    <div *ngIf="!loading && certificados.length > 0" class="card dark-card border-0">
       <div class="card-body p-0">
         <div class="table-responsive">
           <table class="table custom-dark-table table-hover mb-0">
@@ -42,7 +42,7 @@
                 
                 <td class="text-end pe-4 align-middle">
                   <button class="btn btn-yellow btn-sm" (click)="descargarCertificado(cert)">
-                    <i class="fas fa-download me-1"></i> Descargar PDF
+                    <i class="bi bi-download me-1"></i> Descargar PDF
                   </button>
                 </td>
               </tr>

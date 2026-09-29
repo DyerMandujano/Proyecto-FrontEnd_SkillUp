@@ -1,0 +1,131 @@
+.container-custom {
+  background-color: #FFFFFF;
+  color: #212121;
+}
+.sidebar {
+  background-color: #F5F5F5;
+  border-right: 1px solid #E0E0E0;
+}
+.text-custom {
+  color: #212121;
+}
+.btn-sidebar {
+  color: #212121;
+  border-radius: 0;
+}
+.btn-sidebar.active {
+  background-color: #1565C0 !important;
+  color: #FFFFFF !important;
+}
+.main-content {
+  background-color: #FFFFFF;
+}
+.custom-btn-primary {
+  background-color: #1565C0;
+  color: #FFFFFF;
+  border: 1px solid #1565C0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.custom-btn-info {
+  background-color: #F5F5F5;
+  color: #212121;
+  border: 1px solid #E0E0E0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.custom-btn-warning {
+  background-color: #F57F17;
+  color: #FFFFFF;
+  border: 1px solid #F57F17;
+  border-radius: 0;
+  box-shadow: none;
+}
+.custom-btn-danger {
+  background-color: #C62828;
+  color: #FFFFFF;
+  border: 1px solid #C62828;
+  border-radius: 0;
+  box-shadow: none;
+}
+.custom-btn-success {
+  background-color: #2E7D32;
+  color: #FFFFFF;
+  border: 1px solid #2E7D32;
+  border-radius: 0;
+  box-shadow: none;
+}
+.custom-table {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+}
+.custom-table th, .custom-table td {
+  border: 1px solid #E0E0E0;
+  color: #212121;
+}
+.custom-table thead {
+  background-color: #F5F5F5;
+}
+.custom-alert-info {
+  background-color: #F5F5F5;
+  color: #212121;
+  border: 1px solid #E0E0E0;
+  border-radius: 0;
+}
+.custom-badge {
+  border-radius: 0;
+}
+.bg-custom-success {
+  background-color: #2E7D32;
+  color: #FFFFFF;
+}
+.bg-custom-danger {
+  background-color: #C62828;
+  color: #FFFFFF;
+}
+.bg-custom-dark {
+  background-color: #0D47A1;
+}
+.custom-list-item {
+  border: 1px solid #E0E0E0;
+  border-radius: 0;
+  background-color: #FFFFFF;
+}
+.custom-input {
+  border: 1px solid #E0E0E0;
+  border-radius: 0;
+  background-color: #FFFFFF;
+  color: #212121;
+  box-shadow: none;
+}
+.custom-input:focus {
+  border-color: #1565C0;
+  box-shadow: none;
+}
+.metric-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 0;
+  padding: 1rem;
+  text-align: center;
+}
+.course-performance, .activity-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 0;
+  padding: 1.5rem;
+}
+.text-custom-muted {
+  color: #616161 !important;
+}
+.text-custom-success {
+  color: #2E7D32 !important;
+}
+.text-custom-primary {
+  color: #1565C0 !important;
+}
+.custom-progress {
+  border-radius: 0;
+  background-color: #F5F5F5;
+  height: 10px;
+}

@@ -1,162 +1,141 @@
-<div class="bg-skillup-estudiante text-light min-vh-100 d-flex flex-column">
-
-  <nav class="navbar navbar-expand-lg navbar-dark bg-skillup-tarjeta shadow-sm">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold text-warning" routerLink="/">SkillUP</a>
-      <form class="d-flex w-50">
-        <input class="form-control me-2 bg-dark text-white border-secondary" type="search" placeholder="Buscar cursos" aria-label="Search">
-      </form>
-      <div>
-        <button class="btn btn-warning me-2" (click)="irAMisCertificados()">
-          <i class="bi bi-award-fill"></i> Mis Certificados
-        </button>
-        
-        <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#configModal">
-          <i class="bi bi-gear-fill"></i> Configuración
-        </button>
-        
-        <a href="#" class="btn btn-outline-light">
-          <i class="bi bi-person-fill"></i> {{ primerNombre }}
-        </a>
-        
-        <button (click)="onLogout()" class="btn btn-outline-danger ms-2">
-          <i class="bi bi-box-arrow-right"></i> Salir
-        </button>
-      </div>
+<div class="student-dashboard">
+  <nav class="dashboard-navbar">
+    <div class="nav-brand">
+      <span class="brand-text" routerLink="/">SkillUP</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-profile" (click)="irAMisCertificados()">
+        <i class="bi bi-award-fill"></i> Mis Certificados
+      </button>
+      <button type="button" class="btn-profile" data-bs-toggle="modal" data-bs-target="#configModal">
+        <i class="bi bi-gear-fill"></i> Configuración
+      </button>
+      <a href="#" class="btn-profile">
+        <i class="bi bi-person-fill"></i> {{ primerNombre }}
+      </a>
+      <button (click)="onLogout()" class="btn-logout">
+        <i class="bi bi-box-arrow-right"></i> Salir
+      </button>
     </div>
   </nav>
 
-  <section class="container pt-4">
-    <div class="row align-items-center">
-      <div class="col-md-8">
-        <h5>Hola de nuevo, <span class="fw-bold text-warning">{{ currentUser?.nombreCompleto }}</span></h5>
-        <p class="text-white-50">Continúa aprendiendo y mejora tus habilidades técnicas 🚀</p>
-      </div>
-    </div>
-  </section>
+  <div class="dashboard-content">
+    <section class="welcome-section">
+      <h2>Hola de nuevo, <span style="font-weight: 700; color: #1565C0;">{{ currentUser?.nombreCompleto }}</span></h2>
+      <p>Continúa aprendiendo y mejora tus habilidades técnicas.</p>
+    </section>
 
-  <section class="container">
-    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show bg-success text-white border-0" role="alert">
-        <i class="bi bi-check-circle-fill"></i> {{ successMessage }}
-        <button type="button" class="btn-close btn-close-white" (click)="successMessage = null" aria-label="Close"></button>
-    </div>
-    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show bg-danger text-white border-0" role="alert">
-        <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
-        <button type="button" class="btn-close btn-close-white" (click)="errorMessage = null" aria-label="Close"></button>
-    </div>
-  </section>
+    <section *ngIf="successMessage || errorMessage" style="margin-top: 1rem;">
+        <div *ngIf="successMessage" style="background-color: #2E7D32; color: #FFFFFF; padding: 1rem; margin-bottom: 1rem;">
+            <i class="bi bi-check-circle-fill"></i> {{ successMessage }}
+            <button type="button" style="float: right; background: none; border: none; color: #FFFFFF;" (click)="successMessage = null">X</button>
+        </div>
+        <div *ngIf="errorMessage" style="background-color: #C62828; color: #FFFFFF; padding: 1rem; margin-bottom: 1rem;">
+            <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
+            <button type="button" style="float: right; background: none; border: none; color: #FFFFFF;" (click)="errorMessage = null">X</button>
+        </div>
+    </section>
 
-  <div class="container mb-4">
-    <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
-    </div>
-  </div>
-
-  <section class="container mt-4">
-    <h4 class="fw-bold mb-4">Empecemos a aprender</h4>
-
-    <div class="row g-4">
-      <div *ngFor="let curso of cursos" class="col-md-3">
-        <div class="card shadow-sm border-0 bg-skillup-tarjeta text-white h-100">
-          <img src="/img/curso/{{ curso.imagenCurso1 }}" class="card-img-top" alt="{{curso.nombreCurso}}">
-          <div class="card-body d-flex flex-column">
-            <h6 class="card-title fw-bold text-truncate" title="{{ curso.nombreCurso }}">{{ curso.nombreCurso }}</h6>
-            <p class="text-white-50 small mb-2">
+    <section style="margin-top: 2rem;">
+      <h4 class="section-title">Empecemos a aprender</h4>
+      <div class="courses-grid">
+        <div *ngFor="let curso of cursos" class="course-card">
+          <div class="card-image">
+            <img src="/img/curso/{{ curso.imagenCurso1 }}" alt="{{curso.nombreCurso}}">
+            <span class="card-badge badge-enrolled">Inscrito</span>
+          </div>
+          <div class="card-content">
+            <h6 class="card-title" title="{{ curso.nombreCurso }}">{{ curso.nombreCurso }}</h6>
+            <p class="card-description">
               Nivel: {{ curso.nivel }} • {{ curso.duracionMin }} min
             </p>
-            <div class="progress mb-3 bg-dark" style="height: 6px;">
-              <div class="progress-bar bg-warning" style="width: 50%;"></div>
+            <div style="background-color: #F5F5F5; height: 6px; margin-bottom: 1rem;">
+              <div style="background-color: #F57F17; width: 50%; height: 100%;"></div>
             </div>
-            <a [routerLink]="['/curso', curso.idCurso, 'lecciones']" class="btn btn-success mt-auto w-100">
+            <a [routerLink]="['/curso', curso.idCurso, 'lecciones']" class="btn-continue" style="display: block; text-align: center; text-decoration: none;">
               Continuar Curso
             </a>
           </div>
         </div>
       </div>
-    </div>
 
-    <div *ngIf="cursos.length === 0" class="text-center mt-5 p-5 bg-skillup-tarjeta rounded-3">
-      <i class="bi bi-journal-x fs-1 text-white-50"></i>
-      <p class="text-white-50 mt-3 mb-0">Aún no tienes cursos matriculados.</p>
-    </div>
-  </section>
+      <div *ngIf="cursos.length === 0" class="empty-state">
+        <i class="bi bi-journal-x" style="font-size: 2rem;"></i>
+        <p style="margin-top: 1rem;">Aún no tienes cursos matriculados.</p>
+      </div>
+    </section>
 
-  <section class="container py-5 mt-3">
-    <h4 class="fw-bold mb-4">Qué aprender ahora</h4>
-    <div class="row g-4">
-      <div *ngFor="let c of cursosNoM" class="col-md-3">
-        <div class="card shadow-sm border-0 bg-skillup-tarjeta text-white h-100 course-card">
-          <img src="/img/curso/{{ c.imagenCurso1 }}" class="card-img-top" alt="Curso">
-          <div class="card-body d-flex flex-column">
-            <h6 class="fw-bold">{{c.nombreCurso}}</h6>
-            <p class="text-white-50 small mb-2">Instructor • 4.8 ★★★★☆</p>
-            <p class="fw-bold text-info small mb-3"><i class="bi bi-clock me-1"></i> {{c.duracionMin}} min</p>
-            <a [routerLink]="['/curso', c.idCurso]" class="btn btn-primary mt-auto w-100">
+    <section style="margin-top: 3rem;">
+      <h4 class="section-title">Qué aprender ahora</h4>
+      <div class="courses-grid">
+        <div *ngFor="let c of cursosNoM" class="course-card">
+          <div class="card-image">
+            <img src="/img/curso/{{ c.imagenCurso1 }}" alt="Curso">
+            <span class="card-badge">Recomendado</span>
+          </div>
+          <div class="card-content">
+            <h6 class="card-title">{{c.nombreCurso}}</h6>
+            <div class="card-meta">
+              <span>Instructor • 4.8 ★★★★☆</span>
+            </div>
+            <p style="color: #1565C0; font-weight: 600; font-size: 0.85rem; margin-bottom: 1rem;"><i class="bi bi-clock"></i> {{c.duracionMin}} min</p>
+            <a [routerLink]="['/curso', c.idCurso]" class="btn-explore" style="display: block; text-align: center; margin-top: 0;">
               Ver Curso     
             </a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
+</div>
 
-  <footer class="bg-skillup-tarjeta text-white-50 py-4 mt-auto border-top border-secondary">
-    <div class="container d-flex justify-content-between align-items-center">
-      <p class="mb-0 small">Realizado por Estudiantes UPN &copy; 2025</p>
-      <div>
-        <a href="#" class="text-white-50 text-decoration-none me-3 small hover-white">Acerca de</a>
-        <a href="#" class="text-white-50 text-decoration-none me-3 small hover-white">Privacidad</a>
-        <a href="#" class="text-white-50 text-decoration-none small hover-white">Contacto</a>
-      </div>
-    </div>
-  </footer>
-
-</div> <div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true" data-bs-backdrop="static">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content bg-skillup-tarjeta text-white border-secondary">
-      <div class="modal-header border-secondary">
-        <h5 class="modal-title" id="configModalLabel">Configuración de la Cuenta</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-lg" style="border-radius: 0;">
+    <div class="modal-content" style="border-radius: 0; border: 1px solid #E0E0E0; background-color: #FFFFFF;">
+      <div class="modal-header" style="border-bottom: 1px solid #E0E0E0; border-radius: 0;">
+        <h5 class="modal-title" id="configModalLabel" style="color: #212121;">Configuración de la Cuenta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
       <form *ngIf="profileData" (ngSubmit)="onUpdateProfile()">
         <div class="modal-body">
-          <ul class="nav nav-tabs border-secondary" id="configTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active bg-transparent text-white border-secondary border-bottom-0" id="perfil-tab" data-bs-toggle="tab" data-bs-target="#perfil" type="button" role="tab">
-                <i class="bi bi-person-vcard"></i> Editar Perfil
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link bg-transparent text-white-50 border-0" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab">
-                <i class="bi bi-key"></i> Cambiar Contraseña
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link bg-transparent text-white-50 border-0" id="danger-tab" data-bs-toggle="tab" data-bs-target="#danger" type="button" role="tab">
-                <i class="bi bi-exclamation-triangle"></i> Zona de Peligro
-              </button>
-            </li>
+          <ul class="nav nav-tabs" id="configTabs" role="tablist" style="border-bottom: 1px solid #E0E0E0;">
+             <li class="nav-item" role="presentation">
+               <button class="nav-link active" id="perfil-tab" data-bs-toggle="tab" data-bs-target="#perfil" type="button" role="tab" aria-controls="perfil" aria-selected="true" style="border-radius: 0; color: #1565C0;">
+                  <i class="bi bi-person-vcard"></i> Editar Perfil
+               </button>
+             </li>
+             <li class="nav-item" role="presentation">
+               <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab" aria-controls="password" aria-selected="false" style="border-radius: 0; color: #616161;">
+                  <i class="bi bi-key"></i> Cambiar Contraseña
+               </button>
+             </li>
+             <li class="nav-item" role="presentation">
+               <button class="nav-link" id="danger-tab" data-bs-toggle="tab" data-bs-target="#danger" type="button" role="tab" aria-controls="danger" aria-selected="false" style="border-radius: 0; color: #C62828;">
+                  <i class="bi bi-exclamation-triangle"></i> Zona de Peligro
+               </button>
+             </li>
           </ul>
 
-          <div class="tab-content pt-4" id="configTabsContent">
+          <div class="tab-content pt-3" id="configTabsContent">
             <div class="tab-pane fade show active" id="perfil" role="tabpanel" aria-labelledby="perfil-tab">
-              <h6 class="mb-3 text-warning">Información Personal</h6>
+              <h6 class="mb-3" style="color: #212121;">Información Personal</h6>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label for="nombres" class="form-label">Nombres</label>
-                  <input type="text" class="form-control bg-dark text-white border-secondary" id="nombres" name="nombres" [(ngModel)]="profileData.nombres" required>
+                  <label for="nombres" class="form-label" style="color: #616161;">Nombres</label>
+                  <input type="text" class="form-control" id="nombres" name="nombres" [(ngModel)]="profileData.nombres" required style="border-radius: 0; border: 1px solid #E0E0E0;">
                 </div>
                 <div class="col-md-6">
-                  <label for="apellidos" class="form-label">Apellidos</label>
-                  <input type="text" class="form-control bg-dark text-white border-secondary" id="apellidos" name="apellidos" [(ngModel)]="profileData.apellidos" required>
+                  <label for="apellidos" class="form-label" style="color: #616161;">Apellidos</label>
+                  <input type="text" class="form-control" id="apellidos" name="apellidos" [(ngModel)]="profileData.apellidos" required style="border-radius: 0; border: 1px solid #E0E0E0;">
                 </div>
                 <div class="col-md-6">
-                  <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
-                  <input type="date" class="form-control bg-dark text-white border-secondary" id="fechaNacimiento" name="fechaNacimiento" [(ngModel)]="profileData.fechaDeNacimiento">
+                  <label for="fechaNacimiento" class="form-label" style="color: #616161;">Fecha de Nacimiento</label>
+                  <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" [(ngModel)]="profileData.fechaDeNacimiento" style="border-radius: 0; border: 1px solid #E0E0E0;">
                 </div>
                 <div class="col-md-6">
-                  <label for="genero" class="form-label">Género</label>
-                  <select id="genero" name="genero" class="form-select bg-dark text-white border-secondary" [(ngModel)]="profileData.genero">
+                  <label for="genero" class="form-label" style="color: #616161;">Género</label>
+                  <select id="genero" name="genero" class="form-select" [(ngModel)]="profileData.genero" style="border-radius: 0; border: 1px solid #E0E0E0;">
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino">Femenino</option>
                     <option value="Otro">Otro</option>
@@ -165,25 +144,33 @@
                 </div>
               </div>
             </div>
-            
-            <div class="tab-pane fade" id="password" role="tabpanel">
-                <p class="text-white-50">Opciones de contraseña irán aquí.</p>
+
+            <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+                <h6 class="mb-3" style="color: #212121;">Actualizar Contraseña</h6>
+                <div class="mb-3">
+                    <label for="nuevaPassword" class="form-label" style="color: #616161;">Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="nuevaPassword" name="nuevaPassword" autocomplete="new-password" style="border-radius: 0; border: 1px solid #E0E0E0;">
+                </div>
+                <div class="mb-3">
+                    <label for="confirmarPassword" class="form-label" style="color: #616161;">Confirmar Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword" autocomplete="new-password" style="border-radius: 0; border: 1px solid #E0E0E0;">
+                </div>
             </div>
-            
-            <div class="tab-pane fade" id="danger" role="tabpanel">
-                 <div class="p-4 border border-danger rounded bg-dark bg-opacity-25">
-                    <h5 class="text-danger fw-bold"><i class="bi bi-shield-x me-2"></i>Dar de baja la cuenta</h5>
-                    <p class="text-white-50 small mb-3">Una vez que elimines tu cuenta, no hay vuelta atrás. Por favor, asegúrate de estar seguro.</p>
-                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+
+            <div class="tab-pane fade" id="danger" role="tabpanel" aria-labelledby="danger-tab">
+                 <div class="p-3" style="border: 1px solid #C62828; background-color: #F5F5F5;">
+                    <h5 style="color: #C62828;">Dar de baja la cuenta</h5>
+                    <button type="button" class="btn" style="background-color: #C62828; color: #FFFFFF; border-radius: 0;" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
                       Solicitar baja de mi cuenta
                     </button>
                  </div>
             </div>
           </div>
         </div>
-        <div class="modal-footer border-secondary">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+
+        <div class="modal-footer" style="border-top: 1px solid #E0E0E0;">
+          <button type="button" class="btn" style="background-color: #757575; color: #FFFFFF; border-radius: 0;" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn" style="background-color: #1565C0; color: #FFFFFF; border-radius: 0;">Guardar Cambios</button>
         </div>
       </form>
     </div>
@@ -191,29 +178,33 @@
 </div>
 
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content bg-skillup-tarjeta text-white border-danger">
-      <div class="modal-header bg-danger text-white border-0">
-        <h5 class="modal-title fw-bold" id="deleteConfirmModalLabel"><i class="bi bi-exclamation-octagon-fill me-2"></i>¿Estás absolutamente seguro?</h5>
+  <div class="modal-dialog modal-dialog-centered" style="border-radius: 0;">
+    <div class="modal-content" style="border-radius: 0; border: 1px solid #E0E0E0;">
+      <div class="modal-header" style="background-color: #C62828; color: #FFFFFF; border-radius: 0;">
+        <h5 class="modal-title" id="deleteConfirmModalLabel">¿Estás absolutamente seguro?</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      
       <form (ngSubmit)="onDeleteAccount()">
-          <div class="modal-body p-4">
-            <p>Esta acción <strong>no se puede deshacer</strong>. Perderás el acceso a todos tus cursos y certificados.</p>
-            <p class="mb-2">Para confirmar, escribe tu nombre de usuario (<strong class="text-warning">{{ currentUser?.username }}</strong>) abajo.</p>
-            <input type="text" class="form-control bg-dark text-white border-secondary mt-3" name="confirmDeleteInput" 
+          <div class="modal-body">
+            <p style="color: #212121;">Esta acción <strong style="color: #C62828;">no se puede deshacer</strong>.</p>
+            <p style="color: #212121;">Para confirmar, escribe tu nombre de usuario (<strong>{{ currentUser?.username }}</strong>) abajo.</p>
+            
+            <input type="text" class="form-control" name="confirmDeleteInput" 
                    placeholder="Escribe tu nombre de usuario" 
                    [(ngModel)]="confirmUsername" 
-                   autocomplete="off">
+                   autocomplete="off" style="border-radius: 0; border: 1px solid #E0E0E0;">
           </div>
-          <div class="modal-footer border-secondary">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-danger" 
+          <div class="modal-footer" style="border-top: 1px solid #E0E0E0;">
+            <button type="button" class="btn" style="background-color: #757575; color: #FFFFFF; border-radius: 0;" data-bs-dismiss="modal">Cancelar</button>
+            
+            <button type="submit" class="btn" style="background-color: #C62828; color: #FFFFFF; border-radius: 0;"
                     [disabled]="confirmUsername !== currentUser?.username">
                 Entiendo, dar de baja mi cuenta
             </button>
           </div>
       </form>
+      
     </div>
   </div>
 </div>

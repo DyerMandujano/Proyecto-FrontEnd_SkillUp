@@ -5,5 +5,5 @@ export interface LoginResponse {
   token: string;
   idUsuario: number;
   idPersona: number;
-  idRolEspecifico: number | null; // 'Integer' en Java puede ser nulo
+  idRolEspecifico: number | null;
 }

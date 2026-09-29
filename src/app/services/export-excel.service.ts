@@ -8,10 +8,8 @@ import { saveAs } from 'file-saver';
 export class ExportExcelService {
 
   exportAsExcelFile(json: any[], excelFileName: string): void {
-    // CORRECCIÓN: Se quitó ': XLSX.WorkSheet'
     const worksheet = XLSX.utils.json_to_sheet(json);
 
-    // CORRECCIÓN: Se quitó ': XLSX.WorkBook'
     const workbook = {
       Sheets: { 'data': worksheet },
       SheetNames: ['data']

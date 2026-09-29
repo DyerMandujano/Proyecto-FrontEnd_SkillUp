@@ -18,7 +18,6 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
-  // --- MÉTODOS DE API ---
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.BASE_URL}/login`, credentials);
   }
@@ -27,7 +26,6 @@ export class AuthService {
     return this.http.post(`${this.BASE_URL}/registrar`, userData, { responseType: 'text' });
   }
 
-  // --- SESIÓN SEGURO PARA SSR ---
   saveSession(response: LoginResponse): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
