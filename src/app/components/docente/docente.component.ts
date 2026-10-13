@@ -258,7 +258,7 @@ export class DocenteComponent implements OnInit, AfterViewInit {
               this.mostrarGraficoPie();
             } else {
               this.limpiarCanvas();
-              this.mostrarMensajeSinDatos('No hay certificados emitidos para este docente');
+              //this.mostrarMensajeSinDatos('No hay certificados emitidos para este docente');
             }
           },
           error: () => {
