@@ -4,6 +4,7 @@ export interface Persona {
   apellidos: string;
   fecha_nacimiento: string;
   genero: string;
+  dni: string;
 }
 
 export interface Usuario {

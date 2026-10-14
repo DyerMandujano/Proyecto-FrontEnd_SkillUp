@@ -21,6 +21,10 @@
             
             <input class="input-formulario" type="text" placeholder="Apellidos" 
                    [(ngModel)]="registerData.apellidos" name="apellidos" required />
+
+            <input class="input-formulario" type="text" placeholder="DNI (8 dígitos)" 
+                   [(ngModel)]="registerData.dni" name="dni" required maxlength="8" minlength="8" 
+                   pattern="[0-9]{8}" inputmode="numeric" />
             
             <!-- 
               IMPORTANTE: El 'name' debe ser único dentro del formulario.
@@ -111,13 +115,11 @@
             <div class="panel-superposicion superposicion-izquierda">
                 <h2 class="encabezado-panel">¡Bienvenido de Nuevo!</h2>
                 <p class="texto-panel">Para seguir conectado con nosotros, por favor inicia sesión con tu información personal.</p>
-                <!-- Este botón es manejado por ngAfterViewInit en tu .ts -->
                 <button class="btn fantasma" id="botonInicioSesion">Ingresar</button>
             </div>
             <div class="panel-superposicion superposicion-derecha">
                 <h2 class="encabezado-panel">¡Hola, Amigo!</h2>
                 <p class="texto-panel">Ingresa tus datos personales y comienza esta aventura con nosotros.</p>
-                <!-- Este botón es manejado por ngAfterViewInit en tu .ts -->
                 <button class="btn fantasma" id="botonRegistro">Registrarse</button>
             </div>
         </div>

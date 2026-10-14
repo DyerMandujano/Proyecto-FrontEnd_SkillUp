@@ -5,4 +5,5 @@ export interface Persona {
   fechaDeNacimiento: string; 
   genero: string;
   estado: number;
+  dni: string;
 }

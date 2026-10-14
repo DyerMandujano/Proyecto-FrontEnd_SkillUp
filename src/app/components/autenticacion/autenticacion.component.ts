@@ -26,6 +26,7 @@ export class AutenticacionComponent implements AfterViewInit {
   registerData = {
     nombres: '',
     apellidos: '',
+    dni: '',
     username: '',
     contrasenia: '',
     fecha_nacimiento: '',
@@ -59,7 +60,6 @@ export class AutenticacionComponent implements AfterViewInit {
         this.authService.saveSession(response);
         
         // ================================================================
-        // ¡ESTA ES LA CORRECCIÓN!
         // Redirige según el rol del usuario
         // ================================================================
         if (response.rol === 'docente') {
@@ -76,7 +76,6 @@ export class AutenticacionComponent implements AfterViewInit {
       },
       error => {
         console.error('Error en el login:', error);
-        //
         this.loginError = error.error?.message || 'Usuario o contraseña incorrectos.';
       }
     );
@@ -92,10 +91,16 @@ export class AutenticacionComponent implements AfterViewInit {
       return;
     }
 
+    if (!this.registerData.dni || this.registerData.dni.trim().length !== 8) {
+      this.registroError = "El DNI debe tener exactamente 8 dígitos.";
+      return;
+    }
+
     const payload: RegistroRequest = {
       persona: {
         nombres: this.registerData.nombres,
         apellidos: this.registerData.apellidos,
+        dni: this.registerData.dni.trim(),
         fecha_nacimiento: this.registerData.fecha_nacimiento,
         genero: this.registerData.genero
       },
@@ -118,12 +123,17 @@ export class AutenticacionComponent implements AfterViewInit {
         console.log('Registro exitoso!', response);
         this.registroExitoso = '¡Cuenta creada! Por favor, inicia sesión.';
         
-        // Esta línea también debe estar dentro del 'if' de abajo
         document.getElementById('botonInicioSesion')?.click();
       },
       error => {
         console.error('Error en el registro:', error);
-        this.registroError = error.error?.message || 'Error al crear la cuenta. Verifique los datos.';
+        if (typeof error.error === 'string') {
+          this.registroError = error.error;
+        } else if (error.error?.message) {
+          this.registroError = error.error.message;
+        } else {
+          this.registroError = 'Error al crear la cuenta. Verifique los datos.';
+        }
       }
     );
   }
@@ -174,8 +184,8 @@ export class AutenticacionComponent implements AfterViewInit {
       rolEstudianteRadio?.addEventListener('change', toggleRoleFields);
       rolDocenteRadio?.addEventListener('change', toggleRoleFields);
 
-    } // Fin del 'if (isPlatformBrowser)'
+    }
 
-  } // Fin de ngAfterViewInit
+  }
 
 }
