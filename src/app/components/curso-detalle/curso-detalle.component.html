@@ -197,7 +197,7 @@
               <div class="d-flex flex-wrap gap-4 mb-4 text-light small">
                 <div><i class="bi bi-clock me-1 text-warning"></i> {{ currentLesson.duracion }} minutos</div>
                 <div><i class="bi bi-bar-chart me-1 text-warning"></i> Nivel Básico</div>
-                <div><i class="bi bi-paperclip me-1 text-warning"></i> {{ currentLesson.materiales?.length || 0 }} recursos adjuntos</div>
+                <div><i class="bi bi-paperclip me-1 text-warning"></i> {{ currentLesson ? currentLesson.materiales.length : 0 }} recursos adjuntos</div>
               </div>
               <p class="text-white-50">En esta sesión cubriremos los aspectos fundamentales de esta técnica. Recuerda descargar los recursos adjuntos ubicados en el panel izquierdo para complementar el video. Presta especial atención a las medidas de seguridad mencionadas por el instructor.</p>
             </div>
