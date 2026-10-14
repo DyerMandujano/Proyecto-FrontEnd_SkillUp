@@ -3,42 +3,40 @@
     <!-- =========== FORMULARIO DE REGISTRO =========== -->
     <div class="contenedor-formulario contenedor-registro" id="registro">
         
-        <!-- 
-          1. (ngSubmit) llama a tu función 'onRegisterSubmit'
-          2. #registerForm="ngForm" crea una referencia local para el formulario
-        -->
         <form (ngSubmit)="onRegisterSubmit()" #registerForm="ngForm">
-            <h1>Crear una Cuenta</h1>
-            <span>Usa tu correo para registrarte</span>
+            <div class="encabezado-formulario">
+                <h1>Crear una Cuenta</h1>
+                <span>Usa tu correo para registrarte</span>
+            </div>
 
-            <!-- 
-              3. [(ngModel)] conecta este input a 'registerData.nombres'
-              4. 'name' es OBLIGATORIO para que ngModel funcione
-              5. 'required' ahora es manejado por Angular
-            -->
             <input class="input-formulario" type="text" placeholder="Nombres" 
                    [(ngModel)]="registerData.nombres" name="nombres" required />
             
             <input class="input-formulario" type="text" placeholder="Apellidos" 
                    [(ngModel)]="registerData.apellidos" name="apellidos" required />
 
-            <input class="input-formulario" type="text" placeholder="DNI (8 dígitos)" 
-                   [(ngModel)]="registerData.dni" name="dni" required maxlength="8" minlength="8" 
-                   pattern="[0-9]{8}" inputmode="numeric" />
+            <div class="campo-formulario">
+                <input class="input-formulario" type="text" placeholder="DNI (8 dígitos)" 
+                       [(ngModel)]="registerData.dni" name="dni" required maxlength="8" minlength="8" 
+                       pattern="[0-9]{8}" inputmode="numeric" 
+                       (input)="onDniInput()"
+                       [class.input-error]="dniError" />
+                <div *ngIf="dniError" class="mensaje-error-dni">
+                    {{ dniError }}
+                </div>
+            </div>
             
-            <!-- 
-              IMPORTANTE: El 'name' debe ser único dentro del formulario.
-              Usamos 'username_reg' y 'contrasenia_reg' para diferenciar.
-            -->
             <input class="input-formulario" type="text" placeholder="Username" 
                    [(ngModel)]="registerData.username" name="username_reg" required />
             
             <input class="input-formulario" type="password" placeholder="Contraseña" 
                    [(ngModel)]="registerData.contrasenia" name="contrasenia_reg" required />
 
-            <label for="fecha_nac" class="input-label">Fecha de Nacimiento:</label>
-            <input class="input-formulario" id="fecha_nac" type="date" 
-                   [(ngModel)]="registerData.fecha_nacimiento" name="fecha_nacimiento" required style="margin-top: 2px;"/>
+            <div class="campo-fecha">
+                <label for="fecha_nac" class="input-label">Fecha de Nacimiento:</label>
+                <input class="input-formulario" id="fecha_nac" type="date" 
+                       [(ngModel)]="registerData.fecha_nacimiento" name="fecha_nacimiento" required />
+            </div>
             
             <select class="input-formulario" [(ngModel)]="registerData.genero" name="genero" required>
                 <option value="" disabled selected>Selecciona tu género</option>
@@ -47,9 +45,7 @@
                 <option value="Otro">Otro</option>
             </select>
             
-            <!-- Los 'radio' buttons no necesitan ngModel aquí, -->
-            <!-- porque tu .ts ya los maneja con 'getElementById' en ngAfterViewInit -->
-            <div style="display: flex; justify-content: space-around; width: 100%; margin: 10px 0; font-size: 0.9em;">
+            <div class="roles-radio">
                 <label>
                     <input type="radio" name="rol" value="estudiante" id="rolEstudiante" required> Soy Estudiante
                 </label>
@@ -75,11 +71,11 @@
                        [(ngModel)]="registerData.grado_academico" name="grado_academico" />
             </div>
             
-            <!-- 6. Mensajes de estado (se muestran condicionalmente) -->
-            <div *ngIf="registroExitoso" style="color: green; margin: 10px 0;">{{ registroExitoso }}</div>
-            <div *ngIf="registroError" style="color: red; margin: 10px 0;">{{ registroError }}</div>
+            <!-- Mensajes de estado generales (no DNI) -->
+            <div *ngIf="registroExitoso" class="mensaje-exito">{{ registroExitoso }}</div>
+            <div *ngIf="registroError" class="mensaje-error-general">{{ registroError }}</div>
 
-            <!-- 7. El botón se deshabilita si el formulario no es válido -->
+            <!-- Botón de Registro -->
             <button class="btn" type="submit" [disabled]="!registerForm.valid">Registrarse</button>
         </form>
     </div>
@@ -87,7 +83,6 @@
     <!-- =========== FORMULARIO DE INICIO DE SESIÓN =========== -->
     <div class="contenedor-formulario contenedor-inicio-sesion" id="iniciar">
         
-        <!-- Conectamos el formulario de Login -->
         <form (ngSubmit)="onLoginSubmit()" #loginForm="ngForm">
             <h1>Iniciar Sesión</h1>
             <span>Usa tu cuenta</span>
@@ -98,7 +93,6 @@
             <input class="input-formulario" type="password" placeholder="Contraseña" 
                    [(ngModel)]="loginData.contrasenia" name="contrasenia_login" required />
             
-            <!-- Mostramos el mensaje de error de login -->
             <div *ngIf="loginError" style="color: red; margin-bottom: 10px; font-size: 0.9em;">
                 {{ loginError }}
             </div>
@@ -109,7 +103,7 @@
         </form>
     </div>
 
-    <!-- =========== PANELES DE ANIMACIÓN (Estos quedan igual) =========== -->
+    <!-- =========== PANELES DE ANIMACIÓN =========== -->
     <div class="contenedor-superposicion">
         <div class="superposicion">
             <div class="panel-superposicion superposicion-izquierda">

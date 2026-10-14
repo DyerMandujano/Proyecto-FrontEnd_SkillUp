@@ -15,7 +15,7 @@
     position: relative;
     width: 768px;
     max-width: 100%;
-    min-height: 780px; /* Tu valor de 780px */
+    min-height: 800px;
 }
 
 .contenedor-formulario {
@@ -58,11 +58,144 @@ form {
  * de registro, alineándolo arriba y dándole su padding.
 */
 .contenedor-registro form {
-    justify-content: flex-start; /* Alinea el registro arriba */
-    padding: 40px 50px; /* Le devuelve el padding vertical */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 26px 42px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
 }
 
+.contenedor-registro form::-webkit-scrollbar {
+    width: 4px;
+}
+.contenedor-registro form::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+}
 
+.encabezado-formulario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.encabezado-formulario h1 {
+    font-weight: bold;
+    margin: 0 0 2px;
+    font-size: 1.6rem;
+    color: #0c4a6e;
+}
+
+.encabezado-formulario span {
+    font-size: 12px;
+    color: #475569;
+    margin: 0;
+}
+
+.contenedor-registro input.input-formulario,
+.contenedor-registro select.input-formulario {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    padding: 10px 14px;
+    margin: 0;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 0.86rem;
+    color: #082f49;
+    box-sizing: border-box;
+}
+
+.campo-formulario {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.mensaje-error-dni {
+    color: #ef4444;
+    font-size: 0.76rem;
+    font-weight: 600;
+    text-align: left;
+    width: 100%;
+    margin-top: 3px;
+    margin-left: 2px;
+    animation: animacionFadeIn 0.3s ease-in-out;
+}
+
+input.input-formulario.input-error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+}
+
+.campo-fecha {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+.campo-fecha label.input-label {
+    margin: 0;
+    font-size: 0.78rem;
+    color: #475569;
+}
+
+.roles-radio {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    font-size: 0.88em;
+    color: #334155;
+    margin: 2px 0;
+}
+
+#camposDocente {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#camposDocente input.input-formulario:first-child {
+    margin-bottom: 6px;
+}
+
+.mensaje-error-general {
+    color: #ef4444;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin: 2px 0;
+    animation: animacionFadeIn 0.3s ease-in-out;
+}
+
+.mensaje-exito {
+    color: #16a34a;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin: 2px 0;
+    animation: animacionFadeIn 0.3s ease-in-out;
+}
+
+.contenedor-registro button.btn {
+    margin: 0;
+    padding: 11px 45px;
+    align-self: center;
+}
+
+@keyframes animacionFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 h1 {
     font-weight: bold;
     margin: 0 0 1rem;

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core'; 
+import { Component, AfterViewInit, Inject, PLATFORM_ID, OnDestroy } from '@angular/core'; 
 import { isPlatformBrowser, CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { RegistroRequest } from '../../models/registro-request.model';
   templateUrl: './autenticacion.component.html',
   styleUrls: ['./autenticacion.component.css']
 })
-export class AutenticacionComponent implements AfterViewInit {
+export class AutenticacionComponent implements AfterViewInit, OnDestroy {
 
   loginData: LoginRequest = {
     username: '',
@@ -36,10 +36,15 @@ export class AutenticacionComponent implements AfterViewInit {
     especialidad: '',
     grado_academico: ''
   };
+
   loginError: string | null = null;
   registroExitoso: string | null = null;
   registroError: string | null = null;
+  dniError: string | null = null;
 
+  private dniErrorTimeout: any = null;
+  private registroErrorTimeout: any = null;
+  private registroExitosoTimeout: any = null;
 
   constructor(
     private authService: AuthService,
@@ -47,32 +52,58 @@ export class AutenticacionComponent implements AfterViewInit {
     @Inject(PLATFORM_ID) private platformId: Object 
   ) { }
 
-  
+  ngOnDestroy(): void {
+    if (this.dniErrorTimeout) clearTimeout(this.dniErrorTimeout);
+    if (this.registroErrorTimeout) clearTimeout(this.registroErrorTimeout);
+    if (this.registroExitosoTimeout) clearTimeout(this.registroExitosoTimeout);
+  }
+
+  setDniError(mensaje: string): void {
+    this.dniError = mensaje;
+    if (this.dniErrorTimeout) clearTimeout(this.dniErrorTimeout);
+    this.dniErrorTimeout = setTimeout(() => {
+      this.dniError = null;
+    }, 5000);
+  }
+
+  setRegistroError(mensaje: string): void {
+    this.registroError = mensaje;
+    if (this.registroErrorTimeout) clearTimeout(this.registroErrorTimeout);
+    this.registroErrorTimeout = setTimeout(() => {
+      this.registroError = null;
+    }, 5000);
+  }
+
+  setRegistroExitoso(mensaje: string): void {
+    this.registroExitoso = mensaje;
+    if (this.registroExitosoTimeout) clearTimeout(this.registroExitosoTimeout);
+    this.registroExitosoTimeout = setTimeout(() => {
+      this.registroExitoso = null;
+    }, 5000);
+  }
+
+  onDniInput(): void {
+    if (this.dniError) {
+      this.dniError = null;
+      if (this.dniErrorTimeout) clearTimeout(this.dniErrorTimeout);
+    }
+  }
+
   onLoginSubmit() {
     this.loginError = null; 
     
     this.authService.login(this.loginData).subscribe(
       response => {
-
-
-        debugger;
         console.log('Login exitoso!', response);
         this.authService.saveSession(response);
         
-        // ================================================================
-        // Redirige según el rol del usuario
-        // ================================================================
         if (response.rol === 'docente') {
           this.router.navigate(['docente', response.idRolEspecifico]);
         } else if (response.rol === 'estudiante') {
-          // Si es estudiante, va al nuevo dashboard
           this.router.navigate(['/visualizar-cursos', response.idRolEspecifico]);
         } else {
-          // Una ruta por defecto si no es ninguno (o es admin, etc.)
           this.router.navigate(['/']);
         }
-        // ================================================================
-
       },
       error => {
         console.error('Error en el login:', error);
@@ -81,18 +112,18 @@ export class AutenticacionComponent implements AfterViewInit {
     );
   }
 
- 
   onRegisterSubmit() {
+    this.dniError = null;
     this.registroError = null;
     this.registroExitoso = null;
 
     if (!this.registerData.rol) {
-      this.registroError = "Por favor, selecciona un rol (Estudiante o Docente).";
+      this.setRegistroError("Por favor, selecciona un rol (Estudiante o Docente).");
       return;
     }
 
     if (!this.registerData.dni || this.registerData.dni.trim().length !== 8) {
-      this.registroError = "El DNI debe tener exactamente 8 dígitos.";
+      this.setDniError("El DNI debe tener exactamente 8 dígitos.");
       return;
     }
 
@@ -121,31 +152,30 @@ export class AutenticacionComponent implements AfterViewInit {
     this.authService.register(payload).subscribe(
       response => {
         console.log('Registro exitoso!', response);
-        this.registroExitoso = '¡Cuenta creada! Por favor, inicia sesión.';
-        
+        this.setRegistroExitoso('¡Cuenta creada! Por favor, inicia sesión.');
         document.getElementById('botonInicioSesion')?.click();
       },
       error => {
         console.error('Error en el registro:', error);
+        let mensaje = 'Error al crear la cuenta. Verifique los datos.';
         if (typeof error.error === 'string') {
-          this.registroError = error.error;
+          mensaje = error.error;
         } else if (error.error?.message) {
-          this.registroError = error.error.message;
+          mensaje = error.error.message;
+        }
+
+        // Si el error está relacionado con el DNI, mostrarlo directamente debajo del campo DNI
+        if (mensaje.toLowerCase().includes('dni')) {
+          this.setDniError(mensaje);
         } else {
-          this.registroError = 'Error al crear la cuenta. Verifique los datos.';
+          this.setRegistroError(mensaje);
         }
       }
     );
   }
 
-
-  // --- LÓGICA DE ANIMACIÓN (del JSP original) ---
-  
   ngAfterViewInit(): void {
-    
     if (isPlatformBrowser(this.platformId)) {
-      
-      // --- CÓDIGO PARA LA ANIMACIÓN DEL PANEL ---
       const botonRegistro = document.getElementById('botonRegistro');
       const botonInicioSesion = document.getElementById('botonInicioSesion');
       const contenedorPrincipal = document.getElementById('contenedorPrincipal');
@@ -162,7 +192,6 @@ export class AutenticacionComponent implements AfterViewInit {
         contenedorPrincipal?.classList.add('panel-derecho-activo');
       }
 
-      // --- CÓDIGO PARA CAMPOS DINÁMICOS DE ROL ---
       const rolEstudianteRadio = document.getElementById('rolEstudiante') as HTMLInputElement;
       const rolDocenteRadio = document.getElementById('rolDocente') as HTMLInputElement;
       
@@ -183,9 +212,7 @@ export class AutenticacionComponent implements AfterViewInit {
 
       rolEstudianteRadio?.addEventListener('change', toggleRoleFields);
       rolDocenteRadio?.addEventListener('change', toggleRoleFields);
-
     }
-
   }
 
 }
