@@ -9,35 +9,134 @@
                 <span>Usa tu correo para registrarte</span>
             </div>
 
-            <input class="input-formulario" type="text" placeholder="Nombres" 
-                   [(ngModel)]="registerData.nombres" name="nombres" required />
-            
-            <input class="input-formulario" type="text" placeholder="Apellidos" 
-                   [(ngModel)]="registerData.apellidos" name="apellidos" required />
-
+            <!-- Nombres: Solo permite letras y espacios -->
             <div class="campo-formulario">
-                <input class="input-formulario" type="text" placeholder="DNI (8 dígitos)" 
+                <input class="input-formulario" type="text" placeholder="Nombres" 
+                       [(ngModel)]="registerData.nombres" name="nombres" 
+                       (keypress)="soloLetras($event)"
+                       (input)="onNombreInput()"
+                       [class.input-error]="nombreError"
+                       required />
+                <div *ngIf="nombreError" class="mensaje-error-dni">
+                    {{ nombreError }}
+                </div>
+            </div>
+            
+            <!-- Apellidos: Solo permite letras y espacios -->
+            <div class="campo-formulario">
+                <input class="input-formulario" type="text" placeholder="Apellidos" 
+                       [(ngModel)]="registerData.apellidos" name="apellidos" 
+                       (keypress)="soloLetras($event)"
+                       (input)="onApellidoInput()"
+                       [class.input-error]="apellidoError"
+                       required />
+                <div *ngIf="apellidoError" class="mensaje-error-dni">
+                    {{ apellidoError }}
+                </div>
+            </div>
+
+            <!-- DNI (8 dígitos) -->
+            <div class="campo-formulario">
+                <input class="input-formulario" type="text" placeholder="DNI" 
                        [(ngModel)]="registerData.dni" name="dni" required maxlength="8" minlength="8" 
                        pattern="[0-9]{8}" inputmode="numeric" 
                        (input)="onDniInput()"
                        [class.input-error]="dniError" />
+                <span class="indicacion-campo">* Debe tener 8 dígitos numéricos</span>
                 <div *ngIf="dniError" class="mensaje-error-dni">
                     {{ dniError }}
                 </div>
             </div>
             
-            <input class="input-formulario" type="text" placeholder="Username" 
+            <!-- Username -->
+            <input class="input-formulario" type="text" placeholder="Nombre de usuario" 
                    [(ngModel)]="registerData.username" name="username_reg" required />
             
-            <input class="input-formulario" type="password" placeholder="Contraseña" 
-                   [(ngModel)]="registerData.contrasenia" name="contrasenia_reg" required />
+            <!-- Contraseña: Con el ÚNICO ojo del formulario -->
+            <div class="campo-password">
+                <input class="input-formulario" 
+                       [type]="mostrarContrasenia ? 'text' : 'password'" 
+                       placeholder="Contraseña" 
+                       [(ngModel)]="registerData.contrasenia" 
+                       name="contrasenia_reg" 
+                       (input)="onPasswordInput()"
+                       required />
+                <button type="button" class="btn-toggle-ojito" (click)="toggleMostrarContrasenia()" [title]="mostrarContrasenia ? 'Ocultar contraseña' : 'Ver contraseña'">
+                    <svg *ngIf="!mostrarContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <svg *ngIf="mostrarContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                    </svg>
+                </button>
+            </div>
 
+            <!-- Requisitos de seguridad de contraseña -->
+            <div *ngIf="registerData.contrasenia" class="requisitos-contrasenia">
+                <div class="requisito-item" [class.cumplido]="passwordValidations.minLength">
+                    <span class="icono-check">{{ passwordValidations.minLength ? '✓' : '•' }}</span> Mínimo 8 caracteres
+                </div>
+                <div class="requisito-item" [class.cumplido]="passwordValidations.hasUpper">
+                    <span class="icono-check">{{ passwordValidations.hasUpper ? '✓' : '•' }}</span> Al menos una mayúscula (A-Z)
+                </div>
+                <div class="requisito-item" [class.cumplido]="passwordValidations.hasLower">
+                    <span class="icono-check">{{ passwordValidations.hasLower ? '✓' : '•' }}</span> Al menos una minúscula (a-z)
+                </div>
+                <div class="requisito-item" [class.cumplido]="passwordValidations.hasNumber">
+                    <span class="icono-check">{{ passwordValidations.hasNumber ? '✓' : '•' }}</span> Al menos un número (0-9)
+                </div>
+                <div class="requisito-item" [class.cumplido]="passwordValidations.hasSpecial">
+                    <span class="icono-check">{{ passwordValidations.hasSpecial ? '✓' : '•' }}</span> Al menos un signo/especial (&#64;, #, $, %, etc.)
+                </div>
+            </div>
+
+            <!-- Verificación / Confirmación de Contraseña -->
+            <div class="campo-formulario">
+                <div class="campo-password">
+                    <input class="input-formulario" 
+                           [type]="mostrarConfirmarContrasenia ? 'text' : 'password'" 
+                           placeholder="Verificar contraseña" 
+                           [(ngModel)]="registerData.confirmar_contrasenia" 
+                           name="confirmar_contrasenia" 
+                           (input)="onPasswordInput()"
+                           [class.input-error]="passwordMismatchError"
+                           required />
+                    <button type="button" class="btn-toggle-ojito" (click)="toggleMostrarConfirmarContrasenia()" [title]="mostrarConfirmarContrasenia ? 'Ocultar contraseña' : 'Ver contraseña'">
+                        <svg *ngIf="!mostrarConfirmarContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg *ngIf="mostrarConfirmarContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                        </svg>
+                    </button>
+                </div>
+                <div *ngIf="passwordMismatchError" class="mensaje-error-dni">
+                    * {{ passwordMismatchError }}
+                </div>
+                <div *ngIf="registerData.confirmar_contrasenia && !passwordMismatchError && registerData.contrasenia === registerData.confirmar_contrasenia" class="mensaje-exito-campo">
+                    ✓ Las contraseñas coinciden
+                </div>
+            </div>
+
+            <!-- Fecha de Nacimiento: Mayor de 18 años -->
             <div class="campo-fecha">
                 <label for="fecha_nac" class="input-label">Fecha de Nacimiento:</label>
                 <input class="input-formulario" id="fecha_nac" type="date" 
-                       [(ngModel)]="registerData.fecha_nacimiento" name="fecha_nacimiento" required />
+                       [(ngModel)]="registerData.fecha_nacimiento" name="fecha_nacimiento" 
+                       [max]="maxFechaNacimiento"
+                       (change)="onFechaNacimientoChange()"
+                       (input)="onFechaNacimientoChange()"
+                       [class.input-error]="fechaNacimientoError"
+                       required />
+                <span class="indicacion-campo">* Debes ser mayor de 18 años</span>
+                <div *ngIf="fechaNacimientoError" class="mensaje-error-dni">
+                    {{ fechaNacimientoError }}
+                </div>
             </div>
             
+            <!-- Género -->
             <select class="input-formulario" [(ngModel)]="registerData.genero" name="genero" required>
                 <option value="" disabled selected>Selecciona tu género</option>
                 <option value="Masculino">Masculino</option>
@@ -45,6 +144,7 @@
                 <option value="Otro">Otro</option>
             </select>
             
+            <!-- Roles -->
             <div class="roles-radio">
                 <label>
                     <input type="radio" name="rol" value="estudiante" id="rolEstudiante" required> Soy Estudiante
@@ -76,7 +176,10 @@
             <div *ngIf="registroError" class="mensaje-error-general">{{ registroError }}</div>
 
             <!-- Botón de Registro -->
-            <button class="btn" type="submit" [disabled]="!registerForm.valid">Registrarse</button>
+            <button class="btn" type="submit" 
+                    [disabled]="!registerForm.valid || passwordMismatchError || !isPasswordValid || nombreError || apellidoError || fechaNacimientoError || !esMayorDeEdad(registerData.fecha_nacimiento)">
+                Registrarse
+            </button>
         </form>
     </div>
 
@@ -87,7 +190,7 @@
             <h1>Iniciar Sesión</h1>
             <span>Usa tu cuenta</span>
             
-            <input class="input-formulario" type="text" placeholder="Username" 
+            <input class="input-formulario" type="text" placeholder="Nombre de usuario" 
                    [(ngModel)]="loginData.username" name="username_login" required />
             
             <input class="input-formulario" type="password" placeholder="Contraseña" 

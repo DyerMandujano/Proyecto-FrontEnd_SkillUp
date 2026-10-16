@@ -29,6 +29,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     dni: '',
     username: '',
     contrasenia: '',
+    confirmar_contrasenia: '',
     fecha_nacimiento: '',
     genero: '',
     rol: '',
@@ -41,6 +42,16 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
   registroExitoso: string | null = null;
   registroError: string | null = null;
   dniError: string | null = null;
+  nombreError: string | null = null;
+  apellidoError: string | null = null;
+  fechaNacimientoError: string | null = null;
+  passwordMismatchError: string | null = null;
+
+  mostrarContrasenia: boolean = false;
+  mostrarConfirmarContrasenia: boolean = false;
+
+  // Fecha máxima para asegurar mayoría de edad (18 años)
+  maxFechaNacimiento: string = '';
 
   private dniErrorTimeout: any = null;
   private registroErrorTimeout: any = null;
@@ -50,7 +61,11 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object 
-  ) { }
+  ) {
+    const hoy = new Date();
+    hoy.setFullYear(hoy.getFullYear() - 18);
+    this.maxFechaNacimiento = hoy.toISOString().split('T')[0];
+  }
 
   ngOnDestroy(): void {
     if (this.dniErrorTimeout) clearTimeout(this.dniErrorTimeout);
@@ -82,11 +97,105 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     }, 5000);
   }
 
+  // Prevenir que el usuario teclee números o caracteres especiales en nombres y apellidos
+  soloLetras(event: KeyboardEvent): boolean {
+    if (['Backspace', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'Delete'].includes(event.key)) {
+      return true;
+    }
+    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]$/;
+    if (!regex.test(event.key)) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
+  onNombreInput(): void {
+    if (this.registerData.nombres && !/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*$/.test(this.registerData.nombres)) {
+      this.nombreError = "El nombre solo debe contener letras.";
+    } else {
+      this.nombreError = null;
+    }
+  }
+
+  onApellidoInput(): void {
+    if (this.registerData.apellidos && !/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*$/.test(this.registerData.apellidos)) {
+      this.apellidoError = "El apellido solo debe contener letras.";
+    } else {
+      this.apellidoError = null;
+    }
+  }
+
+  esMayorDeEdad(fechaStr: string): boolean {
+    if (!fechaStr) return false;
+    const partes = fechaStr.split('-');
+    if (partes.length !== 3) return false;
+    const anio = parseInt(partes[0], 10);
+    const mes = parseInt(partes[1], 10) - 1;
+    const dia = parseInt(partes[2], 10);
+    const cumple = new Date(anio, mes, dia);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - cumple.getFullYear();
+    const m = hoy.getMonth() - cumple.getMonth();
+    if (m < 0 || (m === 0 && hoy.getDate() < cumple.getDate())) {
+      edad--;
+    }
+    return edad >= 18;
+  }
+
+  onFechaNacimientoChange(): void {
+    if (!this.registerData.fecha_nacimiento) {
+      this.fechaNacimientoError = null;
+      return;
+    }
+    if (!this.esMayorDeEdad(this.registerData.fecha_nacimiento)) {
+      this.fechaNacimientoError = "Debes ser mayor de 18 años para registrarte.";
+    } else {
+      this.fechaNacimientoError = null;
+    }
+  }
+
   onDniInput(): void {
     if (this.dniError) {
       this.dniError = null;
       if (this.dniErrorTimeout) clearTimeout(this.dniErrorTimeout);
     }
+  }
+
+  onPasswordInput(): void {
+    if (this.registerData.confirmar_contrasenia) {
+      if (this.registerData.contrasenia !== this.registerData.confirmar_contrasenia) {
+        this.passwordMismatchError = "Las contraseñas no coinciden.";
+      } else {
+        this.passwordMismatchError = null;
+      }
+    } else {
+      this.passwordMismatchError = null;
+    }
+  }
+
+  toggleMostrarContrasenia(): void {
+    this.mostrarContrasenia = !this.mostrarContrasenia;
+  }
+
+  toggleMostrarConfirmarContrasenia(): void {
+    this.mostrarConfirmarContrasenia = !this.mostrarConfirmarContrasenia;
+  }
+
+  get passwordValidations() {
+    const pwd = this.registerData.contrasenia || '';
+    return {
+      minLength: pwd.length >= 8,
+      hasUpper: /[A-Z]/.test(pwd),
+      hasLower: /[a-z]/.test(pwd),
+      hasNumber: /[0-9]/.test(pwd),
+      hasSpecial: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(pwd)
+    };
+  }
+
+  get isPasswordValid(): boolean {
+    const v = this.passwordValidations;
+    return v.minLength && v.hasUpper && v.hasLower && v.hasNumber && v.hasSpecial;
   }
 
   onLoginSubmit() {
@@ -107,7 +216,13 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
       },
       error => {
         console.error('Error en el login:', error);
-        this.loginError = error.error?.message || 'Usuario o contraseña incorrectos.';
+        if (typeof error.error === 'string') {
+          this.loginError = error.error;
+        } else if (error.error?.message) {
+          this.loginError = error.error.message;
+        } else {
+          this.loginError = 'Credenciales incorrectas';
+        }
       }
     );
   }
@@ -116,9 +231,25 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     this.dniError = null;
     this.registroError = null;
     this.registroExitoso = null;
+    this.passwordMismatchError = null;
+    this.nombreError = null;
+    this.apellidoError = null;
+    this.fechaNacimientoError = null;
 
     if (!this.registerData.rol) {
       this.setRegistroError("Por favor, selecciona un rol (Estudiante o Docente).");
+      return;
+    }
+
+    if (!this.registerData.nombres || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(this.registerData.nombres.trim())) {
+      this.nombreError = "El nombre solo debe contener letras.";
+      this.setRegistroError("El nombre solo debe contener letras.");
+      return;
+    }
+
+    if (!this.registerData.apellidos || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(this.registerData.apellidos.trim())) {
+      this.apellidoError = "El apellido solo debe contener letras.";
+      this.setRegistroError("El apellido solo debe contener letras.");
       return;
     }
 
@@ -127,16 +258,33 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
+    if (!this.registerData.fecha_nacimiento || !this.esMayorDeEdad(this.registerData.fecha_nacimiento)) {
+      this.fechaNacimientoError = "Debes ser mayor de 18 años para registrarte.";
+      this.setRegistroError("Debes ser mayor de 18 años para registrarte.");
+      return;
+    }
+
+    if (!this.isPasswordValid) {
+      this.setRegistroError("La contraseña debe cumplir con todos los requisitos de seguridad.");
+      return;
+    }
+
+    if (this.registerData.contrasenia !== this.registerData.confirmar_contrasenia) {
+      this.passwordMismatchError = "Las contraseñas no coinciden.";
+      this.setRegistroError("Las contraseñas no coinciden. Por favor, verifícalas.");
+      return;
+    }
+
     const payload: RegistroRequest = {
       persona: {
-        nombres: this.registerData.nombres,
-        apellidos: this.registerData.apellidos,
+        nombres: this.registerData.nombres.trim(),
+        apellidos: this.registerData.apellidos.trim(),
         dni: this.registerData.dni.trim(),
         fecha_nacimiento: this.registerData.fecha_nacimiento,
         genero: this.registerData.genero
       },
       usuario: {
-        username: this.registerData.username,
+        username: this.registerData.username.trim(),
         contrasenia: this.registerData.contrasenia,
         rol: this.registerData.rol
       },
