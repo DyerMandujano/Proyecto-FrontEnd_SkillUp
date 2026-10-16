@@ -63,7 +63,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     @Inject(PLATFORM_ID) private platformId: Object 
   ) {
     const hoy = new Date();
-    hoy.setFullYear(hoy.getFullYear() - 18);
+    hoy.setFullYear(hoy.getFullYear() - 12);
     this.maxFechaNacimiento = hoy.toISOString().split('T')[0];
   }
 
@@ -140,7 +140,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     if (m < 0 || (m === 0 && hoy.getDate() < cumple.getDate())) {
       edad--;
     }
-    return edad >= 18;
+    return edad >= 12;
   }
 
   onFechaNacimientoChange(): void {
@@ -149,7 +149,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
       return;
     }
     if (!this.esMayorDeEdad(this.registerData.fecha_nacimiento)) {
-      this.fechaNacimientoError = "Debes ser mayor de 18 años para registrarte.";
+      this.fechaNacimientoError = "Debes tener al menos 12 años para registrarte.";
     } else {
       this.fechaNacimientoError = null;
     }
@@ -259,8 +259,8 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     }
 
     if (!this.registerData.fecha_nacimiento || !this.esMayorDeEdad(this.registerData.fecha_nacimiento)) {
-      this.fechaNacimientoError = "Debes ser mayor de 18 años para registrarte.";
-      this.setRegistroError("Debes ser mayor de 18 años para registrarte.");
+      this.fechaNacimientoError = "Debes tener al menos 12 años para registrarte.";
+      this.setRegistroError("Debes tener al menos 12 años para registrarte.");
       return;
     }
 

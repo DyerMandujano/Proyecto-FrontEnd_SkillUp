@@ -120,7 +120,7 @@
                 </div>
             </div>
 
-            <!-- Fecha de Nacimiento: Mayor de 18 años -->
+            <!-- Fecha de Nacimiento: A partir de 12 años (Secundaria) -->
             <div class="campo-fecha">
                 <label for="fecha_nac" class="input-label">Fecha de Nacimiento:</label>
                 <input class="input-formulario" id="fecha_nac" type="date" 
@@ -130,7 +130,7 @@
                        (input)="onFechaNacimientoChange()"
                        [class.input-error]="fechaNacimientoError"
                        required />
-                <span class="indicacion-campo">* Debes ser mayor de 18 años</span>
+                <span class="indicacion-campo">* Debes tener al menos 12 años</span>
                 <div *ngIf="fechaNacimientoError" class="mensaje-error-dni">
                     {{ fechaNacimientoError }}
                 </div>
