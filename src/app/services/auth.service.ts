@@ -69,4 +69,19 @@ export class AuthService {
     return !!localStorage.getItem('token') &&
            !!localStorage.getItem('currentUser');
   }
+
+  // HU-22: Recuperación de contraseña
+  verificarIdentificador(identificador: string): Observable<{ mensaje: string; username?: string }> {
+    return this.http.post<{ mensaje: string; username?: string }>(
+      `${this.BASE_URL}/recuperar-password/verificar`,
+      { identificador }
+    );
+  }
+
+  restablecerPassword(datos: { identificador: string; nuevaContrasenia: string; confirmarContrasenia: string }): Observable<{ mensaje: string }> {
+    return this.http.post<{ mensaje: string }>(
+      `${this.BASE_URL}/recuperar-password/cambiar`,
+      datos
+    );
+  }
 }

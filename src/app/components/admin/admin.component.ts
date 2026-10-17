@@ -7,7 +7,6 @@ import { AdminService } from '../../services/admin.service';
 import { AuthService } from '../../services/auth.service';
 import { ExportExcelService } from '../../services/export-excel.service';
 import { SolicitudPagoResponse, UsuarioAdmin, MatriculaSeguimiento } from '../../models/admin.models';
-import { RegistroRequest } from '../../models/registro-request.model';
 
 @Component({
   selector: 'app-admin',
@@ -45,21 +44,6 @@ export class AdminComponent implements OnInit {
   usuarios: UsuarioAdmin[] = [];
   filtroRolUsuario: string = 'todos';
   busquedaUsuario: string = '';
-
-  // CRUD ADMIN: Modal para nuevo Administrador
-  modalCrearAdminAbierto: boolean = false;
-  nuevoAdminData = {
-    nombres: '',
-    apellidos: '',
-    dni: '',
-    username: '',
-    contrasenia: '',
-    fecha_nacimiento: '',
-    genero: 'Masculino'
-  };
-  mostrarPasswordAdmin: boolean = false;
-  errorCrearAdmin: string | null = null;
-  exitoCrearAdmin: string | null = null;
 
   // ==========================================
   // HU19: SEGUIMIENTO DE MATRÍCULAS
@@ -221,7 +205,8 @@ export class AdminComponent implements OnInit {
     this.cargando = true;
     this.adminService.listarUsuarios(this.filtroRolUsuario, this.busquedaUsuario).subscribe({
       next: (data) => {
-        this.usuarios = data;
+        // Excluir cualquier cuenta con rol admin por seguridad en la vista
+        this.usuarios = (data || []).filter(u => u.rol?.toLowerCase() !== 'admin');
         this.cargando = false;
       },
       error: () => {
@@ -248,91 +233,6 @@ export class AdminComponent implements OnInit {
       },
       error: (err) => {
         this.mensajeError = err.error || 'Error al cambiar estado de cuenta';
-        this.cargando = false;
-      }
-    });
-  }
-
-  // CRUD ADMIN: Crear nuevo Administrador
-  abrirModalCrearAdmin(): void {
-    this.nuevoAdminData = {
-      nombres: '',
-      apellidos: '',
-      dni: '',
-      username: '',
-      contrasenia: '',
-      fecha_nacimiento: '',
-      genero: 'Masculino'
-    };
-    this.errorCrearAdmin = null;
-    this.exitoCrearAdmin = null;
-    this.mostrarPasswordAdmin = false;
-    this.modalCrearAdminAbierto = true;
-  }
-
-  cerrarModalCrearAdmin(): void {
-    this.modalCrearAdminAbierto = false;
-    this.errorCrearAdmin = null;
-    this.exitoCrearAdmin = null;
-  }
-
-  togglePasswordAdmin(): void {
-    this.mostrarPasswordAdmin = !this.mostrarPasswordAdmin;
-  }
-
-  guardarNuevoAdmin(): void {
-    this.errorCrearAdmin = null;
-    this.exitoCrearAdmin = null;
-
-    if (!this.nuevoAdminData.nombres.trim() || !this.nuevoAdminData.apellidos.trim()) {
-      this.errorCrearAdmin = 'Nombres y apellidos son requeridos.';
-      return;
-    }
-
-    if (!this.nuevoAdminData.dni || !/^\d{8}$/.test(this.nuevoAdminData.dni.trim())) {
-      this.errorCrearAdmin = 'El DNI debe tener exactamente 8 dígitos numéricos.';
-      return;
-    }
-
-    if (!this.nuevoAdminData.username.trim()) {
-      this.errorCrearAdmin = 'El nombre de usuario es obligatorio.';
-      return;
-    }
-
-    if (!this.nuevoAdminData.contrasenia || this.nuevoAdminData.contrasenia.length > 6) {
-      this.errorCrearAdmin = 'La contraseña es obligatoria y debe tener como máximo 6 dígitos.';
-      return;
-    }
-
-    const payload: RegistroRequest = {
-      persona: {
-        nombres: this.nuevoAdminData.nombres.trim(),
-        apellidos: this.nuevoAdminData.apellidos.trim(),
-        dni: this.nuevoAdminData.dni.trim(),
-        fecha_nacimiento: this.nuevoAdminData.fecha_nacimiento || '2000-01-01',
-        genero: this.nuevoAdminData.genero
-      },
-      usuario: {
-        username: this.nuevoAdminData.username.trim(),
-        contrasenia: this.nuevoAdminData.contrasenia,
-        rol: 'admin'
-      },
-      estudiante: null,
-      docente: null
-    };
-
-    this.cargando = true;
-    this.adminService.crearAdmin(payload).subscribe({
-      next: (resp) => {
-        this.exitoCrearAdmin = '¡Nuevo usuario Administrador creado exitosamente!';
-        this.cargando = false;
-        setTimeout(() => {
-          this.cerrarModalCrearAdmin();
-          this.cargarUsuarios();
-        }, 1200);
-      },
-      error: (err) => {
-        this.errorCrearAdmin = err.error || 'Error al crear administrador.';
         this.cargando = false;
       }
     });

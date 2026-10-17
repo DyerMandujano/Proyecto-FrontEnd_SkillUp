@@ -11,14 +11,22 @@ export class MatriculaService {
   private apiUrl = 'http://localhost:8888/api/matriculas';
   constructor(private http: HttpClient) { }
 
- insertarMatricula(idEstudiante: number, idCurso: number): Observable<string> {
-  const params = new HttpParams()
-    .set('idEstudiante', idEstudiante)
-    .set('idCurso', idCurso);
+  insertarMatricula(idEstudiante: number, idCurso: number): Observable<string> {
+    const params = new HttpParams()
+      .set('idEstudiante', idEstudiante)
+      .set('idCurso', idCurso);
 
-  return this.http.post(`${this.apiUrl}/insertar`, null, {
-    params,
-    responseType: 'text'
-  });
-}
+    return this.http.post(`${this.apiUrl}/insertar`, null, {
+      params,
+      responseType: 'text'
+    });
+  }
+
+  verificarMatricula(idEstudiante: number, idCurso: number): Observable<boolean> {
+    const params = new HttpParams()
+      .set('idEstudiante', idEstudiante)
+      .set('idCurso', idCurso);
+
+    return this.http.get<boolean>(`${this.apiUrl}/verificar`, { params });
+  }
 }
