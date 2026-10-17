@@ -11,12 +11,31 @@
             
             <input class="input-formulario" type="text" placeholder="Apellidos" 
                    [(ngModel)]="registerData.apellidos" name="apellidos" required />
+
+            <input class="input-formulario" type="text" placeholder="DNI (8 dígitos)" 
+                   [(ngModel)]="registerData.dni" name="dni" maxlength="8" pattern="[0-9]{8}" required />
             
             <input class="input-formulario" type="text" placeholder="Username" 
                    [(ngModel)]="registerData.username" name="username_reg" required />
             
-            <input class="input-formulario" type="password" placeholder="Contraseña" 
-                   [(ngModel)]="registerData.contrasenia" name="contrasenia_reg" required />
+            <div class="campo-contrasenia">
+                <input class="input-formulario" [type]="mostrarContraseniaReg ? 'text' : 'password'" 
+                       placeholder="Contraseña (máx 6 dígitos)" 
+                       [(ngModel)]="registerData.contrasenia" name="contrasenia_reg" maxlength="6" required />
+                <button type="button" class="btn-ojito" (click)="toggleMostrarContraseniaReg()" [attr.aria-label]="mostrarContraseniaReg ? 'Ocultar contraseña' : 'Ver contraseña'">
+                    <!-- Ojo Visible -->
+                    <svg *ngIf="mostrarContraseniaReg" class="svg-ojo" viewBox="0 0 28 20" width="22" height="18">
+                        <path d="M14 0C7.7 0 2.2 4.1 0 10c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 4.1 20.3 0 14 0zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2zm1.2 2.2c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="#333333"/>
+                    </svg>
+                    <!-- Ojo Oculto / Tachado (idéntico a la imagen) -->
+                    <svg *ngIf="!mostrarContraseniaReg" class="svg-ojo" viewBox="0 0 28 24" width="22" height="19">
+                        <path d="M14 2C7.7 2 2.2 6.1 0 12c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 6.1 20.3 2 14 2zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2z" fill="#333333"/>
+                        <!-- Línea diagonal cruzada de arriba-derecha a abajo-izquierda -->
+                        <line x1="22" y1="2" x2="6" y2="22" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+                        <line x1="22" y1="2" x2="6" y2="22" stroke="#333333" stroke-width="2.8" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
 
             <label for="fecha_nac" class="input-label">Fecha de Nacimiento:</label>
             <input class="input-formulario" id="fecha_nac" type="date" 
@@ -54,8 +73,8 @@
                        [(ngModel)]="registerData.grado_academico" name="grado_academico" />
             </div>
             
-            <div *ngIf="registroExitoso">{{ registroExitoso }}</div>
-            <div *ngIf="registroError">{{ registroError }}</div>
+            <div *ngIf="registroExitoso" class="mensaje-exito">{{ registroExitoso }}</div>
+            <div *ngIf="registroError" class="mensaje-error">{{ registroError }}</div>
 
             <button class="btn" type="submit" [disabled]="!registerForm.valid">Registrarse</button>
         </form>
@@ -70,10 +89,26 @@
             <input class="input-formulario" type="text" placeholder="Username" 
                    [(ngModel)]="loginData.username" name="username_login" required />
             
-            <input class="input-formulario" type="password" placeholder="Contraseña" 
-                   [(ngModel)]="loginData.contrasenia" name="contrasenia_login" required />
+            <div class="campo-contrasenia">
+                <input class="input-formulario" [type]="mostrarContraseniaLogin ? 'text' : 'password'" 
+                       placeholder="Contraseña (máx 6 dígitos)" 
+                       [(ngModel)]="loginData.contrasenia" name="contrasenia_login" maxlength="6" required />
+                <button type="button" class="btn-ojito" (click)="toggleMostrarContraseniaLogin()" [attr.aria-label]="mostrarContraseniaLogin ? 'Ocultar contraseña' : 'Ver contraseña'">
+                    <!-- Ojo Visible -->
+                    <svg *ngIf="mostrarContraseniaLogin" class="svg-ojo" viewBox="0 0 28 20" width="22" height="18">
+                        <path d="M14 0C7.7 0 2.2 4.1 0 10c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 4.1 20.3 0 14 0zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2zm1.2 2.2c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="#333333"/>
+                    </svg>
+                    <!-- Ojo Oculto / Tachado (idéntico a la imagen) -->
+                    <svg *ngIf="!mostrarContraseniaLogin" class="svg-ojo" viewBox="0 0 28 24" width="22" height="19">
+                        <path d="M14 2C7.7 2 2.2 6.1 0 12c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 6.1 20.3 2 14 2zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2z" fill="#333333"/>
+                        <!-- Línea diagonal cruzada de arriba-derecha a abajo-izquierda -->
+                        <line x1="22" y1="2" x2="6" y2="22" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+                        <line x1="22" y1="2" x2="6" y2="22" stroke="#333333" stroke-width="2.8" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
             
-            <div *ngIf="loginError">
+            <div *ngIf="loginError" class="mensaje-error">
                 {{ loginError }}
             </div>
             

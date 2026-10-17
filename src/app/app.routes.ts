@@ -20,11 +20,23 @@ import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import { EvaluacionCursoComponent } from './components/evaluacion-curso/evaluacion-curso.component';
 import { MisCertificadosComponent } from './components/mis-certificados/mis-certificados.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { AdminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomeComponent 
+  },
+  {
+    path: 'admin',
+    redirectTo: 'admin/dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'admin/dashboard',
+    component: AdminComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'visualizar-cursos/:id',

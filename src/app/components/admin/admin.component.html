@@ -1,0 +1,492 @@
+<div class="admin-wrapper">
+
+  <!-- HEADER -->
+  <header class="admin-header">
+    <div class="header-left">
+      <span class="logo-badge">SkillUp</span>
+      <span class="panel-tag">Panel de Administración</span>
+    </div>
+    <div class="header-right">
+      <div class="user-info">
+        <span class="user-greeting">Hola, <strong>{{ adminActual?.nombreCompleto || adminActual?.username || 'Administrador' }}</strong></span>
+        <span class="badge-role">ADMIN</span>
+      </div>
+      <button class="btn-logout" (click)="cerrarSesion()" title="Cerrar Sesión">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Salir
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL: SIDEBAR + CONTENIDO -->
+  <div class="admin-main">
+
+    <!-- SIDEBAR DE NAVEGACIÓN -->
+    <aside class="admin-sidebar">
+      <nav class="sidebar-nav">
+        <button class="nav-item" [class.activo]="seccionActiva === 'dashboard'" (click)="cambiarSeccion('dashboard')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>Dashboard</span>
+        </button>
+
+        <button class="nav-item" [class.activo]="seccionActiva === 'pagos'" (click)="cambiarSeccion('pagos')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+            <line x1="1" y1="10" x2="23" y2="10"></line>
+          </svg>
+          <span>Validación de Pagos</span>
+          <span *ngIf="pagosPendientes > 0" class="badge-notif">{{ pagosPendientes }}</span>
+        </button>
+
+        <button class="nav-item" [class.activo]="seccionActiva === 'usuarios'" (click)="cambiarSeccion('usuarios')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>Gestión de Usuarios</span>
+        </button>
+
+        <button class="nav-item" [class.activo]="seccionActiva === 'matriculas'" (click)="cambiarSeccion('matriculas')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <span>Seguimiento Matrículas</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- ÁREA DE CONTENIDO DINÁMICO -->
+    <main class="admin-content">
+
+      <!-- MENSAJES GLOBALES DE FEEDBACK -->
+      <div *ngIf="mensajeExito" class="alerta alerta-exito">
+        <span>✓ {{ mensajeExito }}</span>
+        <button (click)="mensajeExito = null">✕</button>
+      </div>
+
+      <div *ngIf="mensajeError" class="alerta alerta-error">
+        <span>⚠ {{ mensajeError }}</span>
+        <button (click)="mensajeError = null">✕</button>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- SECCIÓN 1: DASHBOARD GENERAL                         -->
+      <!-- ==================================================== -->
+      <section *ngIf="seccionActiva === 'dashboard'" class="seccion-panel">
+        <div class="panel-header">
+          <h2>Resumen Ejecutivo de la Plataforma</h2>
+          <p class="subtitulo">Visión global de usuarios, transacciones académicas y solicitudes de soporte.</p>
+        </div>
+
+        <div class="cards-grid">
+          <div class="kpi-card" (click)="cambiarSeccion('usuarios')">
+            <div class="kpi-icon icon-blue">👥</div>
+            <div class="kpi-data">
+              <span class="kpi-valor">{{ totalUsuarios }}</span>
+              <span class="kpi-label">Usuarios Totales</span>
+            </div>
+            <span class="kpi-link">Ver directorio →</span>
+          </div>
+
+          <div class="kpi-card" (click)="cambiarSeccion('pagos')">
+            <div class="kpi-icon icon-orange">💳</div>
+            <div class="kpi-data">
+              <span class="kpi-valor">{{ pagosPendientes }}</span>
+              <span class="kpi-label">Pagos Pendientes</span>
+            </div>
+            <span class="kpi-link">Revisar solicitudes →</span>
+          </div>
+
+          <div class="kpi-card" (click)="cambiarSeccion('matriculas')">
+            <div class="kpi-icon icon-green">📚</div>
+            <div class="kpi-data">
+              <span class="kpi-valor">{{ totalMatriculas }}</span>
+              <span class="kpi-label">Inscripciones a Cursos</span>
+            </div>
+            <span class="kpi-link">Ver avances →</span>
+          </div>
+
+          <div class="kpi-card" (click)="cambiarSeccion('usuarios')">
+            <div class="kpi-icon icon-purple">🎓</div>
+            <div class="kpi-data">
+              <span class="kpi-valor">{{ totalEstudiantes }}</span>
+              <span class="kpi-label">Estudiantes Registrados</span>
+            </div>
+            <span class="kpi-link">Administrar →</span>
+          </div>
+        </div>
+
+        <div class="quick-actions-box">
+          <h3>Acciones Rápidas</h3>
+          <div class="actions-row">
+            <button class="btn-action" (click)="cambiarSeccion('pagos')">
+               Validar Solicitudes de Pago
+            </button>
+            <button class="btn-action" (click)="abrirModalCrearAdmin()">
+               Crear Nuevo Administrador (CRUD Admin)
+            </button>
+            <button class="btn-action" (click)="cambiarSeccion('matriculas')">
+               Exportar Matrículas a Excel
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== -->
+      <!-- SECCIÓN 2: HU17 - VALIDACIÓN DE PAGOS / MEMBRESÍAS   -->
+      <!-- ==================================================== -->
+      <section *ngIf="seccionActiva === 'pagos'" class="seccion-panel">
+        <div class="panel-header flex-header">
+          <div>
+            <h2>Gestión de Renovación de Membresía (HU17)</h2>
+            <p class="subtitulo">Valida y aprueba o rechaza solicitudes de depósito con vouchers bancarios.</p>
+          </div>
+
+          <div class="filtro-estado-pills">
+            <button [class.activo]="filtroEstadoPago === 'todos'" (click)="filtroEstadoPago = 'todos'; cargarSolicitudes()">Todos</button>
+            <button [class.activo]="filtroEstadoPago === 'Pendiente'" (click)="filtroEstadoPago = 'Pendiente'; cargarSolicitudes()">Pendientes</button>
+            <button [class.activo]="filtroEstadoPago === 'Aprobado'" (click)="filtroEstadoPago = 'Aprobado'; cargarSolicitudes()">Aprobados</button>
+            <button [class.activo]="filtroEstadoPago === 'Rechazado'" (click)="filtroEstadoPago = 'Rechazado'; cargarSolicitudes()">Rechazados</button>
+          </div>
+        </div>
+
+        <div class="tabla-responsive">
+          <table class="tabla-admin">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Estudiante</th>
+                <th>DNI</th>
+                <th>N° Operación</th>
+                <th>Monto</th>
+                <th>Método</th>
+                <th>Fecha Subida</th>
+                <th>Estado</th>
+                <th>Observación</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of solicitudes">
+                <td>#{{ s.id_solicitud }}</td>
+                <td>
+                  <strong>{{ s.estudianteNombre || 'Estudiante #' + s.id_estudiante }}</strong>
+                  <div class="txt-muted">&#64;{{ s.username || 'usuario' }}</div>
+                </td>
+                <td>{{ s.estudianteDni || '-' }}</td>
+                <td><span class="badge-op">{{ s.num_operacion }}</span></td>
+                <td><strong>S/ {{ s.monto | number:'1.2-2' }}</strong></td>
+                <td>{{ s.metodo_pago }}</td>
+                <td>{{ s.fecha_subida || '-' }}</td>
+                <td>
+                  <span class="badge-estado" [ngClass]="{
+                    'estado-pendiente': s.estado?.toLowerCase() === 'pendiente',
+                    'estado-aprobado': s.estado?.toLowerCase() === 'aprobado',
+                    'estado-rechazado': s.estado?.toLowerCase() === 'rechazado'
+                  }">
+                    {{ s.estado }}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="s.observacion" class="txt-observacion">{{ s.observacion }}</span>
+                  <span *ngIf="!s.observacion" class="txt-muted">-</span>
+                </td>
+                <td class="acciones-celda">
+                  <ng-container *ngIf="s.estado?.toLowerCase() === 'pendiente'">
+                    <button class="btn-sm btn-aprobar" (click)="aprobarSolicitud(s)" title="Aprobar pago y reactivar 30 días">
+                      ✓ Aprobar
+                    </button>
+                    <button class="btn-sm btn-rechazar" (click)="abrirModalRechazo(s)" title="Rechazar con motivo obligatorio">
+                      ✕ Rechazar
+                    </button>
+                  </ng-container>
+                  <span *ngIf="s.estado?.toLowerCase() !== 'pendiente'" class="txt-muted">
+                    Procesado
+                  </span>
+                </td>
+              </tr>
+              <tr *ngIf="solicitudes.length === 0">
+                <td colspan="10" class="tabla-vacia">No se encontraron solicitudes con el filtro seleccionado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================================================== -->
+      <!-- SECCIÓN 3: HU18 - GESTIÓN DE USUARIOS Y CRUD ADMIN   -->
+      <!-- ==================================================== -->
+      <section *ngIf="seccionActiva === 'usuarios'" class="seccion-panel">
+        <div class="panel-header flex-header">
+          <div>
+            <h2>Gestión de Cuentas de Usuarios</h2>
+            <p class="subtitulo">Directorio global, control de baja lógica y creación exclusiva de administradores.</p>
+          </div>
+
+          <button class="btn-primario" (click)="abrirModalCrearAdmin()">
+            + Crear Administrador
+          </button>
+        </div>
+
+        <div class="filtros-barra">
+          <div class="search-input-box">
+            <input type="text" placeholder="Buscar por DNI, Nombres o Username..." 
+                   [(ngModel)]="busquedaUsuario" (input)="cargarUsuarios()" />
+          </div>
+
+          <div class="filtro-rol-box">
+            <label>Rol:</label>
+            <select [(ngModel)]="filtroRolUsuario" (change)="cargarUsuarios()">
+              <option value="todos">Todos los Roles</option>
+              <option value="estudiante">Estudiantes</option>
+              <option value="docente">Docentes</option>
+              <option value="admin">Administradores</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="tabla-responsive">
+          <table class="tabla-admin">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>DNI</th>
+                <th>Nombre Completo</th>
+                <th>Username</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Fecha Registro</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let u of usuarios">
+                <td>#{{ u.id_usuario }}</td>
+                <td><strong>{{ u.dni || '-' }}</strong></td>
+                <td>{{ u.nombre_completo || u.nombres }}</td>
+                <td>&#64;{{ u.username }}</td>
+                <td>
+                  <span class="badge-role-tag" [ngClass]="'role-' + u.rol?.toLowerCase()">
+                    {{ u.rol | uppercase }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge-estado" [ngClass]="u.estado === 1 ? 'estado-aprobado' : 'estado-rechazado'">
+                    {{ u.estado === 1 ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+                <td>{{ u.fecha_registro || '-' }}</td>
+                <td>
+                  <button class="btn-sm" [ngClass]="u.estado === 1 ? 'btn-desactivar' : 'btn-reactivar'" 
+                          (click)="cambiarEstado(u)">
+                    {{ u.estado === 1 ? 'Desactivar' : 'Reactivar' }}
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="usuarios.length === 0">
+                <td colspan="8" class="tabla-vacia">No se encontraron usuarios coincidentes.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================================================== -->
+      <!-- SECCIÓN 4: HU19 - SEGUIMIENTO DE INSCRIPCIONES       -->
+      <!-- ==================================================== -->
+      <section *ngIf="seccionActiva === 'matriculas'" class="seccion-panel">
+        <div class="panel-header flex-header">
+          <div>
+            <h2>Seguimiento de Inscripciones </h2>
+            <p class="subtitulo">Monitoreo consolidado de estudiantes matriculados, avance de contenidos y reporte Excel.</p>
+          </div>
+
+          <button class="btn-excel" (click)="exportarMatriculasExcel()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Exportar a Excel (.xlsx)
+          </button>
+        </div>
+
+        <div class="filtros-barra">
+          <div class="search-input-box">
+            <input type="text" placeholder="Buscar por Estudiante, DNI o Curso..." 
+                   [(ngModel)]="busquedaMatricula" (input)="cargarMatriculas()" />
+          </div>
+        </div>
+
+        <div class="tabla-responsive">
+          <table class="tabla-admin">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Estudiante</th>
+                <th>DNI</th>
+                <th>Curso Inscrito</th>
+                <th>Fecha Matrícula</th>
+                <th>Estado</th>
+                <th>Avance Académico</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let m of matriculas">
+                <td>#{{ m.id_matricula }}</td>
+                <td>
+                  <strong>{{ m.estudiante_nombre }}</strong>
+                  <div class="txt-muted">&#64;{{ m.estudiante_username }}</div>
+                </td>
+                <td>{{ m.estudiante_dni || '-' }}</td>
+                <td><strong>{{ m.nombre_curso }}</strong></td>
+                <td>{{ m.fecha_matricula || '-' }}</td>
+                <td>
+                  <span class="badge-estado estado-aprobado">{{ m.estado_descripcion }}</span>
+                </td>
+                <td class="progreso-celda">
+                  <div class="barra-progreso-fondo">
+                    <div class="barra-progreso-fill" [style.width.%]="m.porcentaje_avance"></div>
+                  </div>
+                  <span class="progreso-texto">{{ m.porcentaje_avance }}%</span>
+                </td>
+              </tr>
+              <tr *ngIf="matriculas.length === 0">
+                <td colspan="7" class="tabla-vacia">No hay registros de inscripciones para mostrar.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================================================== -->
+  <!-- MODAL: RECHAZO DE PAGO CON MOTIVO OBLIGATORIO (HU17)  -->
+  <!-- ==================================================== -->
+  <div *ngIf="modalRechazoAbierto" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Rechazar Solicitud de Membresía</h3>
+        <button class="btn-close" (click)="cerrarModalRechazo()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p>Está a punto de rechazar la solicitud <strong>#{{ solicitudSeleccionada?.num_operacion }}</strong> de <strong>{{ solicitudSeleccionada?.estudianteNombre }}</strong>.</p>
+        
+        <label for="motivo" class="modal-label">
+          Motivo u Observación del Rechazo: <span class="txt-req">* (Obligatorio)</span>
+        </label>
+        <textarea id="motivo" class="modal-textarea" rows="4" 
+                  placeholder="Escriba claramente el motivo (ej: Voucher ilegible, monto no coincide con la tarifa, número de operación no verificado)..." 
+                  [(ngModel)]="motivoRechazo" required></textarea>
+
+        <div *ngIf="errorRechazo" class="modal-error">
+          ⚠ {{ errorRechazo }}
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secundario" (click)="cerrarModalRechazo()">Cancelar</button>
+        <button class="btn-peligro" (click)="confirmarRechazo()" [disabled]="cargando || !motivoRechazo.trim()">
+          Confirmar Rechazo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================== -->
+  <!-- MODAL: CREAR NUEVO USUARIO ADMIN (CRUD ADMIN)         -->
+  <!-- ==================================================== -->
+  <div *ngIf="modalCrearAdminAbierto" class="modal-backdrop">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <h3>Registrar Nuevo Administrador</h3>
+        <button class="btn-close" (click)="cerrarModalCrearAdmin()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-intro">Esta cuenta tendrá acceso completo a la gestión de pagos, usuarios y reportes institucionales.</p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nombres *</label>
+            <input type="text" [(ngModel)]="nuevoAdminData.nombres" placeholder="Nombres" required />
+          </div>
+
+          <div class="form-group">
+            <label>Apellidos *</label>
+            <input type="text" [(ngModel)]="nuevoAdminData.apellidos" placeholder="Apellidos" required />
+          </div>
+
+          <div class="form-group">
+            <label>DNI (8 dígitos) *</label>
+            <input type="text" [(ngModel)]="nuevoAdminData.dni" maxlength="8" placeholder="12345678" required />
+          </div>
+
+          <div class="form-group">
+            <label>Username *</label>
+            <input type="text" [(ngModel)]="nuevoAdminData.username" placeholder="admin.usuario" required />
+          </div>
+
+          <div class="form-group campo-pwd-group">
+            <label>Contraseña (máx 6 dígitos) *</label>
+            <div class="pwd-input-wrap">
+              <input [type]="mostrarPasswordAdmin ? 'text' : 'password'" 
+                     [(ngModel)]="nuevoAdminData.contrasenia" maxlength="6" 
+                     placeholder="Clave (máx 6 dígitos)" required />
+              <button type="button" class="btn-ojito-modal" (click)="togglePasswordAdmin()" title="Ver/Ocultar">
+                <!-- SVG Ojo idéntico al solicitado -->
+                <svg *ngIf="mostrarPasswordAdmin" viewBox="0 0 28 20" width="20" height="16">
+                  <path d="M14 0C7.7 0 2.2 4.1 0 10c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 4.1 20.3 0 14 0zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2zm1.2 2.2c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="#333"/>
+                </svg>
+                <svg *ngIf="!mostrarPasswordAdmin" viewBox="0 0 28 24" width="20" height="17">
+                  <path d="M14 2C7.7 2 2.2 6.1 0 12c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 6.1 20.3 2 14 2zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2z" fill="#333"/>
+                  <line x1="22" y1="2" x2="6" y2="22" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
+                  <line x1="22" y1="2" x2="6" y2="22" stroke="#333" stroke-width="2.8" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Género</label>
+            <select [(ngModel)]="nuevoAdminData.genero">
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="errorCrearAdmin" class="modal-error">
+          ⚠ {{ errorCrearAdmin }}
+        </div>
+        <div *ngIf="exitoCrearAdmin" class="modal-exito">
+          ✓ {{ exitoCrearAdmin }}
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secundario" (click)="cerrarModalCrearAdmin()">Cancelar</button>
+        <button class="btn-primario" (click)="guardarNuevoAdmin()" [disabled]="cargando">
+          Guardar Administrador
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

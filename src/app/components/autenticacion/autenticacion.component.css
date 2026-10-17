@@ -232,3 +232,63 @@ span {
   margin-top: 6px;
   align-self: flex-start;
 }
+
+.campo-contrasenia {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.campo-contrasenia input.input-formulario {
+  padding-right: 42px;
+}
+
+.btn-ojito {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  user-select: none;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-ojito:hover {
+  opacity: 0.75;
+  transform: scale(1.08);
+}
+
+.btn-ojito:active {
+  transform: scale(0.95);
+}
+
+.svg-ojo {
+  display: block;
+  pointer-events: none;
+}
+
+.mensaje-error {
+  color: #D32F2F;
+  font-size: 0.8rem;
+  margin: 6px 0;
+  background-color: #FFEBEE;
+  padding: 6px 10px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.mensaje-exito {
+  color: #2E7D32;
+  font-size: 0.8rem;
+  margin: 6px 0;
+  background-color: #E8F5E9;
+  padding: 6px 10px;
+  border-radius: 4px;
+  width: 100%;
+}

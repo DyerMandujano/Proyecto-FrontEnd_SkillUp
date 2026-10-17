@@ -26,6 +26,7 @@ export class AutenticacionComponent implements AfterViewInit {
   registerData = {
     nombres: '',
     apellidos: '',
+    dni: '',
     username: '',
     contrasenia: '',
     fecha_nacimiento: '',
@@ -39,6 +40,17 @@ export class AutenticacionComponent implements AfterViewInit {
   registroExitoso: string | null = null;
   registroError: string | null = null;
 
+  mostrarContraseniaLogin: boolean = false;
+  mostrarContraseniaReg: boolean = false;
+
+  toggleMostrarContraseniaLogin(): void {
+    this.mostrarContraseniaLogin = !this.mostrarContraseniaLogin;
+  }
+
+  toggleMostrarContraseniaReg(): void {
+    this.mostrarContraseniaReg = !this.mostrarContraseniaReg;
+  }
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -48,14 +60,23 @@ export class AutenticacionComponent implements AfterViewInit {
   onLoginSubmit() {
     this.loginError = null; 
     
+    if (!this.loginData.contrasenia || this.loginData.contrasenia.length > 6) {
+      this.loginError = "La contraseña debe tener como máximo 6 dígitos.";
+      return;
+    }
+
     this.authService.login(this.loginData).subscribe(
       response => {
         this.authService.saveSession(response);
         
-        if (response.rol === 'docente') {
+        const rol = (response.rol || '').toLowerCase().trim();
+
+        if (rol === 'docente') {
           this.router.navigate(['docente', response.idRolEspecifico]);
-        } else if (response.rol === 'estudiante') {
+        } else if (rol === 'estudiante') {
           this.router.navigate(['/visualizar-cursos', response.idRolEspecifico]);
+        } else if (rol === 'admin') {
+          this.router.navigate(['/admin/dashboard']);
         } else {
           this.router.navigate(['/']);
         }
@@ -70,6 +91,16 @@ export class AutenticacionComponent implements AfterViewInit {
     this.registroError = null;
     this.registroExitoso = null;
 
+    if (!this.registerData.dni || !/^\d{8}$/.test(this.registerData.dni.trim())) {
+      this.registroError = "El DNI es obligatorio y debe tener exactamente 8 dígitos numéricos.";
+      return;
+    }
+
+    if (!this.registerData.contrasenia || this.registerData.contrasenia.length > 6) {
+      this.registroError = "La contraseña es obligatoria y debe tener como máximo 6 dígitos o caracteres.";
+      return;
+    }
+
     if (!this.registerData.rol) {
       this.registroError = "Por favor, selecciona un rol (Estudiante o Docente).";
       return;
@@ -79,6 +110,7 @@ export class AutenticacionComponent implements AfterViewInit {
       persona: {
         nombres: this.registerData.nombres,
         apellidos: this.registerData.apellidos,
+        dni: this.registerData.dni.trim(),
         fecha_nacimiento: this.registerData.fecha_nacimiento,
         genero: this.registerData.genero
       },
@@ -103,7 +135,7 @@ export class AutenticacionComponent implements AfterViewInit {
         document.getElementById('botonInicioSesion')?.click();
       },
       error => {
-        this.registroError = error.error?.message || 'Error al crear la cuenta. Verifique los datos.';
+        this.registroError = error.error || error.error?.message || 'Error al crear la cuenta. Verifique los datos.';
       }
     );
   }

@@ -1,6 +1,7 @@
 export interface Persona {
   nombres: string;
   apellidos: string;
+  dni: string;
   fecha_nacimiento: string;
   genero: string;
 }
