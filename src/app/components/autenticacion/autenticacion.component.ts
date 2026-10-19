@@ -339,9 +339,27 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  onRolChange(rol: string): void {
+    this.registerData.rol = rol;
+    this.rolError = null;
+    this.rolTouched = false;
+
+    if (isPlatformBrowser(this.platformId)) {
+      const camposEstudianteDiv = document.getElementById('camposEstudiante');
+      const camposDocenteDiv = document.getElementById('camposDocente');
+      if (rol === 'estudiante') {
+        if (camposEstudianteDiv) camposEstudianteDiv.style.display = 'block';
+        if (camposDocenteDiv) camposDocenteDiv.style.display = 'none';
+      } else if (rol === 'docente') {
+        if (camposEstudianteDiv) camposEstudianteDiv.style.display = 'none';
+        if (camposDocenteDiv) camposDocenteDiv.style.display = 'block';
+      }
+    }
+  }
+
   validarRol(): void {
-    this.rolTouched = true;
     if (!this.registerData.rol) {
+      this.rolTouched = true;
       this.rolError = "Por favor selecciona si ingresarás como Estudiante o Docente.";
     } else {
       this.rolError = null;
@@ -890,17 +908,10 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
       const rolDocenteRadio = document.getElementById('rolDocente') as HTMLInputElement;
       
       const toggleRoleFields = () => {
-        const camposEstudianteDiv = document.getElementById('camposEstudiante');
-        const camposDocenteDiv = document.getElementById('camposDocente');
-        
-        if (rolEstudianteRadio.checked) {
-          camposEstudianteDiv!.style.display = 'block';
-          camposDocenteDiv!.style.display = 'none';
-          this.registerData.rol = 'estudiante';
-        } else if (rolDocenteRadio.checked) {
-          camposEstudianteDiv!.style.display = 'none';
-          camposDocenteDiv!.style.display = 'block';
-          this.registerData.rol = 'docente';
+        if (rolEstudianteRadio?.checked) {
+          this.onRolChange('estudiante');
+        } else if (rolDocenteRadio?.checked) {
+          this.onRolChange('docente');
         }
       };
 

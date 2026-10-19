@@ -255,11 +255,11 @@
                 </div>
                 <div class="roles-radio">
                     <label class="radio-opcion">
-                        <input type="radio" name="rol" value="estudiante" id="rolEstudiante" (change)="validarRol()" required> 
+                        <input type="radio" name="rol" value="estudiante" id="rolEstudiante" [(ngModel)]="registerData.rol" (change)="onRolChange('estudiante')" required> 
                         <span class="radio-texto">Soy Estudiante</span>
                     </label>
                     <label class="radio-opcion">
-                        <input type="radio" name="rol" value="docente" id="rolDocente" (change)="validarRol()" required> 
+                        <input type="radio" name="rol" value="docente" id="rolDocente" [(ngModel)]="registerData.rol" (change)="onRolChange('docente')" required> 
                         <span class="radio-texto">Soy Docente</span>
                     </label>
                 </div>
