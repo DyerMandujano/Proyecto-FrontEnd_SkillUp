@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class MatriculaService {
 
-  private apiUrl = 'http://localhost:8888/api/matriculas';
+  private apiUrl = '/api/matriculas';
   constructor(private http: HttpClient) { }
 
   insertarMatricula(idEstudiante: number, idCurso: number): Observable<string> {

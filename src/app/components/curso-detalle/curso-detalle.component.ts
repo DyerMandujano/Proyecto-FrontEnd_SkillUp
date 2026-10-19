@@ -274,14 +274,13 @@ export class CursoDetalleComponent implements OnInit {
     const urlNormalizada = urlRuta.replace(/\\/g, '/');
     const urlMinuscula = urlNormalizada.toLowerCase();
 
-    const backendBase = 'http://localhost:8888';
     let urlCompleta = '';
-    if (urlNormalizada.startsWith('uploads/')) {
-      urlCompleta = `${backendBase}/${urlNormalizada}`;
-    } else if (urlNormalizada.startsWith('http')) {
+    if (urlNormalizada.startsWith('http')) {
+      urlCompleta = urlNormalizada;
+    } else if (urlNormalizada.startsWith('/')) {
       urlCompleta = urlNormalizada;
     } else {
-      urlCompleta = `${backendBase}/${urlNormalizada}`;
+      urlCompleta = `/${urlNormalizada}`;
     }
 
     this.materialSeleccionadoRawUrl = urlCompleta;

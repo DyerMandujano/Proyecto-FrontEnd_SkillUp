@@ -109,11 +109,10 @@ export class ActualizarLeccionComponent implements OnInit {
 
   obtenerUrlCompleta(url: string | undefined): string {
     if (!url) return '#';
-    const backendBase = 'http://localhost:8888';
     const normalizada = url.replace(/\\/g, '/');
     if (normalizada.startsWith('http')) return normalizada;
-    if (normalizada.startsWith('uploads/')) return `${backendBase}/${normalizada}`;
-    return `${backendBase}/${normalizada}`;
+    if (normalizada.startsWith('/')) return normalizada;
+    return `/${normalizada}`;
   }
 
   actualizarSeccion(): void {

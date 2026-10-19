@@ -27,7 +27,7 @@ export interface EstudiantePorCurso {
   providedIn: 'root'
 })
 export class DocenteDashboardService {
-  private apiUrl = 'http://localhost:8888/api/docente-dashboard';
+  private apiUrl = '/api/docente-dashboard';
 
   constructor(private http: HttpClient) {
   }

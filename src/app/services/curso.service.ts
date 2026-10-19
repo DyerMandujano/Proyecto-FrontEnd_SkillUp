@@ -9,12 +9,12 @@ import { CursoNoMatricula } from '../models/CursoNoMatricula';
   providedIn: 'root'
 })
 export class CursoService {
-  private apiUrl = 'http://localhost:8888/api/docentes';
+  private apiUrl = '/api/docentes';
   
-  private apiUrl2 = 'http://localhost:8888/api/cursos/docente';
+  private apiUrl2 = '/api/cursos/docente';
 
-   private apiUrl3 = 'http://localhost:8888/api/cursos';
- private apiUrl4 = 'http://localhost:8888/api/cursos/no-matricula';
+  private apiUrl3 = '/api/cursos';
+  private apiUrl4 = '/api/cursos/no-matricula';
 
   constructor(private http: HttpClient) {}
  

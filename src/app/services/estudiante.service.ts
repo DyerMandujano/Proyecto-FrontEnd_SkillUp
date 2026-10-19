@@ -9,8 +9,8 @@ import { CursoMatricula } from '../models/CursoMatricula';
 })
 export class EstudianteService {
 
-  private apiUrl = 'http://localhost:8888/api/estudiantes';
-  private apiUrl2 = 'http://localhost:8888/api/cursos/matricula/estudiante'
+  private apiUrl = '/api/estudiantes';
+  private apiUrl2 = '/api/cursos/matricula/estudiante';
 
   constructor(private http: HttpClient) { }
 

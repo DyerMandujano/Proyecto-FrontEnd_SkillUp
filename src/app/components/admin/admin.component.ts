@@ -212,10 +212,24 @@ export class AdminComponent implements OnInit {
     this.solicitudDetalle = null;
   }
 
+  rechazarDesdeDetalle(): void {
+    if (!this.solicitudDetalle) return;
+    const s = this.solicitudDetalle;
+    this.cerrarModalDetalle();
+    this.abrirModalRechazo(s);
+  }
+
+  aprobarDesdeDetalle(): void {
+    if (!this.solicitudDetalle) return;
+    const s = this.solicitudDetalle;
+    this.cerrarModalDetalle();
+    this.aprobarSolicitud(s);
+  }
+
   obtenerUrlComprobante(ruta: string | undefined): string {
     if (!ruta) return '';
     if (ruta.startsWith('http')) return ruta;
-    return `http://localhost:8888/${ruta}`;
+    return ruta.startsWith('/') ? ruta : `/${ruta}`;
   }
 
   esPdf(ruta: string | undefined): boolean {

@@ -11,7 +11,7 @@ import { RegistroRequest } from '../models/registro-request.model';
 })
 export class AuthService {
 
-  private BASE_URL = 'http://localhost:8888/api/auth';
+  private BASE_URL = '/api/auth';
 
   constructor(
     private http: HttpClient,

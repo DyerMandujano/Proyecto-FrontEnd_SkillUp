@@ -24,7 +24,7 @@ export interface RegistrarReseniaRequest {
 })
 export class ReseniaService {
 
-  private apiUrl = 'http://localhost:8888/api/cursos';
+  private apiUrl = '/api/cursos';
 
   constructor(private http: HttpClient) {}
 

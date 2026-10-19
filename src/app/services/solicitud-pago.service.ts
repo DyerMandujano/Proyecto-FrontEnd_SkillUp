@@ -8,7 +8,7 @@ import { SolicitudPagoResponse } from '../models/admin.models';
 })
 export class SolicitudPagoService {
 
-  private apiUrl = 'http://localhost:8888/api/solicitudes-pago';
+  private apiUrl = '/api/solicitudes-pago';
 
   constructor(private http: HttpClient) { }
 

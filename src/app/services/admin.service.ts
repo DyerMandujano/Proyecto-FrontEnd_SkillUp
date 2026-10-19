@@ -9,7 +9,7 @@ import { RegistroRequest } from '../models/registro-request.model';
 })
 export class AdminService {
 
-  private apiUrl = 'http://localhost:8888/api/admin';
+  private apiUrl = '/api/admin';
 
   constructor(private http: HttpClient) { }
 

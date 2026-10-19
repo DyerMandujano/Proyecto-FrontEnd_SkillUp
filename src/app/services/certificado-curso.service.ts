@@ -9,7 +9,7 @@ import { CertificadoDocente } from '../models/certificadoDocente';
 })
 export class CertificadoCursoService {
 
-   private baseUrl = 'http://localhost:8888/api/certificados';
+   private baseUrl = '/api/certificados';
 
   constructor(private http: HttpClient) { }
 

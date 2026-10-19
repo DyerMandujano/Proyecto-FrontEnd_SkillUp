@@ -8,7 +8,7 @@ import { Persona } from '../models/persona.model';
 })
 export class UsuarioService {
 
-  private apiUrl = 'http://localhost:8888/api/usuarios';
+  private apiUrl = '/api/usuarios';
 
   constructor(private http: HttpClient) { }
 

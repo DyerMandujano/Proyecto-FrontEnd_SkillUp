@@ -8,7 +8,7 @@ import { Seccion } from '../models/seccion.model';
 })
 export class SeccionService {
 
-   private apiUrl = 'http://localhost:8888/api/secciones';
+  private apiUrl = '/api/secciones';
 
   constructor(private http: HttpClient) { }
 

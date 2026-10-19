@@ -9,8 +9,8 @@ import { Evaluacion } from '../models/evaluacion';
 })
 export class EvaluacionCursoService {
 
-  private apiUrl = 'http://localhost:8888/api/evaluacion';
-  private apiUrl2 = 'http://localhost:8888/api/evaluaciones';
+  private apiUrl = '/api/evaluacion';
+  private apiUrl2 = '/api/evaluaciones';
 
   constructor(private http: HttpClient) { }
 

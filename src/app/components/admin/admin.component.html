@@ -572,10 +572,10 @@
 
       <div class="modal-footer">
         <ng-container *ngIf="solicitudDetalle.estado?.toLowerCase() === 'pendiente'">
-          <button class="btn-aprobar btn-modal-action" (click)="aprobarSolicitud(solicitudDetalle); cerrarModalDetalle()">
+          <button class="btn-aprobar btn-modal-action" (click)="aprobarDesdeDetalle()">
             ✓ Aprobar Pago y Reactivar
           </button>
-          <button class="btn-rechazar btn-modal-action" (click)="cerrarModalDetalle(); abrirModalRechazo(solicitudDetalle)">
+          <button class="btn-rechazar btn-modal-action" (click)="rechazarDesdeDetalle()">
             ✕ Rechazar con Observación
           </button>
         </ng-container>

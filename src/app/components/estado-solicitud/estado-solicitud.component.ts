@@ -88,7 +88,7 @@ export class EstadoSolicitudComponent implements OnInit {
     if (!ruta) return '';
     if (ruta.startsWith('http')) return ruta;
     // Si viene como 'uploads/archivo.jpg'
-    return `http://localhost:8888/${ruta}`;
+    return ruta.startsWith('/') ? ruta : `/${ruta}`;
   }
 
   volver(): void {
