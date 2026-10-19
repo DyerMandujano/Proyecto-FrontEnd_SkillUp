@@ -46,8 +46,10 @@ export class LeccionComponent implements OnInit {
     if (this.idSeccion) {
       this.leccionService.listarLeccionesPorSeccion(this.idSeccion)
         .subscribe({
-          next: (data: Leccion[]) => this.lecciones = data,
-          error: (err: any) => {}
+          next: (data: Leccion[]) => this.lecciones = data || [],
+          error: (err: any) => {
+            console.error('Error al cargar lecciones:', err);
+          }
         });
     }
   }
