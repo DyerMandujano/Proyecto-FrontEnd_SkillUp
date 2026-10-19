@@ -228,4 +228,18 @@ export class CursoDescripcionComponent implements OnInit {
   getLeccionesBySeccion(seccionId: number): Leccion[] {
     return this.leccionesPorSeccion[seccionId] || [];
   }
+
+  imagenSeleccionada: string | null = null;
+
+  seleccionarImagen(img: string): void {
+    this.imagenSeleccionada = img;
+  }
+
+  obtenerUrlImagen(imagen: string | null | undefined): string {
+    return this.cursoService.obtenerUrlImagen(imagen);
+  }
+
+  manejarErrorImagen(event: Event): void {
+    this.cursoService.manejarErrorImagen(event);
+  }
 }

@@ -59,15 +59,27 @@
                   <div class="d-flex gap-2">
                     <div class="flex-fill">
                       <input class="form-control" type="file" accept="image/*" (change)="onFileSelected($event, 1)" required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
-                      <small *ngIf="nuevoCurso.imagenCurso1" class="text-success" style="color: #2E7D32;">
-                        Imagen principal: <strong>{{ nuevoCurso.imagenCurso1 }}</strong>
-                      </small>
+                      <div *ngIf="subiendoImagen1" class="text-primary small mt-1">
+                        <span class="spinner-border spinner-border-sm me-1"></span>Subiendo imagen principal...
+                      </div>
+                      <div *ngIf="nuevoCurso.imagenCurso1 && !subiendoImagen1" class="d-flex align-items-center gap-2 mt-1">
+                        <img [src]="obtenerUrlImagen(nuevoCurso.imagenCurso1)" (error)="manejarErrorImagen($event)" style="width: 45px; height: 35px; object-fit: cover; border: 1px solid #E0E0E0;" alt="Vista previa 1">
+                        <small class="text-success" style="color: #2E7D32;">
+                          Imagen principal: <strong>{{ nuevoCurso.imagenCurso1 }}</strong>
+                        </small>
+                      </div>
                     </div>
                     <div class="flex-fill">
                       <input class="form-control" type="file" accept="image/*" (change)="onFileSelected($event, 2)" style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
-                      <small *ngIf="nuevoCurso.imagenCurso2" class="text-success" style="color: #2E7D32;">
-                        Imagen secundaria: <strong>{{ nuevoCurso.imagenCurso2 }}</strong>
-                      </small>
+                      <div *ngIf="subiendoImagen2" class="text-primary small mt-1">
+                        <span class="spinner-border spinner-border-sm me-1"></span>Subiendo imagen secundaria...
+                      </div>
+                      <div *ngIf="nuevoCurso.imagenCurso2 && !subiendoImagen2" class="d-flex align-items-center gap-2 mt-1">
+                        <img [src]="obtenerUrlImagen(nuevoCurso.imagenCurso2)" (error)="manejarErrorImagen($event)" style="width: 45px; height: 35px; object-fit: cover; border: 1px solid #E0E0E0;" alt="Vista previa 2">
+                        <small class="text-success" style="color: #2E7D32;">
+                          Imagen secundaria: <strong>{{ nuevoCurso.imagenCurso2 }}</strong>
+                        </small>
+                      </div>
                     </div>
                   </div>
                 </div>

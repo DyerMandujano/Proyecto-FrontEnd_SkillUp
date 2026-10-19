@@ -77,13 +77,46 @@ export class ActualizarCursoComponent implements OnInit {
     this.router.navigate(['/docente', idDocente]);
   }
 
+  subiendoImagen1: boolean = false;
+  subiendoImagen2: boolean = false;
+
+  obtenerUrlImagen(imagen: string | null | undefined): string {
+    return this.cursoService.obtenerUrlImagen(imagen);
+  }
+
+  manejarErrorImagen(event: Event): void {
+    this.cursoService.manejarErrorImagen(event);
+  }
+
   onFileSelected(event: any, tipo: number): void {
     const file: File = event.target.files[0];
     if (!file) return;
+
     if (tipo === 1) {
-      this.curso.imagenCurso1 = file.name;
+      this.subiendoImagen1 = true;
     } else {
-      this.curso.imagenCurso2 = file.name;
+      this.subiendoImagen2 = true;
     }
+
+    this.cursoService.subirImagen(file).subscribe({
+      next: (res) => {
+        if (tipo === 1) {
+          this.curso.imagenCurso1 = res.fileName;
+          this.subiendoImagen1 = false;
+        } else {
+          this.curso.imagenCurso2 = res.fileName;
+          this.subiendoImagen2 = false;
+        }
+      },
+      error: () => {
+        if (tipo === 1) {
+          this.curso.imagenCurso1 = file.name;
+          this.subiendoImagen1 = false;
+        } else {
+          this.curso.imagenCurso2 = file.name;
+          this.subiendoImagen2 = false;
+        }
+      }
+    });
   }
 }

@@ -36,8 +36,31 @@
           </div>
 
           <div class="col-md-4 text-center">
-            @if (curso.imagenCurso1) {
-              <img src="/img/curso/{{ curso.imagenCurso1 }}" class="img-fluid mb-3" style="max-height: 250px; width: 100%; object-fit: cover; border-radius: 0; border: 1px solid #E0E0E0;">
+            @if (curso.imagenCurso1 || curso.imagenCurso2) {
+              <img [src]="obtenerUrlImagen(imagenSeleccionada || curso.imagenCurso1 || curso.imagenCurso2)" 
+                   (error)="manejarErrorImagen($event)" 
+                   class="img-fluid mb-2" 
+                   style="max-height: 250px; width: 100%; object-fit: cover; border-radius: 0; border: 1px solid #E0E0E0;" 
+                   [alt]="curso.nombreCurso">
+
+              @if (curso.imagenCurso1 && curso.imagenCurso2) {
+                <div class="d-flex justify-content-center gap-2 mb-2">
+                  <img [src]="obtenerUrlImagen(curso.imagenCurso1)" 
+                       (click)="seleccionarImagen(curso.imagenCurso1)"
+                       (error)="manejarErrorImagen($event)"
+                       [style.border]="(imagenSeleccionada === curso.imagenCurso1 || !imagenSeleccionada) ? '2px solid #1565C0' : '1px solid #E0E0E0'"
+                       style="width: 55px; height: 45px; object-fit: cover; cursor: pointer;" 
+                       alt="Imagen principal">
+                  <img [src]="obtenerUrlImagen(curso.imagenCurso2)" 
+                       (click)="seleccionarImagen(curso.imagenCurso2)"
+                       (error)="manejarErrorImagen($event)"
+                       [style.border]="imagenSeleccionada === curso.imagenCurso2 ? '2px solid #1565C0' : '1px solid #E0E0E0'"
+                       style="width: 55px; height: 45px; object-fit: cover; cursor: pointer;" 
+                       alt="Imagen secundaria">
+                </div>
+              }
+            } @else {
+              <img [src]="obtenerUrlImagen('')" class="img-fluid mb-3" style="max-height: 250px; width: 100%; object-fit: cover; border-radius: 0; border: 1px solid #E0E0E0;" [alt]="curso.nombreCurso">
             }
             
             <div class="mt-2">

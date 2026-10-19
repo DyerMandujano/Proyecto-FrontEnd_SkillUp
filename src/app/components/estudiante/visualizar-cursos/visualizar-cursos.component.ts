@@ -196,4 +196,12 @@ export class VisualizarCursosComponent implements OnInit {
           return;
       }
   }
+
+  obtenerUrlImagen(imagen: string | null | undefined): string {
+    return this.cursoService.obtenerUrlImagen(imagen);
+  }
+
+  manejarErrorImagen(event: Event): void {
+    this.cursoService.manejarErrorImagen(event);
+  }
 }

@@ -94,7 +94,7 @@
       <div *ngIf="!cuentaDeshabilitada" class="courses-grid">
         <div *ngFor="let curso of cursos" class="course-card">
           <div class="card-image">
-            <img src="/img/curso/{{ curso.imagenCurso1 }}" alt="{{curso.nombreCurso}}">
+            <img [src]="obtenerUrlImagen(curso.imagenCurso1 || curso.imagenCurso2)" (error)="manejarErrorImagen($event)" [alt]="curso.nombreCurso">
             <span class="card-badge badge-enrolled">Inscrito</span>
           </div>
           <div class="card-content">
@@ -124,7 +124,7 @@
       <div class="courses-grid">
         <div *ngFor="let c of cursosNoM" class="course-card">
           <div class="card-image">
-            <img src="/img/curso/{{ c.imagenCurso1 }}" alt="Curso">
+            <img [src]="obtenerUrlImagen(c.imagenCurso1 || c.imagenCurso2)" (error)="manejarErrorImagen($event)" alt="Curso">
             <span class="card-badge">Recomendado</span>
           </div>
           <div class="card-content">
