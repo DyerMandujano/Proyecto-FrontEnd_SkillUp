@@ -1,62 +1,274 @@
 <div class="contenedorPrincipal" id="contenedorPrincipal">
 
+    <!-- =========== FORMULARIO DE REGISTRO =========== -->
     <div class="contenedor-formulario contenedor-registro" id="registro">
         
         <form (ngSubmit)="onRegisterSubmit()" #registerForm="ngForm">
-            <h1>Crear una Cuenta</h1>
-            <span>Usa tu correo para registrarte</span>
-
-            <input class="input-formulario" type="text" placeholder="Nombres" 
-                   [(ngModel)]="registerData.nombres" name="nombres" required />
-            
-            <input class="input-formulario" type="text" placeholder="Apellidos" 
-                   [(ngModel)]="registerData.apellidos" name="apellidos" required />
-
-            <input class="input-formulario" type="text" placeholder="DNI (8 dígitos)" 
-                   [(ngModel)]="registerData.dni" name="dni" maxlength="8" pattern="[0-9]{8}" required />
-            
-            <div class="campo-contrasenia">
-                <input class="input-formulario" [type]="mostrarContraseniaReg ? 'text' : 'password'" 
-                       placeholder="Contraseña (mín 6 caracteres)" 
-                       [(ngModel)]="registerData.contrasenia" name="contrasenia_reg" minlength="6" required />
-                <button type="button" class="btn-ojito" (click)="toggleMostrarContraseniaReg()" [attr.aria-label]="mostrarContraseniaReg ? 'Ocultar contraseña' : 'Ver contraseña'">
-                    <!-- Ojo Visible -->
-                    <svg *ngIf="mostrarContraseniaReg" class="svg-ojo" viewBox="0 0 28 20" width="22" height="18">
-                        <path d="M14 0C7.7 0 2.2 4.1 0 10c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 4.1 20.3 0 14 0zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2zm1.2 2.2c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="#333333"/>
-                    </svg>
-                    <!-- Ojo Oculto / Tachado (idéntico a la imagen) -->
-                    <svg *ngIf="!mostrarContraseniaReg" class="svg-ojo" viewBox="0 0 28 24" width="22" height="19">
-                        <path d="M14 2C7.7 2 2.2 6.1 0 12c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 6.1 20.3 2 14 2zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2z" fill="#333333"/>
-                        <!-- Línea diagonal cruzada de arriba-derecha a abajo-izquierda -->
-                        <line x1="22" y1="2" x2="6" y2="22" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
-                        <line x1="22" y1="2" x2="6" y2="22" stroke="#333333" stroke-width="2.8" stroke-linecap="round"/>
-                    </svg>
-                </button>
+            <div class="encabezado-formulario">
+                <h1>Crear una Cuenta</h1>
+                <span class="subtitulo-formulario">Usa tu información para registrarte en SkillUp</span>
             </div>
 
-            <label for="fecha_nac" class="input-label">Fecha de Nacimiento:</label>
-            <input class="input-formulario" id="fecha_nac" type="date" 
-                   [(ngModel)]="registerData.fecha_nacimiento" name="fecha_nacimiento" 
-                   [max]="fechaMaximaNacimiento" [min]="fechaMinimaNacimiento" required />
+            <!-- Nombres -->
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="reg-nombres">Nombres <span class="campo-requerido">*</span></label>
+                </div>
+                <input id="reg-nombres" class="input-formulario" type="text" placeholder="Ej: Juan Carlos" 
+                       [(ngModel)]="registerData.nombres" name="nombres" 
+                       (keypress)="soloLetras($event)"
+                       (input)="onNombreInput()"
+                       (blur)="onNombreInput()"
+                       [class.input-error]="nombreTouched && nombreError"
+                       required />
+                <div *ngIf="nombreTouched && nombreError" class="mensaje-error-campo">
+                    <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ nombreError }}</span>
+                </div>
+            </div>
             
-            <select class="input-formulario" [(ngModel)]="registerData.genero" name="genero" required>
-                <option value="" disabled selected>Selecciona tu género</option>
-                <option value="Masculino">Masculino</option>
-                <option value="Femenino">Femenino</option>
-                <option value="Otro">Otro</option>
-            </select>
-            
-            <div>
-                <label>
-                    <input type="radio" name="rol" value="estudiante" id="rolEstudiante" required> Soy Estudiante
-                </label>
-                <label>
-                    <input type="radio" name="rol" value="docente" id="rolDocente" required> Soy Docente
-                </label>
+            <!-- Apellidos -->
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="reg-apellidos">Apellidos <span class="campo-requerido">*</span></label>
+                </div>
+                <input id="reg-apellidos" class="input-formulario" type="text" placeholder="Ej: Pérez Rodríguez" 
+                       [(ngModel)]="registerData.apellidos" name="apellidos" 
+                       (keypress)="soloLetras($event)"
+                       (input)="onApellidoInput()"
+                       (blur)="onApellidoInput()"
+                       [class.input-error]="apellidoTouched && apellidoError"
+                       required />
+                <div *ngIf="apellidoTouched && apellidoError" class="mensaje-error-campo">
+                    <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ apellidoError }}</span>
+                </div>
             </div>
 
-            <div id="camposEstudiante" style="display:none; width:100%;">
-                <select class="input-formulario" [(ngModel)]="registerData.nivel_educativo" name="nivel_educativo">
+            <!-- DNI (8 dígitos) -->
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="reg-dni">DNI <span class="campo-requerido">*</span></label>
+                </div>
+                <input id="reg-dni" class="input-formulario" type="text" placeholder="Ej: 76346512" 
+                       [(ngModel)]="registerData.dni" name="dni" required maxlength="8" minlength="8" 
+                       pattern="[0-9]{8}" inputmode="numeric" 
+                       (keypress)="soloNumeros($event)"
+                       (input)="onDniInput()"
+                       (blur)="onDniInput()"
+                       [class.input-error]="dniTouched && dniError" />
+                <span *ngIf="!dniTouched || !dniError" class="indicacion-campo">* Debe tener exactamente 8 dígitos numéricos</span>
+                <div *ngIf="dniTouched && dniError" class="mensaje-error-campo">
+                    <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ dniError }}</span>
+                </div>
+            </div>
+
+            <!-- Celular (Opcional - para recuperación de contraseña) -->
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="reg-celular">Celular <span class="opcional-tag">(Opcional)</span></label>
+                </div>
+                <input id="reg-celular" class="input-formulario" type="text" placeholder="Ej: 987654321" 
+                       [(ngModel)]="registerData.celular" name="celular" maxlength="9"
+                       (keypress)="soloNumeros($event)"
+                       (input)="onCelularInput()"
+                       (blur)="onCelularInput()"
+                       [class.input-error]="celularTouched && celularError" />
+                <span *ngIf="!celularTouched || !celularError" class="indicacion-campo">* Opcional: 9 dígitos (Perú). Se usará para recuperar tu contraseña.</span>
+                <div *ngIf="celularTouched && celularError" class="mensaje-error-campo">
+                    <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ celularError }}</span>
+                </div>
+            </div>
+            
+            <!-- Username / Correo -->
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="reg-username">Usuario o Correo <span class="campo-requerido">*</span></label>
+                </div>
+                <input id="reg-username" class="input-formulario" type="text" placeholder="Ej: usuario@skillup.pe" 
+                       [(ngModel)]="registerData.username" name="username_reg" 
+                       (input)="onUsernameInput()"
+                       (blur)="onUsernameInput()"
+                       [class.input-error]="usernameTouched && usernameError"
+                       required />
+                <div *ngIf="usernameTouched && usernameError" class="mensaje-error-campo">
+                    <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ usernameError }}</span>
+                </div>
+            </div>
+            
+            <!-- Contraseña -->
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="reg-contrasenia">Contraseña <span class="campo-requerido">*</span></label>
+                </div>
+                <div class="campo-password">
+                    <input id="reg-contrasenia" class="input-formulario" 
+                           [type]="mostrarContrasenia ? 'text' : 'password'" 
+                           placeholder="Crea tu contraseña segura" 
+                           [(ngModel)]="registerData.contrasenia" 
+                           name="contrasenia_reg" 
+                           (input)="onPasswordInput()"
+                           (blur)="onPasswordInput()"
+                           [class.input-error]="passwordTouched && registerData.contrasenia && !isPasswordValid"
+                           required />
+                    <button type="button" class="btn-toggle-ojito" (click)="toggleMostrarContrasenia()" [title]="mostrarContrasenia ? 'Ocultar contraseña' : 'Ver contraseña'">
+                        <svg *ngIf="!mostrarContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg *ngIf="mostrarContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                        </svg>
+                    </button>
+                </div>
+                <div *ngIf="passwordTouched && registerData.contrasenia && !isPasswordValid" class="mensaje-error-campo">
+                    <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Tu clave debe cumplir todos los requisitos indicados abajo:</span>
+                </div>
+
+                <!-- Requisitos de seguridad de contraseña -->
+                <div *ngIf="registerData.contrasenia" class="requisitos-contrasenia">
+                    <div class="requisito-item" [class.cumplido]="passwordValidations.minLength">
+                        <span class="icono-check">{{ passwordValidations.minLength ? '✓' : '•' }}</span> Mínimo 8 caracteres
+                    </div>
+                    <div class="requisito-item" [class.cumplido]="passwordValidations.hasUpper">
+                        <span class="icono-check">{{ passwordValidations.hasUpper ? '✓' : '•' }}</span> Al menos una mayúscula (A-Z)
+                    </div>
+                    <div class="requisito-item" [class.cumplido]="passwordValidations.hasLower">
+                        <span class="icono-check">{{ passwordValidations.hasLower ? '✓' : '•' }}</span> Al menos una minúscula (a-z)
+                    </div>
+                    <div class="requisito-item" [class.cumplido]="passwordValidations.hasNumber">
+                        <span class="icono-check">{{ passwordValidations.hasNumber ? '✓' : '•' }}</span> Al menos un número (0-9)
+                    </div>
+                    <div class="requisito-item" [class.cumplido]="passwordValidations.hasSpecial">
+                        <span class="icono-check">{{ passwordValidations.hasSpecial ? '✓' : '•' }}</span> Al menos un carácter especial (&#64;, #, $, %, etc.)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmación de Contraseña -->
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="reg-confirmar">Verificar contraseña <span class="campo-requerido">*</span></label>
+                </div>
+                <div class="campo-password">
+                    <input id="reg-confirmar" class="input-formulario" 
+                           [type]="mostrarConfirmarContrasenia ? 'text' : 'password'" 
+                           placeholder="Repite tu contraseña exactamente" 
+                           [(ngModel)]="registerData.confirmar_contrasenia" 
+                           name="confirmar_contrasenia" 
+                           (input)="onConfirmarPasswordInput()"
+                           (blur)="onConfirmarPasswordInput()"
+                           [class.input-error]="confirmarPasswordTouched && passwordMismatchError"
+                           required />
+                    <button type="button" class="btn-toggle-ojito" (click)="toggleMostrarConfirmarContrasenia()" [title]="mostrarConfirmarContrasenia ? 'Ocultar contraseña' : 'Ver contraseña'">
+                        <svg *ngIf="!mostrarConfirmarContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg *ngIf="mostrarConfirmarContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                        </svg>
+                    </button>
+                </div>
+                <div *ngIf="confirmarPasswordTouched && passwordMismatchError" class="mensaje-error-campo">
+                    <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ passwordMismatchError }}</span>
+                </div>
+                <div *ngIf="registerData.confirmar_contrasenia && !passwordMismatchError && registerData.contrasenia === registerData.confirmar_contrasenia" class="mensaje-exito-campo">
+                    ✓ Las contraseñas coinciden perfectamente
+                </div>
+            </div>
+
+            <!-- Fecha de Nacimiento -->
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="fecha_nac">Fecha de Nacimiento <span class="campo-requerido">*</span></label>
+                </div>
+                <input class="input-formulario" id="fecha_nac" type="date" 
+                       [(ngModel)]="registerData.fecha_nacimiento" name="fecha_nacimiento" 
+                       [max]="maxFechaNacimiento"
+                       (change)="onFechaNacimientoChange()"
+                       (input)="onFechaNacimientoChange()"
+                       (blur)="onFechaNacimientoChange()"
+                       [class.input-error]="fechaNacimientoTouched && fechaNacimientoError"
+                       required />
+                <span *ngIf="!fechaNacimientoTouched || !fechaNacimientoError" class="indicacion-campo">* Debes tener al menos 12 años</span>
+                <div *ngIf="fechaNacimientoTouched && fechaNacimientoError" class="mensaje-error-campo">
+                    <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ fechaNacimientoError }}</span>
+                </div>
+            </div>
+            
+            <!-- Género -->
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="reg-genero">Género <span class="campo-requerido">*</span></label>
+                </div>
+                <select id="reg-genero" class="input-formulario" [(ngModel)]="registerData.genero" name="genero" 
+                        (change)="validarGenero()" (blur)="validarGenero()"
+                        [class.input-error]="generoTouched && generoError" required>
+                    <option value="" disabled selected>Selecciona tu género</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otro">Otro</option>
+                </select>
+                <div *ngIf="generoTouched && generoError" class="mensaje-error-campo">
+                    <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ generoError }}</span>
+                </div>
+            </div>
+            
+            <!-- Roles -->
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta">¿Cuál será tu rol? <span class="campo-requerido">*</span></label>
+                </div>
+                <div class="roles-radio">
+                    <label class="radio-opcion">
+                        <input type="radio" name="rol" value="estudiante" id="rolEstudiante" (change)="validarRol()" required> 
+                        <span class="radio-texto">Soy Estudiante</span>
+                    </label>
+                    <label class="radio-opcion">
+                        <input type="radio" name="rol" value="docente" id="rolDocente" (change)="validarRol()" required> 
+                        <span class="radio-texto">Soy Docente</span>
+                    </label>
+                </div>
+                <div *ngIf="rolTouched && rolError" class="mensaje-error-campo">
+                    <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ rolError }}</span>
+                </div>
+            </div>
+
+            <!-- Campos condicionales Estudiante -->
+            <div id="camposEstudiante" style="display:none; width:100%;" class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="reg-nivel">Nivel Educativo</label>
+                </div>
+                <select id="reg-nivel" class="input-formulario" [(ngModel)]="registerData.nivel_educativo" name="nivel_educativo">
                     <option value="" disabled selected>Selecciona tu Nivel Educativo</option>
                     <option value="Secundaria">Secundaria</option>
                     <option value="Superior">Superior</option>
@@ -64,75 +276,93 @@
                 </select>
             </div>
 
-            <div id="camposDocente" style="display:none; width:100%;">
-                <select class="input-formulario" [(ngModel)]="registerData.especialidad" name="especialidad">
-                    <option value="" disabled selected>Selecciona tu Especialidad</option>
-                    <option value="Construcción Civil y Albañilería">Construcción Civil y Albañilería</option>
-                    <option value="Instalaciones Eléctricas">Instalaciones Eléctricas</option>
-                    <option value="Gasfitería y Redes Sanitarias">Gasfitería y Redes Sanitarias</option>
-                    <option value="Mecánica Automotriz y Mantenimiento">Mecánica Automotriz y Mantenimiento</option>
-                    <option value="Carpintería en Madera">Carpintería en Madera</option>
-                    <option value="Enchapado y Acabados de Cerámica">Enchapado y Acabados de Cerámica</option>
-                    <option value="Pintura de Interiores y Exteriores">Pintura de Interiores y Exteriores</option>
-                    <option value="Soldadura y Estructuras Metálicas">Soldadura y Estructuras Metálicas</option>
-                    <option value="Seguridad Industrial y Salud Ocupacional">Seguridad Industrial y Salud Ocupacional</option>
-                </select>
-
-                <select class="input-formulario" [(ngModel)]="registerData.grado_academico" name="grado_academico">
-                    <option value="" disabled selected>Selecciona tu Grado Académico</option>
-                    <option value="Técnico Especialista">Técnico Especialista</option>
-                    <option value="Técnico Superior">Técnico Superior</option>
-                    <option value="Bachiller">Bachiller</option>
-                    <option value="Licenciado">Licenciado</option>
-                    <option value="Magíster">Magíster</option>
-                    <option value="Ingeniero Colegiado">Ingeniero Colegiado</option>
-                </select>
+            <!-- Campos condicionales Docente -->
+            <div id="camposDocente" style="display:none; width:100%;" class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta">Información Profesional</label>
+                </div>
+                <input class="input-formulario input-separado" type="text" placeholder="Especialidad (ej: Ing. de Software)" 
+                       [(ngModel)]="registerData.especialidad" name="especialidad" />
+                <input class="input-formulario" type="text" placeholder="Grado Académico (ej: Magíster)" 
+                       [(ngModel)]="registerData.grado_academico" name="grado_academico" />
             </div>
             
-            <div *ngIf="registroExitoso" class="mensaje-exito">{{ registroExitoso }}</div>
-            <div *ngIf="registroError" class="mensaje-error">{{ registroError }}</div>
+            <!-- Mensajes de estado generales -->
+            <div *ngIf="registroExitoso" class="mensaje-exito">
+                <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>{{ registroExitoso }}</span>
+            </div>
+            <div *ngIf="registroError" class="mensaje-error-general">
+                <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <span>{{ registroError }}</span>
+            </div>
 
-            <button class="btn" type="submit" [disabled]="!registerForm.valid">Registrarse</button>
+            <!-- Botón de Registro -->
+            <button class="btn btn-registro" type="submit" 
+                    [disabled]="!registerForm.valid || passwordMismatchError || !isPasswordValid || nombreError || apellidoError || fechaNacimientoError || celularError || !esMayorDeEdad(registerData.fecha_nacimiento)">
+                Registrarse
+            </button>
         </form>
     </div>
 
+    <!-- =========== FORMULARIO DE INICIO DE SESIÓN =========== -->
     <div class="contenedor-formulario contenedor-inicio-sesion" id="iniciar">
         
         <form (ngSubmit)="onLoginSubmit()" #loginForm="ngForm">
-            <h1>Iniciar Sesión</h1>
-            <span>Usa tu cuenta</span>
-            
-            <input class="input-formulario" type="text" placeholder="usuario" 
-                   [(ngModel)]="loginData.username" name="username_login" required />
-            
-            <div class="campo-contrasenia">
-                <input class="input-formulario" [type]="mostrarContraseniaLogin ? 'text' : 'password'" 
-                       placeholder="Contraseña (mín 6 dígitos)" 
-                       [(ngModel)]="loginData.contrasenia" name="contrasenia_login" minlength="6" required />
-                <button type="button" class="btn-ojito" (click)="toggleMostrarContraseniaLogin()" [attr.aria-label]="mostrarContraseniaLogin ? 'Ocultar contraseña' : 'Ver contraseña'">
-                    <!-- Ojo Visible -->
-                    <svg *ngIf="mostrarContraseniaLogin" class="svg-ojo" viewBox="0 0 28 20" width="22" height="18">
-                        <path d="M14 0C7.7 0 2.2 4.1 0 10c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 4.1 20.3 0 14 0zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2zm1.2 2.2c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="#333333"/>
-                    </svg>
-                    <!-- Ojo Oculto / Tachado (idéntico a la imagen) -->
-                    <svg *ngIf="!mostrarContraseniaLogin" class="svg-ojo" viewBox="0 0 28 24" width="22" height="19">
-                        <path d="M14 2C7.7 2 2.2 6.1 0 12c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 6.1 20.3 2 14 2zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2z" fill="#333333"/>
-                        <!-- Línea diagonal cruzada de arriba-derecha a abajo-izquierda -->
-                        <line x1="22" y1="2" x2="6" y2="22" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
-                        <line x1="22" y1="2" x2="6" y2="22" stroke="#333333" stroke-width="2.8" stroke-linecap="round"/>
-                    </svg>
-                </button>
+            <div class="encabezado-formulario">
+                <h1>Iniciar Sesión</h1>
+                <span class="subtitulo-formulario">Accede con tus credenciales a SkillUp</span>
             </div>
             
-            <div *ngIf="loginError" class="mensaje-error">
-                {{ loginError }}
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="login-username">Usuario o Correo</label>
+                </div>
+                <input id="login-username" class="input-formulario" type="text" placeholder="Ej: usuario@skillup.pe" 
+                       [(ngModel)]="loginData.username" name="username_login" required />
             </div>
             
-            <a href="javascript:void(0)" class="enlace-formulario" (click)="abrirModalRecuperar()">¿Olvidaste tu contraseña?</a>
-            <button class="btn" type="submit" [disabled]="!loginForm.valid">Ingresar</button>
+            <div class="campo-formulario">
+                <div class="campo-cabecera">
+                    <label class="campo-etiqueta" for="login-password">Contraseña</label>
+                </div>
+                <div class="campo-password">
+                    <input id="login-password" class="input-formulario" 
+                           [type]="mostrarLoginContrasenia ? 'text' : 'password'" 
+                           placeholder="Ingresa tu contraseña" 
+                           [(ngModel)]="loginData.contrasenia" 
+                           name="contrasenia_login" required />
+                    <button type="button" class="btn-toggle-ojito" (click)="toggleMostrarLoginContrasenia()" [title]="mostrarLoginContrasenia ? 'Ocultar contraseña' : 'Ver contraseña'">
+                        <svg *ngIf="!mostrarLoginContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg *ngIf="mostrarLoginContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div *ngIf="loginError" class="mensaje-error-general">
+                <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <span>{{ loginError }}</span>
+            </div>
+            
+            <div class="contenedor-olvido-contrasenia">
+                <span class="enlace-deshabilitado" title="Módulo de recuperación de contraseña temporalmente en desarrollo">¿Olvidaste tu contraseña? (Próximamente)</span>
+            </div>
+            <button class="btn btn-login" type="submit" [disabled]="!loginForm.valid">Ingresar</button>
         </form>
     </div>
 
+    <!-- =========== PANELES DE ANIMACIÓN =========== -->
     <div class="contenedor-superposicion">
         <div class="superposicion">
             <div class="panel-superposicion superposicion-izquierda">
@@ -144,137 +374,6 @@
                 <h2 class="encabezado-panel">¡Hola, Amigo!</h2>
                 <p class="texto-panel">Ingresa tus datos personales y comienza esta aventura con nosotros.</p>
                 <button class="btn fantasma" id="botonRegistro">Registrarse</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ========================================== -->
-<!-- MODAL DE RECUPERACIÓN DE CONTRASEÑA (HU-22) -->
-<!-- ========================================== -->
-<div *ngIf="modalRecuperarAbierto" class="modal-backdrop-recuperar" (click)="cerrarModalRecuperar()">
-    <div class="modal-card-recuperar" (click)="$event.stopPropagation()">
-        <!-- Botón Cerrar -->
-        <button type="button" class="btn-cerrar-modal" (click)="cerrarModalRecuperar()" aria-label="Cerrar modal">&times;</button>
-
-        <!-- Cabecera del Modal -->
-        <div class="modal-recuperar-header">
-            <div class="icono-seguridad">
-                <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#0D47A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-            </div>
-            <h2>Recuperación de Contraseña</h2>
-        </div>
-
-        <!-- PASO 1: Identificación por Usuario o DNI -->
-        <div *ngIf="pasoRecuperar === 1" class="modal-recuperar-body">
-            <p class="instruccion-modal">
-                Ingresa tu <strong>nombre de usuario</strong> o tu número de <strong>DNI (8 dígitos)</strong> asociado a tu cuenta para verificar tu identidad.
-            </p>
-
-            <div class="campo-recuperar">
-                <label for="idRecuperar">Usuario o DNI</label>
-                <input id="idRecuperar" type="text" class="input-formulario" 
-                       placeholder="Ej: jsmith o 76543210" 
-                       [(ngModel)]="identificadorRecuperar" 
-                       (keyup.enter)="verificarIdentificadorRecuperar()"
-                       [disabled]="cargandoRecuperar" />
-            </div>
-
-            <div *ngIf="errorRecuperar" class="mensaje-error">
-                {{ errorRecuperar }}
-            </div>
-
-            <div class="modal-recuperar-actions">
-                <button type="button" class="btn btn-secundario" (click)="cerrarModalRecuperar()" [disabled]="cargandoRecuperar">Cancelar</button>
-                <button type="button" class="btn" (click)="verificarIdentificadorRecuperar()" [disabled]="cargandoRecuperar || !identificadorRecuperar.trim()">
-                    {{ cargandoRecuperar ? 'Verificando...' : 'Continuar' }}
-                </button>
-            </div>
-        </div>
-
-        <!-- PASO 2: Nueva Contraseña con confirmación y Ojito Custom -->
-        <div *ngIf="pasoRecuperar === 2" class="modal-recuperar-body">
-            <div class="alerta-usuario-encontrado">
-                Cuenta localizada: <strong>&#64;{{ usuarioEncontrado }}</strong>
-            </div>
-
-            <p class="instruccion-modal">
-                Define tu nueva clave de acceso (mínimo 6 dígitos o caracteres):
-            </p>
-
-            <!-- Nueva Contraseña -->
-            <div class="campo-recuperar">
-                <label>Nueva Contraseña (mín 6 dígitos)</label>
-                <div class="campo-contrasenia">
-                    <input class="input-formulario" [type]="mostrarNuevaClave ? 'text' : 'password'" 
-                           placeholder="Nueva contraseña (mín 6 dígitos)" 
-                           [(ngModel)]="nuevaContraseniaRecuperar" 
-                           minlength="6" />
-                    <button type="button" class="btn-ojito" (click)="toggleMostrarNuevaClave()" [attr.aria-label]="mostrarNuevaClave ? 'Ocultar contraseña' : 'Ver contraseña'">
-                        <svg *ngIf="mostrarNuevaClave" class="svg-ojo" viewBox="0 0 28 20" width="22" height="18">
-                            <path d="M14 0C7.7 0 2.2 4.1 0 10c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 4.1 20.3 0 14 0zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2zm1.2 2.2c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="#333333"/>
-                        </svg>
-                        <svg *ngIf="!mostrarNuevaClave" class="svg-ojo" viewBox="0 0 28 24" width="22" height="19">
-                            <path d="M14 2C7.7 2 2.2 6.1 0 12c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 6.1 20.3 2 14 2zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2z" fill="#333333"/>
-                            <line x1="22" y1="2" x2="6" y2="22" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
-                            <line x1="22" y1="2" x2="6" y2="22" stroke="#333333" stroke-width="2.8" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Confirmar Contraseña -->
-            <div class="campo-recuperar">
-                <label>Confirmar Contraseña</label>
-                <div class="campo-contrasenia">
-                    <input class="input-formulario" [type]="mostrarConfirmarClave ? 'text' : 'password'" 
-                           placeholder="Repita la contraseña" 
-                           [(ngModel)]="confirmarContraseniaRecuperar" 
-                           (keyup.enter)="confirmarCambioContrasenia()"
-                           minlength="6" />
-                    <button type="button" class="btn-ojito" (click)="toggleMostrarConfirmarClave()" [attr.aria-label]="mostrarConfirmarClave ? 'Ocultar contraseña' : 'Ver contraseña'">
-                        <svg *ngIf="mostrarConfirmarClave" class="svg-ojo" viewBox="0 0 28 20" width="22" height="18">
-                            <path d="M14 0C7.7 0 2.2 4.1 0 10c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 4.1 20.3 0 14 0zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2zm1.2 2.2c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="#333333"/>
-                        </svg>
-                        <svg *ngIf="!mostrarConfirmarClave" class="svg-ojo" viewBox="0 0 28 24" width="22" height="19">
-                            <path d="M14 2C7.7 2 2.2 6.1 0 12c2.2 5.9 7.7 10 14 10s11.8-4.1 14-10C25.8 6.1 20.3 2 14 2zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm0-11.2c-2.3 0-4.2 1.9-4.2 4.2s1.9 4.2 4.2 4.2 4.2-1.9 4.2-4.2-1.9-4.2-4.2-4.2z" fill="#333333"/>
-                            <line x1="22" y1="2" x2="6" y2="22" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
-                            <line x1="22" y1="2" x2="6" y2="22" stroke="#333333" stroke-width="2.8" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <div *ngIf="errorRecuperar" class="mensaje-error">
-                {{ errorRecuperar }}
-            </div>
-
-            <div class="modal-recuperar-actions">
-                <button type="button" class="btn btn-secundario" (click)="pasoRecuperar = 1" [disabled]="cargandoRecuperar">Atrás</button>
-                <button type="button" class="btn" (click)="confirmarCambioContrasenia()" 
-                        [disabled]="cargandoRecuperar || !nuevaContraseniaRecuperar || !confirmarContraseniaRecuperar">
-                    {{ cargandoRecuperar ? 'Guardando...' : 'Restablecer Clave' }}
-                </button>
-            </div>
-        </div>
-
-        <!-- PASO 3: Éxito -->
-        <div *ngIf="pasoRecuperar === 3" class="modal-recuperar-body exito-view">
-            <div class="icono-exito">
-                <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#2E7D32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-            </div>
-            <h3>¡Actualización Exitosa!</h3>
-            <p class="instruccion-modal">
-                {{ exitoRecuperar }}
-            </p>
-            <div class="modal-recuperar-actions centrado">
-                <button type="button" class="btn" (click)="cerrarModalRecuperar()">Iniciar Sesión</button>
             </div>
         </div>
     </div>

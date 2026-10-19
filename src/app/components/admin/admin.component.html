@@ -192,9 +192,9 @@
                 <td>{{ s.fecha_subida || '-' }}</td>
                 <td>
                   <span class="badge-estado" [ngClass]="{
-                    'estado-pendiente': s.estado?.toLowerCase() === 'pendiente',
-                    'estado-aprobado': s.estado?.toLowerCase() === 'aprobado',
-                    'estado-rechazado': s.estado?.toLowerCase() === 'rechazado'
+                    'estado-pendiente': s.estado.toLowerCase() === 'pendiente',
+                    'estado-aprobado': s.estado.toLowerCase() === 'aprobado',
+                    'estado-rechazado': s.estado.toLowerCase() === 'rechazado'
                   }">
                     {{ s.estado }}
                   </span>
@@ -273,7 +273,7 @@
                 <td>{{ u.nombre_completo || u.nombres }}</td>
                 <td>{{ u.username }}</td>
                 <td>
-                  <span class="badge-role-tag" [ngClass]="'role-' + u.rol?.toLowerCase()">
+                  <span class="badge-role-tag" [ngClass]="'role-' + u.rol.toLowerCase()">
                     {{ u.rol | uppercase }}
                   </span>
                 </td>

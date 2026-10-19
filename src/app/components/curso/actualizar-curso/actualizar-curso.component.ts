@@ -71,4 +71,19 @@ export class ActualizarCursoComponent implements OnInit {
       }
     });
   }
+
+  cancelar(): void {
+    const idDocente = this.curso.idDocente || localStorage.getItem('idDocente') || 1;
+    this.router.navigate(['/docente', idDocente]);
+  }
+
+  onFileSelected(event: any, tipo: number): void {
+    const file: File = event.target.files[0];
+    if (!file) return;
+    if (tipo === 1) {
+      this.curso.imagenCurso1 = file.name;
+    } else {
+      this.curso.imagenCurso2 = file.name;
+    }
+  }
 }

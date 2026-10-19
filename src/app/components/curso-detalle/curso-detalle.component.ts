@@ -242,12 +242,13 @@ export class CursoDetalleComponent implements OnInit {
     this.esPdf = urlMinuscula.endsWith('.pdf');
     let urlCompleta = '';
 
+    const backendBase = 'http://localhost:8888';
     if (urlNormalizada.startsWith('uploads/')) {
-      urlCompleta = `https://servers-argument-recognize-alphabetical.trycloudflare.com/${urlNormalizada}`;
+      urlCompleta = `${backendBase}/${urlNormalizada}`;
     } else if (urlNormalizada.startsWith('http')) {
       urlCompleta = urlNormalizada;
     } else {
-      urlCompleta = `https://servers-argument-recognize-alphabetical.trycloudflare.com/${urlNormalizada}`;
+      urlCompleta = `${backendBase}/${urlNormalizada}`;
     }
 
     this.materialSeleccionadoRawUrl = urlCompleta;

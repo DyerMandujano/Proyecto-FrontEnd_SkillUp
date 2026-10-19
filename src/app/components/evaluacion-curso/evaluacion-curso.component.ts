@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { jsPDF } from 'jspdf';
 
 import { EvaluacionCurso } from '../../models/evaluacionCurso';
@@ -36,8 +36,17 @@ export class EvaluacionCursoComponent implements OnInit {
     private certificadoService: CertificadoService,
     private authService: AuthService,
     private cursoService: CursoService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
+
+  volverAlCurso(): void {
+    if (this.idCurso) {
+      this.router.navigate(['/curso', this.idCurso, 'lecciones']);
+    } else {
+      window.history.back();
+    }
+  }
 
   ngOnInit(): void {
     

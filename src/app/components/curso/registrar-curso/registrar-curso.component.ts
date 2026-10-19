@@ -78,4 +78,8 @@ export class RegistrarCursoComponent implements OnInit {
       this.nuevoCurso.imagenCurso2 = fileName;
     }
   }
+
+  cancelar(): void {
+    this.router.navigate(['/docente', this.idDocente]);
+  }
 }

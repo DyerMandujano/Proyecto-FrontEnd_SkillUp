@@ -55,10 +55,16 @@
                   <textarea class="form-control" name="resumen" [(ngModel)]="curso.resumen" rows="2" placeholder="Breve resumen del curso..." required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;"></textarea>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold" style="color: #212121;">Imagenes del Curso</label>
-                  <div class="d-flex gap-2">
-                    <input type="text" class="form-control" name="imagenCurso1" [(ngModel)]="curso.imagenCurso1" placeholder="Ruta o URL de la imagen principal" required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
-                    <input type="text" class="form-control" name="imagenCurso2" [(ngModel)]="curso.imagenCurso2" placeholder="Ruta o URL de la imagen secundaria" style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
+                  <label class="form-label fw-semibold" style="color: #212121;">Imágenes del Curso</label>
+                  <div class="d-flex flex-column gap-2">
+                    <div class="d-flex gap-2 align-items-center">
+                      <input type="text" class="form-control" name="imagenCurso1" [(ngModel)]="curso.imagenCurso1" placeholder="Imagen principal" required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
+                      <input class="form-control" type="file" accept="image/*" (change)="onFileSelected($event, 1)" style="border-radius: 0; border: 1px solid #E0E0E0; max-width: 140px;">
+                    </div>
+                    <div class="d-flex gap-2 align-items-center">
+                      <input type="text" class="form-control" name="imagenCurso2" [(ngModel)]="curso.imagenCurso2" placeholder="Imagen secundaria" style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
+                      <input class="form-control" type="file" accept="image/*" (change)="onFileSelected($event, 2)" style="border-radius: 0; border: 1px solid #E0E0E0; max-width: 140px;">
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -69,8 +75,8 @@
                   </select>
                 </div>
                 <div class="col-12 d-flex justify-content-end gap-3 mt-3">
+                  <button type="button" class="btn btn-secondary px-4" (click)="cancelar()" style="border-radius: 0; background-color: #616161; color: #FFFFFF; border: none;">Cancelar</button>
                   <button type="submit" class="btn btn-primary px-4" style="border-radius: 0; background-color: #1565C0; color: #FFFFFF; border: none;">Actualizar Curso</button>
-                  <button type="reset" class="btn btn-secondary px-4" style="border-radius: 0; background-color: #F5F5F5; color: #212121; border: 1px solid #E0E0E0;">Cancelar</button>
                 </div>
               </form>
             </div>

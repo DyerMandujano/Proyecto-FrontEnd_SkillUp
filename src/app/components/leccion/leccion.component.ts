@@ -74,10 +74,16 @@ export class LeccionComponent implements OnInit {
   }
 
   volverASecciones(): void {
-    if (this.idCurso) {
-      this.router.navigate([`/seccion/curso/${this.idCurso}`]);
+    const idCurso = this.idCurso || Number(localStorage.getItem('idCursoActual'));
+    if (idCurso) {
+      this.router.navigate([`/seccion/curso/${idCurso}`]);
     } else {
-      this.router.navigate(['/panel-docente']); 
+      const idDocente = localStorage.getItem('idDocente');
+      if (idDocente) {
+        this.router.navigate([`/docente/${idDocente}`]);
+      } else {
+        this.router.navigate(['/']);
+      }
     }
   }
 

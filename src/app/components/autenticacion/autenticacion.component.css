@@ -4,17 +4,22 @@
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  background-color: #F5F5F5;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .contenedorPrincipal {
   background-color: #FFFFFF;
-  border: 1px solid #E0E0E0;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
   position: relative;
-  width: 768px;
+  width: 820px;
   max-width: 100%;
-  min-height: 700px;
+  min-height: 840px;
   overflow: hidden;
+  display: flex;
 }
 
 .contenedor-formulario {
@@ -43,24 +48,383 @@ form {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 0 40px;
+  padding: 0 36px;
   height: 100%;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .contenedor-registro form {
+  display: flex;
+  flex-direction: column;
   justify-content: flex-start;
-  padding: 30px 40px;
+  padding: 28px 32px 36px 32px;
+  height: 100%;
+  box-sizing: border-box;
   overflow-y: auto;
 }
 
-h1 {
-  font-weight: 700;
-  margin: 0 0 1rem;
-  font-size: 1.5rem;
-  color: #212121;
+.contenedor-registro form::-webkit-scrollbar {
+  width: 6px;
+}
+.contenedor-registro form::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 6px;
 }
 
+.encabezado-formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.encabezado-formulario h1 {
+  font-weight: 700;
+  margin: 0 0 4px;
+  font-size: 1.6rem;
+  color: #0c4a6e;
+}
+
+.subtitulo-formulario {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ========================================================
+   CAMPOS, ETIQUETAS, SEPARADORES Y PLACEHOLDERS
+   ======================================================== */
+.campo-formulario {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+  text-align: left;
+}
+
+.campo-cabecera {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.campo-etiqueta {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.campo-requerido {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.opcional-tag {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #64748b;
+  margin-left: 4px;
+}
+
+/* Inputs y Selects */
+input.input-formulario,
+select.input-formulario {
+  background-color: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  padding: 10px 14px;
+  width: 100%;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  color: #0f172a;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  font-family: inherit;
+}
+
+input.input-formulario::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+  font-size: 0.85rem;
+}
+
+input.input-formulario:focus,
+select.input-formulario:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.input-separado {
+  margin-bottom: 8px !important;
+}
+
+/* ========================================================
+   VALIDACIONES: BORDE ROJO Y MENSAJE EXPLICATIVO AMIGABLE
+   ======================================================== */
+input.input-formulario.input-error,
+select.input-formulario.input-error {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12) !important;
+}
+
+.mensaje-error-campo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #b91c1c;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  line-height: 1.35;
+  margin-top: 5px;
+  text-align: left;
+  animation: animacionFadeIn 0.25s ease-in-out;
+}
+
+.icono-alerta {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.indicacion-campo {
+  font-size: 0.72rem;
+  color: #64748b;
+  text-align: left;
+  margin-top: 4px;
+  margin-left: 2px;
+}
+
+.mensaje-exito-campo {
+  color: #15803d;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-align: left;
+  margin-top: 5px;
+  animation: animacionFadeIn 0.3s ease-in-out;
+}
+
+/* Campo Password con ojito */
+.campo-password {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.campo-password input.input-formulario {
+  padding-right: 42px !important;
+}
+
+.btn-toggle-ojito {
+  position: absolute;
+  right: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  border-radius: 6px;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.btn-toggle-ojito:hover {
+  color: #2563eb;
+  background-color: rgba(37, 99, 235, 0.08);
+}
+
+.icono-ojo {
+  width: 18px;
+  height: 18px;
+}
+
+/* Requisitos de seguridad de contraseña */
+.requisitos-contrasenia {
+  width: 100%;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.72rem;
+  text-align: left;
+  box-sizing: border-box;
+  animation: animacionFadeIn 0.25s ease-in-out;
+}
+
+.requisito-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  transition: color 0.2s ease;
+}
+
+.requisito-item.cumplido {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.requisito-item .icono-check {
+  font-weight: bold;
+  display: inline-block;
+  width: 12px;
+  text-align: center;
+}
+
+/* Radio buttons de roles */
+.roles-radio {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.radio-opcion {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #cbd5e1;
+  background: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.radio-opcion:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.radio-opcion input[type="radio"] {
+  cursor: pointer;
+  accent-color: #0284c7;
+  width: 16px;
+  height: 16px;
+}
+
+.radio-texto {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* Mensajes de error general */
+.mensaje-error-general {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b91c1c;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin: 10px 0;
+  width: 100%;
+  box-sizing: border-box;
+  animation: animacionFadeIn 0.3s ease-in-out;
+}
+
+.mensaje-exito {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #15803d;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin: 10px 0;
+  width: 100%;
+  box-sizing: border-box;
+  animation: animacionFadeIn 0.3s ease-in-out;
+}
+
+/* ========================================================
+   BOTONES
+   ======================================================== */
+button.btn {
+  border: none;
+  background-color: #0284c7;
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 12px 36px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+  margin-top: 10px;
+}
+
+button.btn:hover:not(:disabled) {
+  background-color: #0369a1;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+}
+
+button.btn:disabled {
+  background-color: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-registro {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.btn-login {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.contenedor-olvido-contrasenia {
+  margin: 12px 0 6px 0;
+}
+
+.enlace-deshabilitado {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  font-weight: 500;
+  cursor: not-allowed;
+  user-select: none;
+}
+
+/* ========================================================
+   SUPERPOSICIÓN / SLIDER PANEL LATERAL
+   ======================================================== */
 .contenedor-superposicion {
   position: absolute;
   top: 0;
@@ -73,7 +437,7 @@ h1 {
 }
 
 .superposicion {
-  background-color: #0D47A1;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%);
   color: #FFFFFF;
   position: relative;
   left: -100%;
@@ -96,6 +460,7 @@ h1 {
   width: 50%;
   transform: translateX(0);
   transition: transform 0.6s ease-in-out;
+  box-sizing: border-box;
 }
 
 .superposicion-izquierda {
@@ -110,34 +475,40 @@ h1 {
 h2.encabezado-panel {
   font-weight: 700;
   margin: 0 0 1rem;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: #FFFFFF;
 }
 
 p.texto-panel {
-  font-size: 14px;
+  font-size: 0.9rem;
   font-weight: 400;
-  line-height: 22px;
-  margin: 20px 0 30px;
-  color: #FFFFFF;
+  line-height: 1.5;
+  margin: 0 0 25px 0;
+  color: #f0f9ff;
 }
 
 button.btn.fantasma {
   background-color: transparent;
   border: 2px solid #FFFFFF;
   color: #FFFFFF;
-  padding: 10px 40px;
+  padding: 10px 32px;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 1px;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none;
 }
 
 button.btn.fantasma:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: #FFFFFF;
+  color: #0369a1;
+  transform: translateY(-1px);
 }
 
+/* Transiciones al alternar panel */
 .contenedorPrincipal.panel-derecho-activo .contenedor-inicio-sesion {
   transform: translateX(100%);
 }
@@ -170,285 +541,13 @@ button.btn.fantasma:hover {
   transform: translateX(20%);
 }
 
-input.input-formulario,
-select.input-formulario {
-  background-color: #F5F5F5;
-  border: 1px solid #E0E0E0;
-  padding: 10px 15px;
-  margin: 6px 0;
-  width: 100%;
-  font-size: 0.875rem;
-  color: #212121;
-}
-
-input.input-formulario::placeholder {
-  color: #9E9E9E;
-}
-
-input.input-formulario:focus,
-select.input-formulario:focus {
-  outline: 2px solid #1565C0;
-  border-color: #1565C0;
-}
-
-button.btn {
-  border: none;
-  background-color: #1565C0;
-  color: #FFFFFF;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 12px 45px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  margin-top: 15px;
-}
-
-button.btn:hover {
-  background-color: #0D47A1;
-}
-
-a.enlace-formulario {
-  color: #1565C0;
-  font-size: 14px;
-  text-decoration: none;
-  margin: 15px 0;
-}
-
-a.enlace-formulario:hover {
-  color: #0D47A1;
-  text-decoration: underline;
-}
-
-span {
-  font-size: 12px;
-  color: #616161;
-  margin-bottom: 10px;
-}
-
-.input-label {
-  font-size: 0.85rem;
-  color: #616161;
-  margin-top: 6px;
-  align-self: flex-start;
-}
-
-.campo-contrasenia {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.campo-contrasenia input.input-formulario {
-  padding-right: 42px;
-}
-
-.btn-ojito {
-  position: absolute;
-  right: 10px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: none;
-  user-select: none;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-.btn-ojito:hover {
-  opacity: 0.75;
-  transform: scale(1.08);
-}
-
-.btn-ojito:active {
-  transform: scale(0.95);
-}
-
-.svg-ojo {
-  display: block;
-  pointer-events: none;
-}
-
-.mensaje-error {
-  color: #D32F2F;
-  font-size: 0.8rem;
-  margin: 6px 0;
-  background-color: #FFEBEE;
-  padding: 6px 10px;
-  border-radius: 4px;
-  width: 100%;
-}
-
-.mensaje-exito {
-  color: #2E7D32;
-  font-size: 0.8rem;
-  margin: 6px 0;
-  background-color: #E8F5E9;
-  padding: 6px 10px;
-  border-radius: 4px;
-  width: 100%;
-}
-
-/* ========================================================
-   ESTILOS MODAL RECUPERACIÓN DE CONTRASEÑA (HU-22)
-   ======================================================== */
-.modal-backdrop-recuperar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(4px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  animation: fadeInModal 0.25s ease-out;
-}
-
-@keyframes fadeInModal {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.modal-card-recuperar {
-  background: #FFFFFF;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 440px;
-  padding: 30px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-  position: relative;
-  animation: slideUpModal 0.25s ease-out;
-}
-
-@keyframes slideUpModal {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.btn-cerrar-modal {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  background: transparent;
-  border: none;
-  font-size: 1.8rem;
-  line-height: 1;
-  color: #757575;
-  cursor: pointer;
-  transition: color 0.15s ease;
-}
-
-.btn-cerrar-modal:hover {
-  color: #212121;
-}
-
-.modal-recuperar-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.icono-seguridad {
-  display: inline-flex;
-  padding: 12px;
-  border-radius: 50%;
-  background: #E3F2FD;
-  margin-bottom: 12px;
-}
-
-.modal-recuperar-header h2 {
-  font-size: 1.35rem;
-  color: #0D47A1;
-  font-weight: 700;
-  margin: 0;
-}
-
-.modal-recuperar-body {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.instruccion-modal {
-  font-size: 0.9rem;
-  color: #616161;
-  line-height: 1.45;
-  margin: 0;
-  text-align: center;
-}
-
-.alerta-usuario-encontrado {
-  background-color: #E8F5E9;
-  color: #1B5E20;
-  padding: 10px 14px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  border-left: 4px solid #2E7D32;
-  text-align: center;
-}
-
-.campo-recuperar {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  text-align: left;
-}
-
-.campo-recuperar label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #424242;
-}
-
-.campo-recuperar .input-formulario {
-  width: 100%;
-  margin: 0;
-}
-
-.modal-recuperar-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.modal-recuperar-actions.centrado {
-  justify-content: center;
-}
-
-.btn-secundario {
-  background-color: #ECEFF1 !important;
-  color: #455A64 !important;
-  border: 1px solid #CFD8DC !important;
-}
-
-.btn-secundario:hover {
-  background-color: #CFD8DC !important;
-}
-
-.exito-view {
-  text-align: center;
-  align-items: center;
-  padding: 10px 0;
-}
-
-.icono-exito {
-  display: inline-flex;
-  padding: 12px;
-  border-radius: 50%;
-  background: #E8F5E9;
-  margin-bottom: 8px;
-}
-
-.exito-view h3 {
-  color: #1B5E20;
-  margin: 0 0 6px 0;
-  font-size: 1.25rem;
-  font-weight: 700;
+@keyframes animacionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

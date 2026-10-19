@@ -4,6 +4,7 @@ export interface Persona {
   dni: string;
   fecha_nacimiento: string;
   genero: string;
+  celular?: string | null;
 }
 
 export interface Usuario {

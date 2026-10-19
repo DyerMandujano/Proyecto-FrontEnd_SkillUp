@@ -1,4 +1,10 @@
 <div class="container-quiz">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <button type="button" (click)="volverAlCurso()" style="border-radius: 0; border: 1px solid #757575; color: #212121; background: #FFFFFF; font-weight: 500; padding: 6px 16px; cursor: pointer;">
+            ← Volver al Curso
+        </button>
+        <span style="font-size: 0.85rem; color: #616161; font-weight: 600;">EVALUACIÓN DE CURSO</span>
+    </div>
 
     <h1 *ngIf="evaluacion.length > 0">{{ evaluacion[0].titulo }}</h1>
     <p class="subtitle" *ngIf="evaluacion.length > 0">
