@@ -4,17 +4,18 @@ import { Observable } from 'rxjs';
 import { Curso } from '../models/curso.model';
 import { DocenteC } from '../models/docenteC.model';
 import { CursoNoMatricula } from '../models/CursoNoMatricula';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CursoService {
-  private apiUrl = 'http://localhost:8888/api/docentes';
+  private apiUrl = `${environment.apiUrl}/docentes`;
   
-  private apiUrl2 = 'http://localhost:8888/api/cursos/docente';
+  private apiUrl2 = `${environment.apiUrl}/cursos/docente`;
 
-   private apiUrl3 = 'http://localhost:8888/api/cursos';
- private apiUrl4 = 'http://localhost:8888/api/cursos/no-matricula';
+  private apiUrl3 = `${environment.apiUrl}/cursos`;
+  private apiUrl4 = `${environment.apiUrl}/cursos/no-matricula`;
 
   constructor(private http: HttpClient) {}
  

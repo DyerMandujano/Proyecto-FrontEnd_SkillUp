@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface ReseniaCurso {
   idReseniaCurso?: number;
@@ -24,7 +25,7 @@ export interface RegistrarReseniaRequest {
 })
 export class ReseniaService {
 
-  private apiUrl = 'http://localhost:8888/api/cursos';
+  private apiUrl = `${environment.apiUrl}/cursos`;
 
   constructor(private http: HttpClient) {}
 

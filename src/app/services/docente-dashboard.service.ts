@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface CertificadoPorCurso {
   nombreCurso: string;
@@ -27,7 +28,7 @@ export interface EstudiantePorCurso {
   providedIn: 'root'
 })
 export class DocenteDashboardService {
-  private apiUrl = 'http://localhost:8888/api/docente-dashboard';
+  private apiUrl = `${environment.apiUrl}/docente-dashboard`;
 
   constructor(private http: HttpClient) {
   }

@@ -2,13 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Matricula } from '../models/matricula';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatriculaService {
 
-  private apiUrl = 'http://localhost:8888/api/matriculas';
+  private apiUrl = `${environment.apiUrl}/matriculas`;
   constructor(private http: HttpClient) { }
 
   insertarMatricula(idEstudiante: number, idCurso: number): Observable<string> {

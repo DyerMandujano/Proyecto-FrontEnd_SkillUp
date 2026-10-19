@@ -48,5 +48,4 @@ typings/
 Thumbs.db
 desktop.ini
 
-src/environments/environment*.ts
 .env

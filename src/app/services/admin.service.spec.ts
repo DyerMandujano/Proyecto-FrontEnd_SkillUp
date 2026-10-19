@@ -3,6 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { AdminService } from './admin.service';
 import { SolicitudPagoResponse, UsuarioAdmin } from '../models/admin.models';
+import { environment } from '../../environments/environment';
 
 describe('AdminService (Pruebas Unitarias Frontend)', () => {
   let service: AdminService;
@@ -34,7 +35,7 @@ describe('AdminService (Pruebas Unitarias Frontend)', () => {
       expect(data[0].num_operacion).toBe('OP-123');
     });
 
-    const req = httpMock.expectOne('http://localhost:8888/api/admin/solicitudes-pago?estado=Pendiente');
+    const req = httpMock.expectOne(`${environment.apiUrl}/admin/solicitudes-pago?estado=Pendiente`);
     expect(req.request.method).toBe('GET');
     req.flush(mockPagos);
   });
@@ -44,7 +45,7 @@ describe('AdminService (Pruebas Unitarias Frontend)', () => {
       expect(res).toBeTruthy();
     });
 
-    const req = httpMock.expectOne('http://localhost:8888/api/admin/solicitudes-pago/1/aprobar');
+    const req = httpMock.expectOne(`${environment.apiUrl}/admin/solicitudes-pago/1/aprobar`);
     expect(req.request.method).toBe('PUT');
     req.flush({ id_solicitud: 1, estado: 'Aprobado' });
   });
@@ -56,7 +57,7 @@ describe('AdminService (Pruebas Unitarias Frontend)', () => {
       expect(res).toBeTruthy();
     });
 
-    const req = httpMock.expectOne('http://localhost:8888/api/admin/solicitudes-pago/1/rechazar');
+    const req = httpMock.expectOne(`${environment.apiUrl}/admin/solicitudes-pago/1/rechazar`);
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual({ observacion });
     req.flush({ id_solicitud: 1, estado: 'Rechazado' });
@@ -67,7 +68,7 @@ describe('AdminService (Pruebas Unitarias Frontend)', () => {
       expect(res.estado).toBe(0);
     });
 
-    const req = httpMock.expectOne('http://localhost:8888/api/admin/usuarios/5/estado?nuevoEstado=0');
+    const req = httpMock.expectOne(`${environment.apiUrl}/admin/usuarios/5/estado?nuevoEstado=0`);
     expect(req.request.method).toBe('PUT');
     req.flush({ id_usuario: 5, estado: 0 });
   });

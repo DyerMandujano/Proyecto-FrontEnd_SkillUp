@@ -10,6 +10,7 @@ import { Leccion } from '../../models/leccion.model';
 import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
 import { FormsModule } from '@angular/forms'; 
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-curso-detalle',
@@ -242,12 +243,13 @@ export class CursoDetalleComponent implements OnInit {
     this.esPdf = urlMinuscula.endsWith('.pdf');
     let urlCompleta = '';
 
+    const backendBaseUrl = environment.apiUrl.replace(/\/api\/?$/, '');
     if (urlNormalizada.startsWith('uploads/')) {
-      urlCompleta = `https://servers-argument-recognize-alphabetical.trycloudflare.com/${urlNormalizada}`;
+      urlCompleta = `${backendBaseUrl}/${urlNormalizada}`;
     } else if (urlNormalizada.startsWith('http')) {
       urlCompleta = urlNormalizada;
     } else {
-      urlCompleta = `https://servers-argument-recognize-alphabetical.trycloudflare.com/${urlNormalizada}`;
+      urlCompleta = `${backendBaseUrl}/${urlNormalizada}`;
     }
 
     this.materialSeleccionadoRawUrl = urlCompleta;

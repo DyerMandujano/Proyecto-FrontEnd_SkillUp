@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CertificadoCurso } from '../models/certificadoEstudiante';
 import { CertificadoDocente } from '../models/certificadoDocente';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CertificadoCursoService {
 
-   private baseUrl = 'http://localhost:8888/api/certificados';
+   private baseUrl = `${environment.apiUrl}/certificados`;
 
   constructor(private http: HttpClient) { }
 

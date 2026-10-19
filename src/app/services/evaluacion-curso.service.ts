@@ -3,14 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EvaluacionCurso } from '../models/evaluacionCurso';
 import { Evaluacion } from '../models/evaluacion';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EvaluacionCursoService {
 
-  private apiUrl = 'http://localhost:8888/api/evaluacion';
-  private apiUrl2 = 'http://localhost:8888/api/evaluaciones';
+  private apiUrl = `${environment.apiUrl}/evaluacion`;
+  private apiUrl2 = `${environment.apiUrl}/evaluaciones`;
 
   constructor(private http: HttpClient) { }
 
