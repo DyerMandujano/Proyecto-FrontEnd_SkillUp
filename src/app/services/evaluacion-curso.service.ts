@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EvaluacionCurso } from '../models/evaluacionCurso';
+import { EvaluacionCurso, EvaluacionEstado, EvaluacionResultado } from '../models/evaluacionCurso';
 import { Evaluacion } from '../models/evaluacion';
 
 @Injectable({
@@ -20,6 +20,14 @@ export class EvaluacionCursoService {
 
   listarTituloEvaluacion(idSeccion: number): Observable<Evaluacion[]> {
     return this.http.get<Evaluacion[]>(`${this.apiUrl2}/seccion/${idSeccion}`);
+  }
+
+  obtenerEstadoEvaluacion(idSeccion: number, idEstudiante: number): Observable<EvaluacionEstado> {
+    return this.http.get<EvaluacionEstado>(`${this.apiUrl}/seccion/${idSeccion}/estado?idEstudiante=${idEstudiante}`);
+  }
+
+  enviarEvaluacion(idSeccion: number, data: { idEstudiante: number; idCurso?: number; respuestas: { idPregunta: number; idOpPregunta: number }[] }): Observable<EvaluacionResultado> {
+    return this.http.post<EvaluacionResultado>(`${this.apiUrl}/seccion/${idSeccion}/enviar`, data);
   }
 
 }

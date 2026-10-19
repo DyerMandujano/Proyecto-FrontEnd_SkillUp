@@ -24,29 +24,85 @@
         </div>
 
         <div class="form-group-full material-section">
-          <label class="form-label text-primary">Recursos y Materiales</label>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <label class="form-label text-primary mb-0">Recursos y Materiales de la Lección</label>
+            <span class="badge-contador" *ngIf="leccion.materiales">{{ leccion.materiales.length }} adjunto(s)</span>
+          </div>
           
+          <div *ngIf="!leccion.materiales || leccion.materiales.length === 0" class="text-muted small my-2 p-2 border rounded bg-light text-center">
+            Esta lección no tiene materiales adjuntos actualmente.
+          </div>
+
           <div *ngFor="let material of leccion.materiales; let i = index" class="material-row">
-            <div class="material-col">
-              <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="leccion.materiales[i].nombreArchivo" name="nombreArchivo{{i}}">
+            <!-- Columna 1: Nombre visible -->
+            <div class="material-col-nombre">
+              <label class="small text-muted mb-1" *ngIf="i === 0">Título visible</label>
+              <input type="text" class="form-control" placeholder="Nombre descriptivo (ej: Guía de práctica)" 
+                     [(ngModel)]="leccion.materiales[i].nombreArchivo" name="nombreArchivo{{i}}" required>
             </div>
             
-            <div class="material-col">
-              <input type="file" class="form-control" (change)="seleccionarArchivo($event, i)" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
-              <small class="text-muted" *ngIf="material.urlMaterial && !material.archivoFisico">
-                Archivo actual guardado en el servidor.
-              </small>
+            <!-- Columna 2: Archivo -->
+            <div class="material-col-archivo">
+              <label class="small text-muted mb-1" *ngIf="i === 0">Archivo adjunto</label>
+              
+              <!-- Caso 1: Archivo ya guardado previamente en el servidor y sin intención de cambiarlo -->
+              <div *ngIf="material.urlMaterial && !material.archivoFisico && !material._cambiando" class="archivo-guardado-card">
+                <i [class]="obtenerIcono(material.urlMaterial)" class="me-2 fs-5"></i>
+                <div class="archivo-info">
+                  <span class="archivo-nombre text-truncate" [title]="obtenerNombreVisual(material.urlMaterial)">
+                    {{ obtenerNombreVisual(material.urlMaterial) }}
+                  </span>
+                  <span class="badge-guardado">Guardado en servidor</span>
+                </div>
+                <div class="archivo-acciones">
+                  <a [href]="obtenerUrlCompleta(material.urlMaterial)" target="_blank" class="btn-link-ver" title="Abrir recurso">
+                    Ver
+                  </a>
+                  <button type="button" class="btn-cambiar-archivo" (click)="cambiarArchivo(i)" title="Subir otro archivo para reemplazar este">
+                    Cambiar
+                  </button>
+                </div>
+              </div>
+
+              <!-- Caso 2: Nuevo archivo físico seleccionado (listo para actualizar) -->
+              <div *ngIf="material.archivoFisico" class="archivo-nuevo-card">
+                <i class="bi bi-file-earmark-check-fill text-success me-2 fs-5"></i>
+                <div class="archivo-info">
+                  <span class="archivo-nombre text-truncate" [title]="material.archivoFisico.name">
+                    {{ material.archivoFisico.name }}
+                  </span>
+                  <span class="badge-nuevo">Nuevo para guardar</span>
+                </div>
+                <div class="archivo-acciones">
+                  <button type="button" class="btn-cancelar-cambio" (click)="cancelarCambio(i)" title="Cancelar y mantener el archivo anterior">
+                    Deshacer
+                  </button>
+                </div>
+              </div>
+
+              <!-- Caso 3: Modo selección de archivo (nuevo material o cambió archivo) -->
+              <div *ngIf="(!material.urlMaterial && !material.archivoFisico) || material._cambiando" class="archivo-input-wrapper">
+                <input type="file" class="form-control" (change)="seleccionarArchivo($event, i)" 
+                       accept=".pdf,.doc,.docx,.xlsx,.xls,.png,.jpg,.jpeg">
+                <button *ngIf="material._cambiando && material._urlOriginal" type="button" 
+                        class="btn-cancelar-inline" (click)="cancelarCambio(i)">
+                  Cancelar
+                </button>
+              </div>
+
             </div>
             
+            <!-- Columna 3: Acción Eliminar -->
             <div class="material-col-small">
-              <button type="button" class="btn btn-danger" (click)="quitarMaterial(i)" title="Quitar material">
+              <label class="small text-muted mb-1 d-block" *ngIf="i === 0">&nbsp;</label>
+              <button type="button" class="btn btn-danger btn-eliminar-mat" (click)="quitarMaterial(i)" title="Eliminar material">
                 Eliminar
               </button>
             </div>
           </div>
 
           <button type="button" class="btn btn-secondary mt-2" (click)="agregarMaterial()">
-            Añadir Material
+            + Añadir Material
           </button>
         </div>
 

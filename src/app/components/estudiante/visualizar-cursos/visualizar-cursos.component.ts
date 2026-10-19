@@ -7,11 +7,14 @@ import { CursoMatricula } from '../../../models/CursoMatricula';
 import { CursoNoMatricula } from '../../../models/CursoNoMatricula';
 import { Persona } from '../../../models/persona.model';
 import { LoginResponse } from '../../../models/login-response.model';
+import { SolicitudPagoResponse } from '../../../models/admin.models';
 
 import { EstudianteService } from '../../../services/estudiante.service';
 import { AuthService } from '../../../services/auth.service';
 import { UsuarioService } from '../../../services/usuario.service';
 import { CursoService } from '../../../services/curso.service';
+import { SolicitudPagoService } from '../../../services/solicitud-pago.service';
+import Swal from 'sweetalert2';
 
 declare var bootstrap: any;
 
@@ -35,6 +38,12 @@ export class VisualizarCursosComponent implements OnInit {
   confirmUsername: string = '';
   configModal: any; 
 
+  // Restricciones de cuenta por evaluación
+  cuentaDeshabilitada: boolean = false;
+  tieneSolicitudPendiente: boolean = false;
+  solicitudes: SolicitudPagoResponse[] = [];
+  ultimaSolicitud: SolicitudPagoResponse | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private estudianteService: EstudianteService,
@@ -42,6 +51,7 @@ export class VisualizarCursosComponent implements OnInit {
     private authService: AuthService,
     private usuarioService: UsuarioService,
     private cursoService: CursoService,
+    private solicitudPagoService: SolicitudPagoService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -74,6 +84,7 @@ export class VisualizarCursosComponent implements OnInit {
         
         this.obtenerCursosPorEstudiante(this.idEstudiante);
         this.obtenerCursosSinMatricula(this.idEstudiante);
+        this.verificarEstadoCuenta(this.idEstudiante);
       }
     });
 
@@ -83,6 +94,35 @@ export class VisualizarCursosComponent implements OnInit {
         this.configModal = new bootstrap.Modal(modalElement);
       }
     }
+  }
+
+  verificarEstadoCuenta(id: number): void {
+    this.solicitudPagoService.listarPorEstudiante(id).subscribe({
+      next: (data) => {
+        this.solicitudes = data || [];
+        if (this.solicitudes.length > 0) {
+          this.ultimaSolicitud = this.solicitudes[0];
+          this.tieneSolicitudPendiente = this.solicitudes.some(s => s.estado === 'Pendiente');
+          if (this.tieneSolicitudPendiente) {
+            this.cuentaDeshabilitada = true;
+          }
+        }
+      },
+      error: () => {}
+    });
+  }
+
+  intentarVerCurso(idCurso: number): void {
+    if (this.cuentaDeshabilitada) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Acceso Restringido',
+        text: 'Tu cuenta se encuentra deshabilitada o en proceso de reactivación. No puedes matricularte ni ver nuevos cursos hasta la aprobación del administrador.',
+        confirmButtonColor: '#1565C0'
+      });
+      return;
+    }
+    this.router.navigate(['/curso', idCurso]);
   }
 
   obtenerCursosPorEstudiante(id: number): void {
@@ -117,6 +157,9 @@ export class VisualizarCursosComponent implements OnInit {
         this.profileData = data;
         if (this.profileData && this.profileData.fechaDeNacimiento) {
           this.profileData.fechaDeNacimiento = new Date(this.profileData.fechaDeNacimiento).toISOString().split('T')[0];
+        }
+        if (this.profileData && this.profileData.estado === 0) {
+          this.cuentaDeshabilitada = true;
         }
       },
       (err: any) => { this.errorMessage = 'Error al cargar tu perfil.'; }

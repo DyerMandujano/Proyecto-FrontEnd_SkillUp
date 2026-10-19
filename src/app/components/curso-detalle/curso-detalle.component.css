@@ -14,3 +14,22 @@
 .empty-state-box { border: 1px dashed #E0E0E0; background-color: #F5F5F5; }
 .fadeIn { animation: fadeIn 0.3s ease-in-out; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.docx-preview-wrapper {
+  background-color: #f1f3f5;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.docx-preview-wrapper :deep(.docx-rendered) {
+  background: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important;
+  margin-bottom: 20px !important;
+  padding: 30px !important;
+  max-width: 850px !important;
+  width: 100% !important;
+  color: #212529 !important;
+}

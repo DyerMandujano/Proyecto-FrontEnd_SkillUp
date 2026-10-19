@@ -3,4 +3,6 @@ export interface Material {
   urlMaterial?: string;
   nombreArchivo?: string;
   archivoFisico?: File;
+  _cambiando?: boolean;
+  _urlOriginal?: string;
 }

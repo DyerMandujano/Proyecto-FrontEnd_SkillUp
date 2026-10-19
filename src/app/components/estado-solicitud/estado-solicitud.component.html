@@ -1,0 +1,186 @@
+<div class="tracking-page">
+  <!-- Top Navigation Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="brand">
+        <a routerLink="/" class="brand-link">Skill<span>UP</span></a>
+      </div>
+      <div class="header-actions">
+        <a routerLink="/solicitud-activacion" class="btn-new-request">
+          <i class="bi bi-plus-circle-fill"></i> Nueva Solicitud
+        </a>
+        <button (click)="volver()" class="btn-back">
+          <i class="bi bi-arrow-left"></i> Volver a Mis Cursos
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-body">
+    <div class="content-wrapper">
+
+      <div class="page-title-section">
+        <div>
+          <h2><i class="bi bi-clock-history text-primary"></i> Avance de Solicitudes de Activación</h2>
+          <p class="subtitle">Monitorea el estado y revisión de tus comprobantes de reactivación de cuenta.</p>
+        </div>
+        <button (click)="cargarSolicitudes()" class="btn-refresh" title="Actualizar">
+          <i class="bi bi-arrow-clockwise"></i> Actualizar
+        </button>
+      </div>
+
+      <!-- Resumen de Contadores -->
+      <div class="summary-cards">
+        <div class="summary-card card-total">
+          <div class="card-icon"><i class="bi bi-file-earmark-text"></i></div>
+          <div class="card-info">
+            <span class="count">{{ solicitudes.length }}</span>
+            <span class="title">Total Solicitudes</span>
+          </div>
+        </div>
+
+        <div class="summary-card card-pending">
+          <div class="card-icon"><i class="bi bi-hourglass-split"></i></div>
+          <div class="card-info">
+            <span class="count">{{ cantidadPendientes }}</span>
+            <span class="title">En Revisión (Pendientes)</span>
+          </div>
+        </div>
+
+        <div class="summary-card card-approved">
+          <div class="card-icon"><i class="bi bi-check-circle-fill"></i></div>
+          <div class="card-info">
+            <span class="count">{{ cantidadAprobadas }}</span>
+            <span class="title">Aprobadas</span>
+          </div>
+        </div>
+
+        <div class="summary-card card-rejected">
+          <div class="card-icon"><i class="bi bi-x-circle-fill"></i></div>
+          <div class="card-info">
+            <span class="count">{{ cantidadRechazadas }}</span>
+            <span class="title">Rechazadas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spinner cargando -->
+      <div *ngIf="cargando" class="loading-state">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2">Cargando tus solicitudes...</p>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="error && !cargando" class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle-fill"></i> {{ error }}
+      </div>
+
+      <!-- Estado vacío -->
+      <div *ngIf="!cargando && solicitudes.length === 0 && !error" class="empty-card">
+        <i class="bi bi-inbox" style="font-size: 3rem; color: #9E9E9E;"></i>
+        <h4>No tienes solicitudes registradas</h4>
+        <p>Aún no has registrado ninguna solicitud de activación de cuenta o comprobante de pago.</p>
+        <a routerLink="/solicitud-activacion" class="btn btn-primary mt-2">
+          <i class="bi bi-credit-card"></i> Registrar Solicitud de Activación
+        </a>
+      </div>
+
+      <!-- Lista de Solicitudes -->
+      <div *ngIf="!cargando && solicitudes.length > 0" class="solicitudes-list">
+        <div *ngFor="let s of solicitudes" class="solicitud-card" [class.border-pending]="s.estado === 'Pendiente'" [class.border-approved]="s.estado === 'Aprobado'" [class.border-rejected]="s.estado === 'Rechazado'">
+          
+          <div class="solicitud-header">
+            <div class="id-date">
+              <span class="solicitud-id">Solicitud #{{ s.id_solicitud }}</span>
+              <span class="solicitud-date">
+                <i class="bi bi-calendar3"></i> Enviado: {{ s.fecha_subida || 'Reciente' }}
+              </span>
+            </div>
+
+            <div class="solicitud-badge">
+              <span *ngIf="s.estado === 'Pendiente'" class="badge-status badge-pending">
+                <i class="bi bi-hourglass-split"></i> En Revisión (24h)
+              </span>
+              <span *ngIf="s.estado === 'Aprobado'" class="badge-status badge-approved">
+                <i class="bi bi-check-circle-fill"></i> Aprobado
+              </span>
+              <span *ngIf="s.estado === 'Rechazado'" class="badge-status badge-rejected">
+                <i class="bi bi-x-circle-fill"></i> Rechazado
+              </span>
+            </div>
+          </div>
+
+          <div class="solicitud-body">
+            <div class="data-grid">
+              <div class="data-item">
+                <span class="data-label">Método de Pago</span>
+                <span class="data-val">
+                  <i class="bi" [ngClass]="s.metodo_pago === 'Yape' ? 'bi-phone text-purple' : 'bi-bank text-primary'"></i>
+                  {{ s.metodo_pago }}
+                </span>
+              </div>
+
+              <div class="data-item">
+                <span class="data-label">N° Operación</span>
+                <span class="data-val code">{{ s.num_operacion }}</span>
+              </div>
+
+              <div class="data-item">
+                <span class="data-label">Monto Pagado</span>
+                <span class="data-val price">S/ {{ s.monto | number:'1.2-2' }}</span>
+              </div>
+
+              <div class="data-item">
+                <span class="data-label">Fecha de Revisión</span>
+                <span class="data-val">{{ s.fecha_revision ? s.fecha_revision : 'Pendiente de validación' }}</span>
+              </div>
+            </div>
+
+            <!-- Observaciones del alumno -->
+            <div *ngIf="s.observacion && s.estado !== 'Rechazado'" class="notes-box">
+              <strong>Tu nota:</strong> {{ s.observacion }}
+            </div>
+
+            <!-- Motivo de Rechazo por el Administrador -->
+            <div *ngIf="s.estado === 'Rechazado'" class="rejection-box">
+              <div class="rejection-title">
+                <i class="bi bi-exclamation-octagon-fill"></i> Observación del Administrador:
+              </div>
+              <p class="rejection-text">{{ s.observacion || 'Comprobante no válido o datos incorrectos.' }}</p>
+              <div class="mt-2">
+                <a routerLink="/solicitud-activacion" class="btn btn-sm btn-outline-danger">
+                  <i class="bi bi-arrow-repeat"></i> Enviar nuevo comprobante
+                </a>
+              </div>
+            </div>
+
+            <!-- Mensaje de Aprobación -->
+            <div *ngIf="s.estado === 'Aprobado'" class="approval-box">
+              <i class="bi bi-shield-check text-success" style="font-size: 1.4rem;"></i>
+              <div>
+                <strong class="text-success">¡Tu cuenta ha sido activada!</strong>
+                <p class="mb-0 text-muted" style="font-size: 0.88rem;">Tus 2 intentos de evaluación han sido restablecidos. Ya puedes acceder nuevamente a tus cursos.</p>
+              </div>
+            </div>
+
+            <!-- Mensaje de Pendiente -->
+            <div *ngIf="s.estado === 'Pendiente'" class="pending-notice">
+              <i class="bi bi-info-circle text-warning" style="font-size: 1.2rem;"></i>
+              <span>El administrador validará los datos enviados. La respuesta la obtendrás en un plazo máximo de 24 horas.</span>
+            </div>
+
+            <!-- Comprobante adjunto -->
+            <div *ngIf="s.imagen_comprobante" class="voucher-preview-row">
+              <span class="voucher-label"><i class="bi bi-paperclip"></i> Comprobante adjunto:</span>
+              <a [href]="obtenerUrlComprobante(s.imagen_comprobante)" target="_blank" class="voucher-link">
+                <i class="bi bi-box-arrow-up-right"></i> Ver comprobante subido
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>

@@ -9,6 +9,14 @@
                 <span class="subtitulo-formulario">Usa tu información para registrarte en SkillUp</span>
             </div>
 
+            <!-- Alerta de Error en el Formulario de Registro (Superior) -->
+            <div *ngIf="registroError" class="mensaje-error-general">
+                <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <span>{{ registroError }}</span>
+            </div>
+
             <!-- Nombres -->
             <div class="campo-formulario">
                 <div class="campo-cabecera">
@@ -91,7 +99,7 @@
             </div>
             
             <!-- Username / Correo -->
-            <div class="campo-formulario">
+           <!-- <div class="campo-formulario">
                 <div class="campo-cabecera">
                     <label class="campo-etiqueta" for="reg-username">Usuario o Correo <span class="campo-requerido">*</span></label>
                 </div>
@@ -107,7 +115,7 @@
                     </svg>
                     <span>{{ usernameError }}</span>
                 </div>
-            </div>
+            </div> -->
             
             <!-- Contraseña -->
             <div class="campo-formulario">
@@ -279,12 +287,36 @@
             <!-- Campos condicionales Docente -->
             <div id="camposDocente" style="display:none; width:100%;" class="campo-formulario">
                 <div class="campo-cabecera">
-                    <label class="campo-etiqueta">Información Profesional</label>
+                    <label class="campo-etiqueta" for="reg-especialidad">Especialidad <span class="campo-requerido">*</span></label>
                 </div>
-                <input class="input-formulario input-separado" type="text" placeholder="Especialidad (ej: Ing. de Software)" 
-                       [(ngModel)]="registerData.especialidad" name="especialidad" />
-                <input class="input-formulario" type="text" placeholder="Grado Académico (ej: Magíster)" 
-                       [(ngModel)]="registerData.grado_academico" name="grado_academico" />
+                <select id="reg-especialidad" class="input-formulario input-separado" [(ngModel)]="registerData.especialidad" name="especialidad">
+                    <option value="" disabled selected>Selecciona tu Especialidad</option>
+                    <option value="Desarrollo de Software">Desarrollo de Software</option>
+                    <option value="Electricidad y Electrónica">Electricidad y Electrónica</option>
+                    <option value="Construcción y Acabados">Construcción y Acabados</option>
+                    <option value="Mecánica Automotriz">Mecánica Automotriz</option>
+                    <option value="Soldadura y Metalmecánica">Soldadura y Metalmecánica</option>
+                    <option value="Carpintería y Ebanistería">Carpintería y Ebanistería</option>
+                    <option value="Gasfitería e Instalaciones Sanitarias">Gasfitería e Instalaciones Sanitarias</option>
+                    <option value="Refrigeración y Climatización">Refrigeración y Climatización</option>
+                    <option value="Seguridad Industrial y Salud Ocupacional">Seguridad Industrial y Salud Ocupacional</option>
+                    <option value="Jardinería y Paisajismo">Jardinería y Paisajismo</option>
+                    <option value="Diseño Gráfico y Multimedia">Diseño Gráfico y Multimedia</option>
+                    <option value="Gestión y Administración">Gestión y Administración</option>
+                    <option value="Otra Especialidad">Otra Especialidad</option>
+                </select>
+
+                <div class="campo-cabecera" style="margin-top: 8px;">
+                    <label class="campo-etiqueta" for="reg-grado">Grado Académico <span class="campo-requerido">*</span></label>
+                </div>
+                <select id="reg-grado" class="input-formulario" [(ngModel)]="registerData.grado_academico" name="grado_academico">
+                    <option value="" disabled selected>Selecciona tu Grado Académico</option>
+                    <option value="Técnico / Titulado Técnico">Técnico / Titulado Técnico</option>
+                    <option value="Bachiller">Bachiller</option>
+                    <option value="Licenciado / Titulado Profesional">Licenciado / Titulado Profesional</option>
+                    <option value="Magíster / Maestría">Magíster / Maestría</option>
+                    <option value="Doctor / Doctorado">Doctor / Doctorado</option>
+                </select>
             </div>
             
             <!-- Mensajes de estado generales -->
@@ -317,13 +349,21 @@
                 <h1>Iniciar Sesión</h1>
                 <span class="subtitulo-formulario">Accede con tus credenciales a SkillUp</span>
             </div>
+
+            <!-- Alerta de Registro Exitoso al ser redirigido a Login -->
+            <div *ngIf="mensajeExitoLogin" class="mensaje-exito">
+                <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>{{ mensajeExitoLogin }}</span>
+            </div>
             
             <div class="campo-formulario">
                 <div class="campo-cabecera">
-                    <label class="campo-etiqueta" for="login-username">Usuario o Correo</label>
+                    <label class="campo-etiqueta" for="login-username">Correo</label>
                 </div>
                 <input id="login-username" class="input-formulario" type="text" placeholder="Ej: usuario@skillup.pe" 
-                       [(ngModel)]="loginData.username" name="username_login" required />
+                       [(ngModel)]="loginData.username" name="username_login" (input)="onLoginUsernameInput()" required />
             </div>
             
             <div class="campo-formulario">
@@ -335,8 +375,10 @@
                            [type]="mostrarLoginContrasenia ? 'text' : 'password'" 
                            placeholder="Ingresa tu contraseña" 
                            [(ngModel)]="loginData.contrasenia" 
-                           name="contrasenia_login" required />
-                    <button type="button" class="btn-toggle-ojito" (click)="toggleMostrarLoginContrasenia()" [title]="mostrarLoginContrasenia ? 'Ocultar contraseña' : 'Ver contraseña'">
+                           name="contrasenia_login" [disabled]="esUsuarioActualBloqueado" required />
+                    <button type="button" class="btn-toggle-ojito" (click)="toggleMostrarLoginContrasenia()" 
+                            [title]="mostrarLoginContrasenia ? 'Ocultar contraseña' : 'Ver contraseña'" 
+                            [disabled]="esUsuarioActualBloqueado">
                         <svg *ngIf="!mostrarLoginContrasenia" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -347,6 +389,40 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Aviso de Bloqueo Temporal (1 minuto tras 3 intentos) -->
+            <div *ngIf="esUsuarioActualBloqueado" class="alerta-bloqueo-temporal">
+                <svg class="icono-reloj" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                </svg>
+                <span>Campos bloqueados por seguridad: espera <strong>{{ segundosRestantesBloqueo }}s</strong> para reintentar.</span>
+            </div>
+            
+            <!-- CAPTCHA Anti-IA / Anti-Bot interactivo tras 3 intentos -->
+           <!-- <div *ngIf="mostrarCaptcha && usuarioBloqueado === (loginData.username || '').trim().toLowerCase()" class="bloque-captcha">
+                <label class="etiqueta-captcha">
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="icono-escudo">
+                        <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Verificación Anti-IA / Anti-Bot
+                </label>
+                <div class="fila-captcha-visual">
+                    <div class="caja-codigo-captcha" title="Código de seguridad generado">
+                        <span class="texto-captcha">{{ captchaTexto }}</span>
+                        <div class="linea-ruido-1"></div>
+                        <div class="linea-ruido-2"></div>
+                    </div>
+                    <button type="button" class="btn-recargar-captcha" (click)="generarCaptcha()" title="Generar nuevo código" [disabled]="esUsuarioActualBloqueado">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="icono-refresco">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </button>
+                </div>
+                <input class="input-formulario input-captcha" type="text" placeholder="Escribe el código mostrado" 
+                       [(ngModel)]="captchaIngresado" name="codigo_captcha" (input)="onCaptchaInput()" 
+                       [disabled]="esUsuarioActualBloqueado" maxlength="6" autocomplete="off" />
+                <div *ngIf="captchaError" class="error-captcha">{{ captchaError }}</div>
+            </div>-->
             
             <div *ngIf="loginError" class="mensaje-error-general">
                 <svg class="icono-alerta" viewBox="0 0 20 20" fill="currentColor">
@@ -356,9 +432,9 @@
             </div>
             
             <div class="contenedor-olvido-contrasenia">
-                <span class="enlace-deshabilitado" title="Módulo de recuperación de contraseña temporalmente en desarrollo">¿Olvidaste tu contraseña? (Próximamente)</span>
+                <a href="javascript:void(0)" class="enlace-olvido" (click)="abrirModalRecuperar()">¿Olvidaste tu contraseña?</a>
             </div>
-            <button class="btn btn-login" type="submit" [disabled]="!loginForm.valid">Ingresar</button>
+            <button class="btn btn-login" type="submit" [disabled]="!loginForm.valid || esUsuarioActualBloqueado || (mostrarCaptcha && usuarioBloqueado === (loginData.username || '').trim().toLowerCase() && !captchaValido)">Ingresar</button>
         </form>
     </div>
 
@@ -368,12 +444,138 @@
             <div class="panel-superposicion superposicion-izquierda">
                 <h2 class="encabezado-panel">¡Bienvenido de Nuevo!</h2>
                 <p class="texto-panel">Para seguir conectado con nosotros, por favor inicia sesión con tu información personal.</p>
-                <button class="btn fantasma" id="botonInicioSesion">Ingresar</button>
+                <button class="btn fantasma" id="botonInicioSesion" (click)="irALogin()">Ingresar</button>
             </div>
             <div class="panel-superposicion superposicion-derecha">
                 <h2 class="encabezado-panel">¡Hola, Amigo!</h2>
                 <p class="texto-panel">Ingresa tus datos personales y comienza esta aventura con nosotros.</p>
-                <button class="btn fantasma" id="botonRegistro">Registrarse</button>
+                <button class="btn fantasma" id="botonRegistro" (click)="irARegistro()">Registrarse</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- =========== MODAL RECUPERACIÓN DE CONTRASEÑA (HU-22) =========== -->
+<div *ngIf="modalRecuperarAbierto" class="modal-backdrop-recuperar" (click)="cerrarModalRecuperar()">
+    <div class="modal-card-recuperar" (click)="$event.stopPropagation()">
+        <!-- Botón Cerrar -->
+        <button type="button" class="btn-cerrar-modal" (click)="cerrarModalRecuperar()" aria-label="Cerrar modal">&times;</button>
+
+        <!-- Cabecera del Modal -->
+        <div class="modal-recuperar-header">
+            <div class="icono-seguridad">
+                <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
+            <h2>Recuperación de Contraseña</h2>
+        </div>
+
+        <!-- PASO 1: Identificación por Usuario o DNI -->
+        <div *ngIf="pasoRecuperar === 1" class="modal-recuperar-body">
+            <p class="instruccion-modal">
+                Ingresa tu usuario asociado a tu cuenta para verificar tu identidad.
+            </p>
+
+            <div class="campo-recuperar">
+                <label for="idRecuperar">Usuario</label>
+                <input id="idRecuperar" type="text" class="input-formulario" 
+                       placeholder="Ej: usuario@skillup.pe o 76543210" 
+                       [(ngModel)]="identificadorRecuperar" 
+                       (keyup.enter)="verificarIdentificadorRecuperar()"
+                       [disabled]="cargandoRecuperar" />
+            </div>
+
+            <div *ngIf="errorRecuperar" class="mensaje-error">
+                {{ errorRecuperar }}
+            </div>
+
+            <div class="modal-recuperar-actions">
+                <button type="button" class="btn btn-secundario" (click)="cerrarModalRecuperar()" [disabled]="cargandoRecuperar">Cancelar</button>
+                <button type="button" class="btn" (click)="verificarIdentificadorRecuperar()" [disabled]="cargandoRecuperar || !identificadorRecuperar.trim()">
+                    {{ cargandoRecuperar ? 'Verificando...' : 'Continuar' }}
+                </button>
+            </div>
+        </div>
+
+        <!-- PASO 2: Nueva Contraseña con confirmación y Ojito Custom -->
+        <div *ngIf="pasoRecuperar === 2" class="modal-recuperar-body">
+            <div class="alerta-usuario-encontrado">
+                Cuenta localizada: <strong>&#64;{{ usuarioEncontrado }}</strong>
+            </div>
+
+            <p class="instruccion-modal">
+                Define tu nueva clave de acceso (mínimo 8 caracteres, con mayúscula, minúscula, número y carácter especial):
+            </p>
+
+            <!-- Nueva Contraseña -->
+            <div class="campo-recuperar">
+                <label>Nueva Contraseña</label>
+                <div class="campo-contrasenia-modal">
+                    <input class="input-formulario" [type]="mostrarNuevaClave ? 'text' : 'password'" 
+                           placeholder="Nueva contraseña (mín 8 caracteres)" 
+                           [(ngModel)]="nuevaContraseniaRecuperar" />
+                    <button type="button" class="btn-toggle-ojito" (click)="toggleMostrarNuevaClave()" [attr.aria-label]="mostrarNuevaClave ? 'Ocultar contraseña' : 'Ver contraseña'">
+                        <svg *ngIf="!mostrarNuevaClave" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg *ngIf="mostrarNuevaClave" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Confirmar Contraseña -->
+            <div class="campo-recuperar">
+                <label>Confirmar Contraseña</label>
+                <div class="campo-contrasenia-modal">
+                    <input class="input-formulario" [type]="mostrarConfirmarClave ? 'text' : 'password'" 
+                           placeholder="Repita la nueva contraseña" 
+                           [(ngModel)]="confirmarContraseniaRecuperar" 
+                           (keyup.enter)="confirmarCambioContrasenia()" />
+                    <button type="button" class="btn-toggle-ojito" (click)="toggleMostrarConfirmarClave()" [attr.aria-label]="mostrarConfirmarClave ? 'Ocultar contraseña' : 'Ver contraseña'">
+                        <svg *ngIf="!mostrarConfirmarClave" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg *ngIf="mostrarConfirmarClave" class="icono-ojo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf="errorRecuperar" class="mensaje-error">
+                {{ errorRecuperar }}
+            </div>
+
+            <div class="modal-recuperar-actions">
+                <button type="button" class="btn btn-secundario" (click)="pasoRecuperar = 1" [disabled]="cargandoRecuperar">Atrás</button>
+                <button type="button" class="btn" (click)="confirmarCambioContrasenia()" 
+                        [disabled]="cargandoRecuperar || !nuevaContraseniaRecuperar || !confirmarContraseniaRecuperar">
+                    {{ cargandoRecuperar ? 'Guardando...' : 'Restablecer Clave' }}
+                </button>
+            </div>
+        </div>
+
+        <!-- PASO 3: Éxito -->
+        <div *ngIf="pasoRecuperar === 3" class="modal-recuperar-body exito-view">
+            <div class="icono-exito">
+                <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+            </div>
+            <h3>¡Actualización Exitosa!</h3>
+            <p class="instruccion-modal">
+                {{ exitoRecuperar }}
+            </p>
+            <div class="modal-recuperar-actions centrado">
+                <button type="button" class="btn" (click)="cerrarModalRecuperar()">Iniciar Sesión</button>
             </div>
         </div>
     </div>

@@ -46,8 +46,10 @@ export class LeccionComponent implements OnInit {
     if (this.idSeccion) {
       this.leccionService.listarLeccionesPorSeccion(this.idSeccion)
         .subscribe({
-          next: (data: Leccion[]) => this.lecciones = data,
-          error: (err: any) => {}
+          next: (data: Leccion[]) => this.lecciones = data || [],
+          error: (err: any) => {
+            console.error('Error al cargar lecciones:', err);
+          }
         });
     }
   }
@@ -74,16 +76,10 @@ export class LeccionComponent implements OnInit {
   }
 
   volverASecciones(): void {
-    const idCurso = this.idCurso || Number(localStorage.getItem('idCursoActual'));
-    if (idCurso) {
-      this.router.navigate([`/seccion/curso/${idCurso}`]);
+    if (this.idCurso) {
+      this.router.navigate([`/seccion/curso/${this.idCurso}`]);
     } else {
-      const idDocente = localStorage.getItem('idDocente');
-      if (idDocente) {
-        this.router.navigate([`/docente/${idDocente}`]);
-      } else {
-        this.router.navigate(['/']);
-      }
+      this.router.navigate(['/panel-docente']); 
     }
   }
 

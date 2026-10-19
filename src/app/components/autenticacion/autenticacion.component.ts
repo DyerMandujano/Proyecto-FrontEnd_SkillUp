@@ -67,12 +67,47 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
   mostrarConfirmarContrasenia: boolean = false;
   mostrarLoginContrasenia: boolean = false;
 
+  // --- SEGURIDAD: Bloqueo de 1 minuto tras 3 intentos fallidos (POR USUARIO) ---
+  intentosPorUsuario: { [usuario: string]: number } = {};
+  usuarioBloqueado: string = '';
+  bloqueadoPorMinuto: boolean = false;
+  segundosRestantesBloqueo: number = 60;
+  private intervaloBloqueo: any = null;
+
+  // --- SEGURIDAD: CAPTCHA Anti-IA / Anti-Bot interactivo ---
+  mostrarCaptcha: boolean = false;
+  captchaTexto: string = '';
+  captchaIngresado: string = '';
+  captchaError: string | null = null;
+  captchaValido: boolean = false;
+
+  // Mensaje de éxito al redirigir al login
+  mensajeExitoLogin: string | null = null;
+
+  // --- HU-22: Recuperación de Contraseña ---
+  modalRecuperarAbierto: boolean = false;
+  pasoRecuperar: number = 1;
+  identificadorRecuperar: string = '';
+  usuarioEncontrado: string = '';
+  nuevaContraseniaRecuperar: string = '';
+  confirmarContraseniaRecuperar: string = '';
+  mostrarNuevaClave: boolean = false;
+  mostrarConfirmarClave: boolean = false;
+  cargandoRecuperar: boolean = false;
+  errorRecuperar: string | null = null;
+  exitoRecuperar: string | null = null;
+
   // Fecha máxima para asegurar edad mínima (12 años)
   maxFechaNacimiento: string = '';
 
   private dniErrorTimeout: any = null;
   private registroErrorTimeout: any = null;
   private registroExitosoTimeout: any = null;
+
+  get esUsuarioActualBloqueado(): boolean {
+    const usuarioActual = (this.loginData.username || '').trim().toLowerCase();
+    return this.bloqueadoPorMinuto && this.usuarioBloqueado === usuarioActual;
+  }
 
   constructor(
     private authService: AuthService,
@@ -88,6 +123,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     if (this.dniErrorTimeout) clearTimeout(this.dniErrorTimeout);
     if (this.registroErrorTimeout) clearTimeout(this.registroErrorTimeout);
     if (this.registroExitosoTimeout) clearTimeout(this.registroExitosoTimeout);
+    if (this.intervaloBloqueo) clearInterval(this.intervaloBloqueo);
   }
 
   setDniError(mensaje: string): void {
@@ -95,7 +131,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     if (this.dniErrorTimeout) clearTimeout(this.dniErrorTimeout);
     this.dniErrorTimeout = setTimeout(() => {
       this.dniError = null;
-    }, 5000);
+    }, 15000);
   }
 
   setRegistroError(mensaje: string): void {
@@ -103,7 +139,16 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     if (this.registroErrorTimeout) clearTimeout(this.registroErrorTimeout);
     this.registroErrorTimeout = setTimeout(() => {
       this.registroError = null;
-    }, 5000);
+    }, 15000);
+
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        const errorEl = document.querySelector('.contenedor-registro .mensaje-error-general');
+        if (errorEl) {
+          errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
   }
 
   setRegistroExitoso(mensaje: string): void {
@@ -111,7 +156,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     if (this.registroExitosoTimeout) clearTimeout(this.registroExitosoTimeout);
     this.registroExitosoTimeout = setTimeout(() => {
       this.registroExitoso = null;
-    }, 5000);
+    }, 15000);
   }
 
   soloLetras(event: KeyboardEvent): boolean {
@@ -214,7 +259,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
       this.celularError = null;
     }
   }
-
+/*
   onUsernameInput(): void {
     this.usernameTouched = true;
     this.validarUsername();
@@ -230,7 +275,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
       this.usernameError = null;
     }
   }
-
+*/
   esMayorDeEdad(fechaStr: string): boolean {
     if (!fechaStr) return false;
     const partes = fechaStr.split('-');
@@ -331,12 +376,298 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     return v.minLength && v.hasUpper && v.hasLower && v.hasNumber && v.hasSpecial;
   }
 
+  activarBloqueoUnMinuto(): void {
+    this.bloqueadoPorMinuto = true;
+    this.segundosRestantesBloqueo = 60;
+    if (this.intervaloBloqueo) {
+      clearInterval(this.intervaloBloqueo);
+    }
+    this.intervaloBloqueo = setInterval(() => {
+      this.segundosRestantesBloqueo--;
+      if (this.segundosRestantesBloqueo <= 0) {
+        clearInterval(this.intervaloBloqueo);
+        this.intervaloBloqueo = null;
+        this.bloqueadoPorMinuto = false;
+      }
+    }, 1000);
+  }
+
+  generarCaptcha(): void {
+    const caracteres = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+    let codigo = '';
+    for (let i = 0; i < 6; i++) {
+      codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+    this.captchaTexto = codigo;
+    this.captchaIngresado = '';
+    this.captchaError = null;
+    this.captchaValido = false;
+  }
+
+  validarCaptcha(): boolean {
+    if (!this.captchaIngresado || this.captchaIngresado.trim() === '') {
+      this.captchaError = 'Por favor ingresa el código de seguridad CAPTCHA.';
+      return false;
+    }
+    if (this.captchaIngresado.trim() !== this.captchaTexto) {
+      this.captchaError = 'Código de seguridad incorrecto. Intenta con un nuevo código.';
+      this.generarCaptcha();
+      return false;
+    }
+    this.captchaError = null;
+    this.captchaValido = true;
+    return true;
+  }
+
+  onCaptchaInput(): void {
+    if (this.captchaIngresado && this.captchaIngresado.trim() === this.captchaTexto) {
+      this.captchaValido = true;
+      this.captchaError = null;
+    } else {
+      this.captchaValido = false;
+    }
+  }
+
+  abrirModalRecuperar(): void {
+    this.modalRecuperarAbierto = true;
+    this.pasoRecuperar = 1;
+    this.identificadorRecuperar = '';
+    this.usuarioEncontrado = '';
+    this.nuevaContraseniaRecuperar = '';
+    this.confirmarContraseniaRecuperar = '';
+    this.mostrarNuevaClave = false;
+    this.mostrarConfirmarClave = false;
+    this.cargandoRecuperar = false;
+    this.errorRecuperar = null;
+    this.exitoRecuperar = null;
+  }
+
+  cerrarModalRecuperar(): void {
+    this.modalRecuperarAbierto = false;
+    this.pasoRecuperar = 1;
+    this.errorRecuperar = null;
+    this.exitoRecuperar = null;
+  }
+
+  toggleMostrarNuevaClave(): void {
+    this.mostrarNuevaClave = !this.mostrarNuevaClave;
+  }
+
+  toggleMostrarConfirmarClave(): void {
+    this.mostrarConfirmarClave = !this.mostrarConfirmarClave;
+  }
+
+  verificarIdentificadorRecuperar(): void {
+    if (!this.identificadorRecuperar || !this.identificadorRecuperar.trim()) {
+      this.errorRecuperar = 'Por favor ingresa tu nombre de usuario o DNI.';
+      return;
+    }
+
+    this.cargandoRecuperar = true;
+    this.errorRecuperar = null;
+
+    this.authService.verificarIdentificador(this.identificadorRecuperar.trim()).subscribe({
+      next: (resp) => {
+        this.cargandoRecuperar = false;
+        this.usuarioEncontrado = resp.username || this.identificadorRecuperar.trim();
+        this.pasoRecuperar = 2;
+      },
+      error: (err) => {
+        this.cargandoRecuperar = false;
+        let msg = 'No se encontró ninguna cuenta asociada.';
+        if (typeof err.error === 'string') {
+          msg = err.error;
+        } else if (err.error?.message) {
+          msg = err.error.message;
+        }
+        this.errorRecuperar = msg;
+      }
+    });
+  }
+
+  confirmarCambioContrasenia(): void {
+    this.errorRecuperar = null;
+
+    if (!this.nuevaContraseniaRecuperar || this.nuevaContraseniaRecuperar.length < 8) {
+      this.errorRecuperar = 'La contraseña debe tener como mínimo 8 caracteres.';
+      return;
+    }
+
+    if (!/[A-Z]/.test(this.nuevaContraseniaRecuperar)) {
+      this.errorRecuperar = 'La contraseña debe incluir al menos una letra mayúscula (A-Z).';
+      return;
+    }
+    if (!/[a-z]/.test(this.nuevaContraseniaRecuperar)) {
+      this.errorRecuperar = 'La contraseña debe incluir al menos una letra minúscula (a-z).';
+      return;
+    }
+    if (!/[0-9]/.test(this.nuevaContraseniaRecuperar)) {
+      this.errorRecuperar = 'La contraseña debe incluir al menos un número (0-9).';
+      return;
+    }
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(this.nuevaContraseniaRecuperar)) {
+      this.errorRecuperar = 'La contraseña debe incluir al menos un carácter especial o signo.';
+      return;
+    }
+
+    if (this.nuevaContraseniaRecuperar !== this.confirmarContraseniaRecuperar) {
+      this.errorRecuperar = 'Las contraseñas no coinciden. Asegúrate de que sean idénticas.';
+      return;
+    }
+
+    this.cargandoRecuperar = true;
+
+    this.authService.restablecerPassword({
+      identificador: this.identificadorRecuperar.trim(),
+      nuevaContrasenia: this.nuevaContraseniaRecuperar,
+      confirmarContrasenia: this.confirmarContraseniaRecuperar
+    }).subscribe({
+      next: (resp) => {
+        this.cargandoRecuperar = false;
+        this.exitoRecuperar = resp.mensaje || '¡Tu contraseña ha sido restablecida con éxito!';
+        this.pasoRecuperar = 3;
+      },
+      error: (err) => {
+        this.cargandoRecuperar = false;
+        let msg = 'Error al actualizar la contraseña.';
+        if (typeof err.error === 'string') {
+          msg = err.error;
+        } else if (err.error?.message) {
+          msg = err.error.message;
+        }
+        this.errorRecuperar = msg;
+      }
+    });
+  }
+
+  onLoginUsernameInput(): void {
+    this.loginError = null;
+    this.mensajeExitoLogin = null;
+    const usuarioActual = (this.loginData.username || '').trim().toLowerCase();
+
+    // Si cambió a otro usuario diferente del bloqueado:
+    if (this.usuarioBloqueado && this.usuarioBloqueado !== usuarioActual) {
+      this.mostrarCaptcha = false;
+      this.captchaIngresado = '';
+      this.captchaError = null;
+    } else if (this.usuarioBloqueado && this.usuarioBloqueado === usuarioActual && this.bloqueadoPorMinuto) {
+      this.mostrarCaptcha = true;
+    }
+  }
+
+  limpiarFormularioLogin(): void {
+    this.loginData.username = '';
+    this.loginData.contrasenia = '';
+    this.loginError = null;
+    this.mensajeExitoLogin = null;
+    this.captchaIngresado = '';
+    this.captchaError = null;
+    this.mostrarCaptcha = false;
+    this.bloqueadoPorMinuto = false;
+    this.usuarioBloqueado = '';
+    if (this.intervaloBloqueo) {
+      clearInterval(this.intervaloBloqueo);
+      this.intervaloBloqueo = null;
+    }
+  }
+
+  limpiarFormularioRegistro(): void {
+    this.registerData = {
+      nombres: '',
+      apellidos: '',
+      dni: '',
+      username: '',
+      contrasenia: '',
+      confirmar_contrasenia: '',
+      fecha_nacimiento: '',
+      genero: '',
+      rol: '',
+      celular: '',
+      nivel_educativo: '',
+      especialidad: '',
+      grado_academico: ''
+    };
+    this.nombreTouched = false;
+    this.apellidoTouched = false;
+    this.dniTouched = false;
+    this.usernameTouched = false;
+    this.celularTouched = false;
+    this.passwordTouched = false;
+    this.confirmarPasswordTouched = false;
+    this.fechaNacimientoTouched = false;
+    this.generoTouched = false;
+    this.rolTouched = false;
+
+    this.dniError = null;
+    this.nombreError = null;
+    this.apellidoError = null;
+    this.usernameError = null;
+    this.celularError = null;
+    this.fechaNacimientoError = null;
+    this.passwordMismatchError = null;
+    this.generoError = null;
+    this.rolError = null;
+    this.registroError = null;
+    this.registroExitoso = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      const camposEstudianteDiv = document.getElementById('camposEstudiante');
+      const camposDocenteDiv = document.getElementById('camposDocente');
+      if (camposEstudianteDiv) camposEstudianteDiv.style.display = 'none';
+      if (camposDocenteDiv) camposDocenteDiv.style.display = 'none';
+      const rolEstudianteRadio = document.getElementById('rolEstudiante') as HTMLInputElement;
+      const rolDocenteRadio = document.getElementById('rolDocente') as HTMLInputElement;
+      if (rolEstudianteRadio) rolEstudianteRadio.checked = false;
+      if (rolDocenteRadio) rolDocenteRadio.checked = false;
+    }
+  }
+
+  irALogin(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      document.getElementById('contenedorPrincipal')?.classList.remove('panel-derecho-activo');
+    }
+    this.limpiarFormularioRegistro();
+    this.limpiarFormularioLogin();
+  }
+
+  irARegistro(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      document.getElementById('contenedorPrincipal')?.classList.add('panel-derecho-activo');
+    }
+    this.limpiarFormularioLogin();
+    this.limpiarFormularioRegistro();
+  }
+
   onLoginSubmit() {
     this.loginError = null; 
+    this.mensajeExitoLogin = null;
+
+    const usuarioIdentificador = (this.loginData.username || '').trim().toLowerCase();
+
+    // Bloquear SOLO si este usuario específico tiene el bloqueo de 1 minuto activo
+    if (this.esUsuarioActualBloqueado) {
+      this.loginError = `Campos bloqueados por seguridad. Espera ${this.segundosRestantesBloqueo} segundos para reintentar.`;
+      return;
+    }
+
+    // Exigir CAPTCHA solo si el usuario bloqueado coincide
+    if (this.mostrarCaptcha && this.usuarioBloqueado === usuarioIdentificador && !this.validarCaptcha()) {
+      return;
+    }
     
-    this.authService.login(this.loginData).subscribe(
-      response => {
+    this.authService.login(this.loginData).subscribe({
+      next: (response) => {
         console.log('Login exitoso!', response);
+        // Login exitoso: limpiar intentos del usuario
+        delete this.intentosPorUsuario[usuarioIdentificador];
+        this.mostrarCaptcha = false;
+        this.captchaIngresado = '';
+        this.bloqueadoPorMinuto = false;
+        this.usuarioBloqueado = '';
+        if (this.intervaloBloqueo) {
+          clearInterval(this.intervaloBloqueo);
+          this.intervaloBloqueo = null;
+        }
         this.authService.saveSession(response);
         
         const rolNormalizado = response.rol?.toLowerCase().trim();
@@ -350,17 +681,39 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
           this.router.navigate(['/']);
         }
       },
-      error => {
+      error: (error) => {
         console.error('Error en el login:', error);
+        let mensaje = 'Credenciales incorrectas';
         if (typeof error.error === 'string') {
-          this.loginError = error.error;
+          mensaje = error.error;
         } else if (error.error?.message) {
-          this.loginError = error.error.message;
+          mensaje = error.error.message;
+        }
+        this.loginError = mensaje;
+
+        // Registrar intento fallido para ESTE usuario específico (1 usuario = 3 intentos)
+        this.intentosPorUsuario[usuarioIdentificador] = (this.intentosPorUsuario[usuarioIdentificador] || 0) + 1;
+        const intentosDeEsteUsuario = this.intentosPorUsuario[usuarioIdentificador];
+
+        // Verificar si la BD ya inactivó la cuenta por 30 min (3 intentos) o si este usuario llegó a 3 intentos
+        const cuentaInactivaEnBD = mensaje.toLowerCase().includes('inactiva') || 
+                                   mensaje.toLowerCase().includes('bloqueada') ||
+                                   mensaje.toLowerCase().includes('3 intentos fallidos');
+
+        if (cuentaInactivaEnBD || intentosDeEsteUsuario >= 3) {
+          this.usuarioBloqueado = usuarioIdentificador;
+          this.mostrarCaptcha = true;
+          this.generarCaptcha();
+          this.activarBloqueoUnMinuto();
         } else {
-          this.loginError = 'Credenciales incorrectas';
+          // Si aún le quedan intentos disponibles (ej: "Te quedan 1 intento(s)" o "Te quedan 2 intento(s)")
+          // NO se activa el captcha ni se bloquea
+          this.mostrarCaptcha = false;
+          this.bloqueadoPorMinuto = false;
+          this.usuarioBloqueado = '';
         }
       }
-    );
+    });
   }
 
   onRegisterSubmit() {
@@ -379,7 +732,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     this.validarApellido();
     this.validarDni();
     this.validarCelular();
-    this.validarUsername();
+    //this.validarUsername();
     this.validarFechaNacimiento();
     this.validarConfirmarPassword();
     this.validarGenero();
@@ -440,6 +793,22 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
+    if (this.registerData.rol === 'docente') {
+      if (!this.registerData.especialidad) {
+        this.setRegistroError("Por favor selecciona tu Especialidad profesional.");
+        return;
+      }
+      if (!this.registerData.grado_academico) {
+        this.setRegistroError("Por favor selecciona tu Grado Académico.");
+        return;
+      }
+    } else if (this.registerData.rol === 'estudiante') {
+      if (!this.registerData.nivel_educativo) {
+        this.setRegistroError("Por favor selecciona tu Nivel Educativo.");
+        return;
+      }
+    }
+
     const payload: RegistroRequest = {
       persona: {
         nombres: this.registerData.nombres.trim(),
@@ -463,13 +832,19 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
       } : null
     };
 
-    this.authService.register(payload).subscribe(
-      response => {
+    this.authService.register(payload).subscribe({
+      next: (response) => {
         console.log('Registro exitoso!', response);
-        this.setRegistroExitoso('¡Cuenta creada! Por favor, inicia sesión.');
-        document.getElementById('botonInicioSesion')?.click();
+        // 1. Limpiar completamente los datos del formulario de registro
+        this.limpiarFormularioRegistro();
+        // 2. Limpiar el formulario de login
+        this.limpiarFormularioLogin();
+        // 3. Establecer mensaje de éxito visible en login
+        this.mensajeExitoLogin = '¡Registro exitoso! Por favor inicia sesión con tu cuenta.';
+        // 4. Redirigir al formulario de login
+        this.irALogin();
       },
-      error => {
+      error: (error) => {
         console.error('Error en el registro:', error);
         let mensaje = 'Error al crear la cuenta. Verifique los datos.';
         if (typeof error.error === 'string') {
@@ -478,14 +853,19 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
           mensaje = error.error.message;
         }
 
-        // Si el error está relacionado con el DNI, mostrarlo directamente debajo del campo DNI
+        // Mostrar SIEMPRE la alerta general en el formulario para que el usuario la vea
+        this.setRegistroError(mensaje);
+
+        // Si el error corresponde al DNI, marcarlo también puntualmente
         if (mensaje.toLowerCase().includes('dni')) {
           this.setDniError(mensaje);
-        } else {
-          this.setRegistroError(mensaje);
+        } else if (mensaje.toLowerCase().includes('celular')) {
+          this.celularError = mensaje;
+        } else if (mensaje.toLowerCase().includes('usuario')) {
+          this.usernameError = mensaje;
         }
       }
-    );
+    });
   }
 
   ngAfterViewInit(): void {
@@ -495,11 +875,11 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
       const contenedorPrincipal = document.getElementById('contenedorPrincipal');
       
       botonRegistro?.addEventListener('click', () => {
-        contenedorPrincipal?.classList.add('panel-derecho-activo');
+        this.irARegistro();
       });
       
       botonInicioSesion?.addEventListener('click', () => {
-        contenedorPrincipal?.classList.remove('panel-derecho-activo');
+        this.irALogin();
       });
       
       if (window.location.hash === '#registro') {

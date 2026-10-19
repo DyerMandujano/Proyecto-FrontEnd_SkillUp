@@ -33,3 +33,129 @@
 .perfil-header h3 { margin: 0; font-weight: 600; color: #212121; }
 .btn-close-perfil { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #616161; }
 .perfil-info p { margin: 0.5rem 0; color: #212121; font-size: 0.9rem; }
+
+/* Estilos para banner de cuenta deshabilitada y bloqueo de cursos */
+.account-alert-section {
+  margin-top: 1.5rem;
+}
+
+.alert-box-disabled {
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+  border-left: 6px solid #E65100;
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 850px) {
+  .alert-box-disabled {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.alert-icon-wrap {
+  font-size: 2.2rem;
+  color: #D84315;
+  line-height: 1;
+}
+
+.alert-info-wrap {
+  flex: 1;
+}
+
+.alert-title {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #BF360C;
+}
+
+.alert-desc {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #4E342E;
+  line-height: 1.45;
+}
+
+.alert-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #FFFFFF;
+  color: #E65100;
+  border: 1px solid #FFE082;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.alert-btns-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+}
+
+.btn-alert-track {
+  background-color: #E65100;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.55rem 1rem;
+  border-radius: 4px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: background-color 0.2s;
+}
+
+.btn-alert-track:hover {
+  background-color: #BF360C;
+  color: #FFFFFF;
+}
+
+.btn-alert-pay {
+  background-color: #1565C0;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.55rem 1rem;
+  border-radius: 4px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: background-color 0.2s;
+}
+
+.btn-alert-pay:hover {
+  background-color: #0D47A1;
+  color: #FFFFFF;
+}
+
+.disabled-courses-box {
+  background-color: #FAFAFA;
+  border: 2px dashed #E0E0E0;
+  border-radius: 8px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.locked-icon-center {
+  font-size: 3rem;
+  color: #C62828;
+  line-height: 1;
+}

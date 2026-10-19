@@ -4,6 +4,9 @@
       <span class="brand-text" routerLink="/">SkillUP</span>
     </div>
     <div class="nav-actions">
+      <a routerLink="/mis-solicitudes" class="btn-profile">
+        <i class="bi bi-clock-history"></i> Mis Solicitudes
+      </a>
       <button class="btn-profile" (click)="irAMisCertificados()">
         <i class="bi bi-award-fill"></i> Mis Certificados
       </button>
@@ -25,6 +28,33 @@
       <p>Continúa aprendiendo y mejora tus habilidades técnicas.</p>
     </section>
 
+    <!-- Banner de Cuenta Deshabilitada / Solicitud de Activación -->
+    <section *ngIf="cuentaDeshabilitada" class="account-alert-section">
+      <div class="alert-box-disabled">
+        <div class="alert-icon-wrap">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <div class="alert-info-wrap">
+          <h5 class="alert-title">Cuenta Deshabilitada por Límite de Intentos en Evaluación</h5>
+          <p class="alert-desc">
+            Has agotado los 2 intentos permitidos en la evaluación final. 
+            La visualización de tus cursos matriculados y la inscripción a nuevos cursos se encuentran temporalmente suspendidas.
+          </p>
+          <div *ngIf="tieneSolicitudPendiente" class="alert-status-badge">
+            <i class="bi bi-hourglass-split"></i> <strong>Solicitud en revisión:</strong> El administrador validará tus datos. Plazo estimado: 24 horas.
+          </div>
+        </div>
+        <div class="alert-btns-wrap">
+          <a routerLink="/mis-solicitudes" class="btn-alert-track">
+            <i class="bi bi-clock-history"></i> Ver Avance de Solicitud
+          </a>
+          <a *ngIf="!tieneSolicitudPendiente" routerLink="/solicitud-activacion" class="btn-alert-pay">
+            <i class="bi bi-credit-card-2-front"></i> Solicitar Activación
+          </a>
+        </div>
+      </div>
+    </section>
+
     <section *ngIf="successMessage || errorMessage" style="margin-top: 1rem;">
         <div *ngIf="successMessage" style="background-color: #2E7D32; color: #FFFFFF; padding: 1rem; margin-bottom: 1rem;">
             <i class="bi bi-check-circle-fill"></i> {{ successMessage }}
@@ -36,9 +66,32 @@
         </div>
     </section>
 
+    <!-- Sección Cursos Matriculados -->
     <section style="margin-top: 2rem;">
       <h4 class="section-title">Empecemos a aprender</h4>
-      <div class="courses-grid">
+
+      <!-- Si la cuenta está deshabilitada: NO permite visualizar los cursos matriculados -->
+      <div *ngIf="cuentaDeshabilitada" class="disabled-courses-box">
+        <div class="locked-icon-center">
+          <i class="bi bi-lock-fill"></i>
+        </div>
+        <h5 style="color: #C62828; font-weight: 700; margin-top: 0.5rem;">Cursos Matriculados Bloqueados</h5>
+        <p style="color: #616161; max-width: 580px; margin: 0 auto 1rem auto; font-size: 0.95rem;">
+          No tienes acceso para visualizar ni ingresar a tus cursos matriculados debido al bloqueo por límite de intentos. 
+          Para desbloquearlos, envía tu comprobante de pago o espera la confirmación de la revisión de tu solicitud.
+        </p>
+        <div class="d-flex justify-content-center gap-2">
+          <a routerLink="/mis-solicitudes" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-clock-history"></i> Ver Avance de mi Solicitud
+          </a>
+          <a *ngIf="!tieneSolicitudPendiente" routerLink="/solicitud-activacion" class="btn btn-primary btn-sm">
+            <i class="bi bi-credit-card"></i> Solicitar Activación de Cuenta
+          </a>
+        </div>
+      </div>
+
+      <!-- Cursos normales cuando la cuenta NO está deshabilitada -->
+      <div *ngIf="!cuentaDeshabilitada" class="courses-grid">
         <div *ngFor="let curso of cursos" class="course-card">
           <div class="card-image">
             <img src="/img/curso/{{ curso.imagenCurso1 }}" alt="{{curso.nombreCurso}}">
@@ -59,12 +112,13 @@
         </div>
       </div>
 
-      <div *ngIf="cursos.length === 0" class="empty-state">
+      <div *ngIf="!cuentaDeshabilitada && cursos.length === 0" class="empty-state">
         <i class="bi bi-journal-x" style="font-size: 2rem;"></i>
         <p style="margin-top: 1rem;">Aún no tienes cursos matriculados.</p>
       </div>
     </section>
 
+    <!-- Sección Cursos Sin Matrícula -->
     <section style="margin-top: 3rem;">
       <h4 class="section-title">Qué aprender ahora</h4>
       <div class="courses-grid">
@@ -79,7 +133,12 @@
               <span>Instructor • 4.8 ★★★★☆</span>
             </div>
             <p style="color: #1565C0; font-weight: 600; font-size: 0.85rem; margin-bottom: 1rem;"><i class="bi bi-clock"></i> {{c.duracionMin}} min</p>
-            <a [routerLink]="['/curso', c.idCurso]" class="btn-explore" style="display: block; text-align: center; margin-top: 0;">
+            
+            <!-- Si la cuenta está deshabilitada: NO se puede matricular -->
+            <button *ngIf="cuentaDeshabilitada" (click)="intentarVerCurso(c.idCurso)" class="btn-explore" style="display: block; text-align: center; margin-top: 0; background-color: #EEEEEE; color: #9E9E9E; border: 1px dashed #BDBDBD; cursor: not-allowed; width: 100%;">
+              <i class="bi bi-lock-fill"></i> Matrícula no permitida
+            </button>
+            <a *ngIf="!cuentaDeshabilitada" [routerLink]="['/curso', c.idCurso]" class="btn-explore" style="display: block; text-align: center; margin-top: 0;">
               Ver Curso     
             </a>
           </div>

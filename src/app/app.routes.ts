@@ -22,6 +22,8 @@ import { EvaluacionCursoComponent } from './components/evaluacion-curso/evaluaci
 import { MisCertificadosComponent } from './components/mis-certificados/mis-certificados.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { AdminGuard } from './guards/admin.guard';
+import { SolicitudActivacionComponent } from './components/solicitud-activacion/solicitud-activacion.component';
+import { EstadoSolicitudComponent } from './components/estado-solicitud/estado-solicitud.component';
 
 export const routes: Routes = [
   {
@@ -111,6 +113,16 @@ export const routes: Routes = [
   {
     path: 'estudiante/dashboard',
     component: EstudianteComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'solicitud-activacion',
+    component: SolicitudActivacionComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'mis-solicitudes',
+    component: EstadoSolicitudComponent,
     canActivate: [AuthGuard]
   },
   {

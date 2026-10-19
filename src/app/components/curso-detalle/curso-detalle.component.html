@@ -53,11 +53,11 @@
                             @for (material of leccion.materiales; track material.idMaterial) {
                               <li class="my-1">
                                 <a 
-                                  (click)="$event.stopPropagation(); verMaterialEnPantalla(material.urlMaterial)" 
+                                  (click)="$event.stopPropagation(); verMaterialEnPantalla(material.urlMaterial, material.nombreArchivo)" 
                                   class="text-info text-decoration-none d-block text-truncate" 
                                   style="cursor: pointer;"
                                   title="Ver {{ material.nombreArchivo }}">
-                                  <i class="bi bi-file-earmark-pdf-fill text-danger me-1"></i>
+                                  <i class="bi {{ getIconoMaterial(material.urlMaterial) }} me-1"></i>
                                   {{ material.nombreArchivo || 'Documento de apoyo' }}
                                 </a>
                               </li>
@@ -106,7 +106,7 @@
           </h5>
           
           <div *ngIf="vistaActiva === 'material'" class="d-flex gap-2">
-            <button *ngIf="!esPdf" class="btn btn-sm btn-outline-dark px-3" style="border-radius: 0;" (click)="descargarMaterial()" title="Descargar archivo a mi PC">
+            <button class="btn btn-sm btn-outline-dark px-3" style="border-radius: 0;" (click)="descargarMaterial()" title="Descargar archivo a mi PC">
               <i class="bi bi-download me-1"></i> Descargar
             </button>
             
@@ -138,19 +138,95 @@
           }
 
           @if (vistaActiva === 'material') {
-            @if (materialSeleccionadoUrl) {
+            <!-- 1. Indicador de carga -->
+            @if (cargandoMaterial) {
+              <div class="d-flex flex-column justify-content-center align-items-center p-5 text-muted" style="min-height: 520px;">
+                <div class="spinner-border text-warning mb-3" role="status">
+                  <span class="visually-hidden">Cargando...</span>
+                </div>
+                <span class="fs-6 fw-semibold text-secondary">Cargando recurso de aprendizaje...</span>
+              </div>
+            } @else if (tipoMaterialActual === 'pdf' && materialSeleccionadoUrl) {
+              <!-- 2. Visor PDF -->
               <div class="w-100" style="height: 600px;">
                 <iframe 
                   [src]="materialSeleccionadoUrl" 
                   width="100%" 
                   height="100%" 
                   style="border: none; background: #ffffff;">
-                  Tu navegador no soporta la previsualización interna de este documento.
+                  Tu navegador no soporta la previsualización interna de este PDF.
                 </iframe>
               </div>
+            } @else if (tipoMaterialActual === 'imagen' && materialSeleccionadoRawUrl) {
+              <!-- 3. Visor de Imagen -->
+              <div class="d-flex justify-content-center align-items-center p-4" style="min-height: 550px; background: #212529;">
+                <img [src]="materialSeleccionadoRawUrl" [alt]="materialSeleccionadoNombre" 
+                     class="img-fluid shadow-lg rounded" style="max-height: 550px; object-fit: contain;">
+              </div>
+            } @else if (tipoMaterialActual === 'excel' && !errorCargaMaterial) {
+              <!-- 4. Visor Excel interactivo con SheetJS -->
+              <div class="p-3 bg-white" style="min-height: 520px;">
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                  <div>
+                    <h6 class="mb-0 fw-bold text-success"><i class="bi bi-file-earmark-excel-fill me-1"></i>{{ materialSeleccionadoNombre }}</h6>
+                    <small class="text-muted">Vista interactiva de hoja de cálculo</small>
+                  </div>
+                  <button class="btn btn-sm btn-outline-success" (click)="descargarMaterial()">
+                    <i class="bi bi-file-earmark-arrow-down me-1"></i> Descargar Excel (.xlsx)
+                  </button>
+                </div>
+
+                <!-- Selector de pestañas de hojas -->
+                <ul class="nav nav-tabs mb-2" *ngIf="excelSheetNames.length > 1">
+                  <li class="nav-item" *ngFor="let hoja of excelSheetNames">
+                    <button class="nav-link btn-sm" [class.active]="hojaExcelActiva === hoja" 
+                            (click)="seleccionarHojaExcel(hoja)">
+                      <i class="bi bi-table me-1"></i> {{ hoja }}
+                    </button>
+                  </li>
+                </ul>
+
+                <!-- Tabla de celdas -->
+                <div class="table-responsive" style="max-height: 500px; overflow: auto; border: 1px solid #dee2e6; border-radius: 4px;">
+                  <table class="table table-sm table-bordered table-hover mb-0" style="font-size: 0.85rem;">
+                    <tbody>
+                      <tr *ngFor="let fila of excelData; let rIdx = index" [class.table-light]="rIdx === 0">
+                        <td *ngFor="let celda of fila" [class.fw-bold]="rIdx === 0" [class.bg-light]="rIdx === 0">
+                          {{ celda }}
+                        </td>
+                      </tr>
+                      <tr *ngIf="excelData.length === 0">
+                        <td class="text-center text-muted p-4">La hoja seleccionada no contiene datos visibles.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            } @else if (tipoMaterialActual === 'word' && !docxRenderError && !errorCargaMaterial) {
+              <!-- 5. Visor Word renderizado con docx-preview -->
+              <div class="p-3 bg-white" style="min-height: 520px; max-height: 650px; overflow-y: auto;">
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                  <div>
+                    <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-file-earmark-word-fill me-1"></i>{{ materialSeleccionadoNombre }}</h6>
+                    <small class="text-muted">Documento Microsoft Word</small>
+                  </div>
+                  <button class="btn btn-sm btn-outline-primary" (click)="descargarMaterial()">
+                    <i class="bi bi-download me-1"></i> Descargar Word (.docx)
+                  </button>
+                </div>
+                <div id="docxViewerContainer" class="docx-preview-wrapper"></div>
+              </div>
             } @else {
-              <div class="d-flex justify-content-center align-items-center h-100 p-5 text-muted">
-                No se pudo cargar el recurso solicitado de forma interna.
+              <!-- 6. Tarjeta de consulta y descarga directa -->
+              <div class="d-flex flex-column justify-content-center align-items-center p-5 text-center bg-white" style="min-height: 500px;">
+                <i class="bi fs-1" [class]="getIconoMaterial(materialSeleccionadoRawUrl || '')" style="font-size: 5rem !important;"></i>
+                <h4 class="mt-3 fw-bold text-dark">{{ materialSeleccionadoNombre }}</h4>
+                <p class="text-muted mb-4" style="max-width: 500px;">
+                  Este recurso de apoyo está disponible para consulta y descarga. Puedes descargarlo en tu equipo para abrirlo directamente.
+                </p>
+                <button class="btn btn-primary px-4 py-2 shadow-sm" style="border-radius: 4px;" (click)="descargarMaterial()">
+                  <i class="bi bi-download me-2"></i> Descargar Documento
+                </button>
               </div>
             }
           }
