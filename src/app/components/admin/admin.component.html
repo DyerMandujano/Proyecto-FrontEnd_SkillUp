@@ -8,7 +8,8 @@
     </div>
     <div class="header-right">
       <div class="user-info">
-        <span class="user-greeting">Hola, <strong>{{ adminActual?.nombreCompleto || adminActual?.username || 'Administrador' }}</strong></span>
+        <span class="user-greeting">Hola, <strong>{{ adminActual?.nombreCompleto || adminActual?.username ||
+            'Administrador' }}</strong></span>
         <span class="badge-role">ADMIN</span>
       </div>
       <button class="btn-logout" (click)="cerrarSesion()" title="Cerrar Sesión">
@@ -132,13 +133,13 @@
           <h3>Acciones Rápidas</h3>
           <div class="actions-row">
             <button class="btn-action" (click)="cambiarSeccion('pagos')">
-               Validar Solicitudes de Pago
+              Validar Solicitudes de Pago
             </button>
             <button class="btn-action" (click)="cambiarSeccion('usuarios')">
-               Gestionar Cuentas de Usuarios
+              Gestionar Cuentas de Usuarios
             </button>
             <button class="btn-action" (click)="cambiarSeccion('matriculas')">
-               Exportar Matrículas a Excel
+              Exportar Matrículas a Excel
             </button>
           </div>
         </div>
@@ -155,10 +156,14 @@
           </div>
 
           <div class="filtro-estado-pills">
-            <button [class.activo]="filtroEstadoPago === 'todos'" (click)="filtroEstadoPago = 'todos'; cargarSolicitudes()">Todos</button>
-            <button [class.activo]="filtroEstadoPago === 'Pendiente'" (click)="filtroEstadoPago = 'Pendiente'; cargarSolicitudes()">Pendientes</button>
-            <button [class.activo]="filtroEstadoPago === 'Aprobado'" (click)="filtroEstadoPago = 'Aprobado'; cargarSolicitudes()">Aprobados</button>
-            <button [class.activo]="filtroEstadoPago === 'Rechazado'" (click)="filtroEstadoPago = 'Rechazado'; cargarSolicitudes()">Rechazados</button>
+            <button [class.activo]="filtroEstadoPago === 'todos'"
+              (click)="filtroEstadoPago = 'todos'; cargarSolicitudes()">Todos</button>
+            <button [class.activo]="filtroEstadoPago === 'Pendiente'"
+              (click)="filtroEstadoPago = 'Pendiente'; cargarSolicitudes()">Pendientes</button>
+            <button [class.activo]="filtroEstadoPago === 'Aprobado'"
+              (click)="filtroEstadoPago = 'Aprobado'; cargarSolicitudes()">Aprobados</button>
+            <button [class.activo]="filtroEstadoPago === 'Rechazado'"
+              (click)="filtroEstadoPago = 'Rechazado'; cargarSolicitudes()">Rechazados</button>
           </div>
         </div>
 
@@ -204,7 +209,8 @@
                   <span *ngIf="!s.observacion" class="txt-muted">-</span>
                 </td>
                 <td class="acciones-celda">
-                  <button class="btn-sm btn-visualizar" (click)="abrirModalDetalle(s)" title="Ver detalle completo y comprobante adjunto">
+                  <button class="btn-sm btn-visualizar" (click)="abrirModalDetalle(s)"
+                    title="Ver detalle completo y comprobante adjunto">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                       <circle cx="12" cy="12" r="3"></circle>
@@ -213,10 +219,12 @@
                   </button>
 
                   <ng-container *ngIf="s.estado?.toLowerCase() === 'pendiente'">
-                    <button class="btn-sm btn-aprobar" (click)="aprobarSolicitud(s)" title="Aprobar pago y reactivar cuenta">
+                    <button class="btn-sm btn-aprobar" (click)="aprobarSolicitud(s)"
+                      title="Aprobar pago y reactivar cuenta">
                       ✓ Aprobar
                     </button>
-                    <button class="btn-sm btn-rechazar" (click)="abrirModalRechazo(s)" title="Rechazar con motivo obligatorio">
+                    <button class="btn-sm btn-rechazar" (click)="abrirModalRechazo(s)"
+                      title="Rechazar con motivo obligatorio">
                       ✕ Rechazar
                     </button>
                   </ng-container>
@@ -247,8 +255,8 @@
 
         <div class="filtros-barra">
           <div class="search-input-box">
-            <input type="text" placeholder="Buscar por DNI, Nombres o Correo..." 
-                   [(ngModel)]="busquedaUsuario" (input)="cargarUsuarios()" />
+            <input type="text" placeholder="Buscar por DNI, Nombres o Correo..." [(ngModel)]="busquedaUsuario"
+              (input)="cargarUsuarios()" />
           </div>
 
           <div class="filtro-rol-box">
@@ -293,8 +301,8 @@
                 </td>
                 <td>{{ u.fecha_registro || '-' }}</td>
                 <td>
-                  <button class="btn-sm" [ngClass]="u.estado === 1 ? 'btn-desactivar' : 'btn-reactivar'" 
-                          (click)="cambiarEstado(u)">
+                  <button class="btn-sm" [ngClass]="u.estado === 1 ? 'btn-desactivar' : 'btn-reactivar'"
+                    (click)="cambiarEstado(u)">
                     {{ u.estado === 1 ? 'Desactivar' : 'Reactivar' }}
                   </button>
                 </td>
@@ -314,7 +322,8 @@
         <div class="panel-header flex-header">
           <div>
             <h2>Seguimiento de Inscripciones </h2>
-            <p class="subtitulo">Monitoreo consolidado de estudiantes matriculados, avance de contenidos y reporte Excel.</p>
+            <p class="subtitulo">Monitoreo consolidado de estudiantes matriculados, avance de contenidos y reporte
+              Excel.</p>
           </div>
 
           <button class="btn-excel" (click)="exportarMatriculasExcel()">
@@ -329,8 +338,8 @@
 
         <div class="filtros-barra">
           <div class="search-input-box">
-            <input type="text" placeholder="Buscar por Estudiante, DNI o Curso..." 
-                   [(ngModel)]="busquedaMatricula" (input)="cargarMatriculas()" />
+            <input type="text" placeholder="Buscar por Estudiante, DNI o Curso..." [(ngModel)]="busquedaMatricula"
+              (input)="cargarMatriculas()" />
           </div>
         </div>
 
@@ -389,14 +398,15 @@
       </div>
 
       <div class="modal-body">
-        <p>Está a punto de rechazar la solicitud <strong>#{{ solicitudSeleccionada?.num_operacion }}</strong> de <strong>{{ solicitudSeleccionada?.estudianteNombre }}</strong>.</p>
-        
+        <p>Está a punto de rechazar la solicitud <strong>#{{ solicitudSeleccionada?.num_operacion }}</strong> de
+          <strong>{{ solicitudSeleccionada?.estudianteNombre }}</strong>.</p>
+
         <label for="motivo" class="modal-label">
           Motivo u Observación del Rechazo: <span class="txt-req">* (Obligatorio)</span>
         </label>
-        <textarea id="motivo" class="modal-textarea" rows="4" 
-                  placeholder="Escriba claramente el motivo (ej: Voucher ilegible, monto no coincide con la tarifa, número de operación no verificado)..." 
-                  [(ngModel)]="motivoRechazo" required></textarea>
+        <textarea id="motivo" class="modal-textarea" rows="4"
+          placeholder="Escriba claramente el motivo (ej: Voucher ilegible, monto no coincide con la tarifa, número de operación no verificado)..."
+          [(ngModel)]="motivoRechazo" required></textarea>
 
         <div *ngIf="errorRechazo" class="modal-error">
           ⚠ {{ errorRechazo }}
@@ -427,10 +437,10 @@
 
       <div class="modal-body modal-body-scrollable">
         <div class="detalle-grid">
-          
+
           <!-- COLUMNA IZQUIERDA: INFORMACIÓN DE LA SOLICITUD Y ALUMNO -->
           <div class="detalle-info-col">
-            
+
             <div class="info-group-box">
               <h4 class="info-group-title">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -441,7 +451,8 @@
               </h4>
               <div class="info-row">
                 <span class="info-lbl">Estudiante:</span>
-                <span class="info-val fw-bold">{{ solicitudDetalle.estudianteNombre || 'Estudiante #' + solicitudDetalle.id_estudiante }}</span>
+                <span class="info-val fw-bold">{{ solicitudDetalle.estudianteNombre || 'Estudiante #' +
+                  solicitudDetalle.id_estudiante }}</span>
               </div>
               <div class="info-row">
                 <span class="info-lbl">DNI:</span>
@@ -485,9 +496,9 @@
                 <span class="info-lbl">Estado Actual:</span>
                 <span class="info-val">
                   <span class="badge-estado" [ngClass]="{
-                    'estado-pendiente': solicitudDetalle.estado?.toLowerCase() === 'pendiente',
-                    'estado-aprobado': solicitudDetalle.estado?.toLowerCase() === 'aprobado',
-                    'estado-rechazado': solicitudDetalle.estado?.toLowerCase() === 'rechazado'
+                    'estado-pendiente': solicitudDetalle.estado.toLowerCase() === 'pendiente',
+                    'estado-aprobado': solicitudDetalle.estado.toLowerCase() === 'aprobado',
+                    'estado-rechazado': solicitudDetalle.estado.toLowerCase() === 'rechazado'
                   }">
                     {{ solicitudDetalle.estado }}
                   </span>
@@ -505,9 +516,10 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>
-                {{ solicitudDetalle.estado?.toLowerCase() === 'rechazado' ? 'Motivo del Rechazo' : 'Nota / Observación' }}
+                {{ solicitudDetalle.estado.toLowerCase() === 'rechazado' ? 'Motivo del Rechazo' : 'Nota / Observación'
+                }}
               </h4>
-              <p class="observacion-caja" [class.caja-rechazo]="solicitudDetalle.estado?.toLowerCase() === 'rechazado'">
+              <p class="observacion-caja" [class.caja-rechazo]="solicitudDetalle.estado.toLowerCase() === 'rechazado'">
                 {{ solicitudDetalle.observacion }}
               </p>
             </div>
@@ -518,11 +530,9 @@
           <div class="detalle-voucher-col">
             <div class="voucher-box-header">
               <h4>Comprobante de Pago (Voucher / Captura)</h4>
-              <a *ngIf="solicitudDetalle.imagen_comprobante" 
-                 [href]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" 
-                 target="_blank" 
-                 class="btn-abrir-externo" 
-                 title="Abrir comprobante en tamaño completo">
+              <a *ngIf="solicitudDetalle.imagen_comprobante"
+                [href]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" target="_blank"
+                class="btn-abrir-externo" title="Abrir comprobante en tamaño completo">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                   <polyline points="15 3 21 3 21 9"></polyline>
@@ -533,17 +543,19 @@
             </div>
 
             <!-- Imagen -->
-            <div *ngIf="solicitudDetalle.imagen_comprobante && !esPdf(solicitudDetalle.imagen_comprobante)" class="voucher-img-wrapper">
-              <a [href]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" target="_blank" title="Clic para ampliar imagen">
-                <img [src]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" 
-                     alt="Comprobante de pago" 
-                     class="voucher-img-preview" />
+            <div *ngIf="solicitudDetalle.imagen_comprobante && !esPdf(solicitudDetalle.imagen_comprobante)"
+              class="voucher-img-wrapper">
+              <a [href]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" target="_blank"
+                title="Clic para ampliar imagen">
+                <img [src]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" alt="Comprobante de pago"
+                  class="voucher-img-preview" />
               </a>
               <span class="voucher-hint">🔍 Clic en la imagen para abrirla en tamaño original</span>
             </div>
 
             <!-- PDF -->
-            <div *ngIf="solicitudDetalle.imagen_comprobante && esPdf(solicitudDetalle.imagen_comprobante)" class="voucher-pdf-wrapper">
+            <div *ngIf="solicitudDetalle.imagen_comprobante && esPdf(solicitudDetalle.imagen_comprobante)"
+              class="voucher-pdf-wrapper">
               <div class="pdf-icon-card">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#D32F2F" stroke-width="2">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -553,7 +565,8 @@
                   <polyline points="10 9 9 9 8 9"></polyline>
                 </svg>
                 <p>Comprobante en formato PDF</p>
-                <a [href]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" target="_blank" class="btn-primario btn-sm">
+                <a [href]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" target="_blank"
+                  class="btn-primario btn-sm">
                   Abrir documento PDF
                 </a>
               </div>
@@ -571,7 +584,7 @@
       </div>
 
       <div class="modal-footer">
-        <ng-container *ngIf="solicitudDetalle.estado?.toLowerCase() === 'pendiente'">
+        <ng-container *ngIf="solicitudDetalle.estado.toLowerCase() === 'pendiente'">
           <button class="btn-aprobar btn-modal-action" (click)="aprobarDesdeDetalle()">
             ✓ Aprobar Pago y Reactivar
           </button>

@@ -8,7 +8,7 @@ import { Curso } from '../../models/curso.model';
 import { Seccion } from '../../models/seccion.model';
 import { Leccion } from '../../models/leccion.model';
 import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
 import { renderAsync } from 'docx-preview';
@@ -16,7 +16,7 @@ import { renderAsync } from 'docx-preview';
 @Component({
   selector: 'app-curso-detalle',
   standalone: true,
-  imports: [CommonModule, SafeUrlPipe, FormsModule], 
+  imports: [CommonModule, SafeUrlPipe, FormsModule],
   templateUrl: './curso-detalle.component.html',
   styleUrls: ['./curso-detalle.component.css'],
 })
@@ -29,15 +29,15 @@ export class CursoDetalleComponent implements OnInit {
   cursoId!: number;
   cargando: boolean = true;
   error: string = '';
-  isBrowser: boolean; 
-  
+  isBrowser: boolean;
+
   expandedSections: { [key: number]: boolean } = {};
   expandedResources: { [key: number]: boolean } = {};
   completedLessons: Set<number> = new Set();
 
   vistaActiva: 'video' | 'material' = 'video';
   materialSeleccionadoUrl: SafeResourceUrl | null = null;
-  materialSeleccionadoRawUrl: string | null = null; 
+  materialSeleccionadoRawUrl: string | null = null;
   materialSeleccionadoNombre: string = '';
   tipoMaterialActual: 'pdf' | 'imagen' | 'word' | 'excel' | 'otro' = 'pdf';
   esPdf: boolean = false;
@@ -55,7 +55,7 @@ export class CursoDetalleComponent implements OnInit {
 
   nuevaPregunta: string = '';
   nuevaNota: string = '';
-  
+
   preguntasForo: { autor: string, texto: string, fecha: Date }[] = [];
   misNotas: { texto: string, fecha: Date }[] = [];
 
@@ -66,14 +66,14 @@ export class CursoDetalleComponent implements OnInit {
     private seccionService: SeccionService,
     private leccionService: LeccionService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private sanitizer: DomSanitizer 
+    private sanitizer: DomSanitizer
   ) {
-    this.isBrowser = isPlatformBrowser(this.platformId); 
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit() {
     this.cursoId = +this.route.snapshot.paramMap.get('id')!;
-    
+
     if (this.isBrowser && this.cursoId) {
       localStorage.setItem('cursoId', this.cursoId.toString());
     }
@@ -267,7 +267,7 @@ export class CursoDetalleComponent implements OnInit {
   verMaterialEnPantalla(urlRuta: string | undefined, nombreArchivo?: string): void {
     if (!urlRuta) {
       this.materialSeleccionadoUrl = null;
-      this.materialSeleccionadoRawUrl = null; 
+      this.materialSeleccionadoRawUrl = null;
       this.esPdf = false;
       return;
     }
@@ -285,7 +285,7 @@ export class CursoDetalleComponent implements OnInit {
 
     this.materialSeleccionadoRawUrl = urlCompleta;
     this.materialSeleccionadoNombre = nombreArchivo || this.extraerNombreDeUrl(urlCompleta);
-    
+
     // Resetear estados de visualización previa
     this.cargandoMaterial = true;
     this.errorCargaMaterial = false;
@@ -300,8 +300,8 @@ export class CursoDetalleComponent implements OnInit {
       this.esPdf = true;
       this.materialSeleccionadoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(urlCompleta);
       this.cargandoMaterial = false;
-    } else if (urlMinuscula.endsWith('.png') || urlMinuscula.endsWith('.jpg') || urlMinuscula.endsWith('.jpeg') || 
-               urlMinuscula.endsWith('.gif') || urlMinuscula.endsWith('.webp') || urlMinuscula.endsWith('.svg')) {
+    } else if (urlMinuscula.endsWith('.png') || urlMinuscula.endsWith('.jpg') || urlMinuscula.endsWith('.jpeg') ||
+      urlMinuscula.endsWith('.gif') || urlMinuscula.endsWith('.webp') || urlMinuscula.endsWith('.svg')) {
       this.tipoMaterialActual = 'imagen';
       this.esPdf = false;
       this.materialSeleccionadoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(urlCompleta);
@@ -326,7 +326,7 @@ export class CursoDetalleComponent implements OnInit {
       this.cargandoMaterial = false;
     }
 
-    this.vistaActiva = 'material'; 
+    this.vistaActiva = 'material';
   }
 
   cargarExcel(url: string): void {
@@ -387,7 +387,7 @@ export class CursoDetalleComponent implements OnInit {
               inWrapper: true,
               ignoreWidth: false,
               ignoreHeight: false
-            }).catch(err => {
+            }).catch((err: any) => {
               console.warn('Fallo renderizado DOCX nativo, mostrando tarjeta de descarga:', err);
               this.docxRenderError = true;
             });
@@ -408,7 +408,7 @@ export class CursoDetalleComponent implements OnInit {
     this.materialSeleccionadoUrl = null;
     this.materialSeleccionadoRawUrl = null;
     this.materialSeleccionadoNombre = '';
-    this.esPdf = false; 
+    this.esPdf = false;
     this.excelData = [];
     this.excelSheetNames = [];
   }
@@ -418,7 +418,7 @@ export class CursoDetalleComponent implements OnInit {
       const url = this.materialSeleccionadoRawUrl;
       const partesUrl = url.split('/');
       let nombreDescarga = this.materialSeleccionadoNombre || (partesUrl.length > 0 ? partesUrl[partesUrl.length - 1] : 'recurso-aprendizaje');
-      
+
       const lastDotIndex = url.lastIndexOf('.');
       if (lastDotIndex !== -1) {
         const extensionOriginal = url.substring(lastDotIndex).split('?')[0];
@@ -457,7 +457,7 @@ export class CursoDetalleComponent implements OnInit {
   enviarPregunta(): void {
     if (this.nuevaPregunta.trim().length > 0) {
       this.preguntasForo.unshift({
-        autor: 'Tú (Estudiante)', 
+        autor: 'Tú (Estudiante)',
         texto: this.nuevaPregunta,
         fecha: new Date()
       });
