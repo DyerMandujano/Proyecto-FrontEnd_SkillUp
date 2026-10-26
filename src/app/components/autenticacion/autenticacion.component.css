@@ -373,6 +373,40 @@ select.input-formulario.input-error {
   animation: animacionFadeIn 0.3s ease-in-out;
 }
 
+
+
+/* Alerta de bloqueo temporal por intentos */
+.alerta-bloqueo-temporal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin: 12px 0 6px 0;
+  width: 100%;
+  box-sizing: border-box;
+  animation: animacionFadeIn 0.3s ease-out;
+}
+
+.alerta-bloqueo-temporal .icono-reloj {
+  width: 20px !important;
+  height: 20px !important;
+  max-width: 20px !important;
+  max-height: 20px !important;
+  flex-shrink: 0;
+  animation: pulsoReloj 1.5s infinite;
+}
+
+@keyframes pulsoReloj {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
 /* ========================================================
    BOTONES
    ======================================================== */

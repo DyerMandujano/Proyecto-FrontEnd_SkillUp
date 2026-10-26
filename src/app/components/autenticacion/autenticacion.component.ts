@@ -83,6 +83,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
 
   // Mensaje de éxito al redirigir al login
   mensajeExitoLogin: string | null = null;
+  cargandoLogin: boolean = false;
 
   // --- HU-22: Recuperación de Contraseña ---
   modalRecuperarAbierto: boolean = false;
@@ -673,8 +674,10 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
       return;
     }
     
+    this.cargandoLogin = true;
     this.authService.login(this.loginData).subscribe({
-      next: (response) => {
+      next: (response: any) => {
+        this.cargandoLogin = false;
         console.log('Login exitoso!', response);
         // Login exitoso: limpiar intentos del usuario
         delete this.intentosPorUsuario[usuarioIdentificador];
@@ -705,7 +708,8 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
           this.router.navigate(['/']);
         }
       },
-      error: (error) => {
+      error: (error: any) => {
+        this.cargandoLogin = false;
         console.error('Error en el login:', error);
         let mensaje = 'Credenciales incorrectas';
         if (typeof error.error === 'string') {

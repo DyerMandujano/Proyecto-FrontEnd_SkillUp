@@ -434,7 +434,10 @@
             <div class="contenedor-olvido-contrasenia">
                 <a href="javascript:void(0)" class="enlace-olvido" (click)="abrirModalRecuperar()">¿Olvidaste tu contraseña?</a>
             </div>
-            <button class="btn btn-login" type="submit" [disabled]="!loginForm.valid || esUsuarioActualBloqueado || (mostrarCaptcha && usuarioBloqueado === (loginData.username || '').trim().toLowerCase() && !captchaValido)">Ingresar</button>
+            <button class="btn btn-login" type="submit" [disabled]="!loginForm.valid || esUsuarioActualBloqueado || cargandoLogin || (mostrarCaptcha && usuarioBloqueado === (loginData.username || '').trim().toLowerCase() && !captchaValido)">
+                <span *ngIf="cargandoLogin" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                {{ cargandoLogin ? 'Verificando...' : 'Ingresar' }}
+            </button>
         </form>
     </div>
 
