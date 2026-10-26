@@ -407,6 +407,10 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
         clearInterval(this.intervaloBloqueo);
         this.intervaloBloqueo = null;
         this.bloqueadoPorMinuto = false;
+        if (this.usuarioBloqueado) {
+          delete this.intentosPorUsuario[this.usuarioBloqueado];
+          this.usuarioBloqueado = '';
+        }
       }
     }, 1000);
   }
@@ -717,7 +721,6 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
         } else if (error.error?.message) {
           mensaje = error.error.message;
         }
-        this.loginError = mensaje;
 
         // Registrar intento fallido para ESTE usuario específico (1 usuario = 3 intentos)
         this.intentosPorUsuario[usuarioIdentificador] = (this.intentosPorUsuario[usuarioIdentificador] || 0) + 1;
@@ -733,12 +736,18 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
           this.mostrarCaptcha = true;
           this.generarCaptcha();
           this.activarBloqueoUnMinuto();
+          this.loginError = mensaje.toLowerCase().includes('30 minutos') || mensaje.toLowerCase().includes('inactiva')
+            ? mensaje 
+            : 'Has superado el límite de 3 intentos fallidos. Campos bloqueados por 1 minuto.';
         } else {
-          // Si aún le quedan intentos disponibles (ej: "Te quedan 1 intento(s)" o "Te quedan 2 intento(s)")
-          // NO se activa el captcha ni se bloquea
+          // Si aún le quedan intentos disponibles (ej: "Te quedan 2 intentos" o "Te queda 1 intento")
           this.mostrarCaptcha = false;
           this.bloqueadoPorMinuto = false;
           this.usuarioBloqueado = '';
+          const intentosRestantes = 3 - intentosDeEsteUsuario;
+          const sufijo = intentosRestantes === 1 ? 'Te queda 1 intento.' : `Te quedan ${intentosRestantes} intentos.`;
+          const baseMensaje = mensaje.endsWith('.') ? mensaje.slice(0, -1) : mensaje;
+          this.loginError = `${baseMensaje}. ${sufijo}`;
         }
       }
     });
