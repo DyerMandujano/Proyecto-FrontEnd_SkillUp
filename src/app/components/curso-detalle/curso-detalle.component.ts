@@ -275,16 +275,16 @@ export class CursoDetalleComponent implements OnInit {
     const urlNormalizada = urlRuta.replace(/\\/g, '/');
     const urlMinuscula = urlNormalizada.toLowerCase();
 
-let urlCompleta = '';
+    let urlCompleta = '';
     const backendBaseUrl = environment.apiUrl.replace(/\/api\/?$/, '');
     if (urlNormalizada.startsWith('http')) {
       urlCompleta = urlNormalizada;
     } else if (urlNormalizada.startsWith('uploads/')) {
-      urlCompleta = ${backendBaseUrl}/;
+      urlCompleta = backendBaseUrl + '/' + urlNormalizada;
     } else if (urlNormalizada.startsWith('/uploads/')) {
-      urlCompleta = ${backendBaseUrl};
+      urlCompleta = backendBaseUrl + urlNormalizada;
     } else {
-      urlCompleta = ${backendBaseUrl}/;
+      urlCompleta = backendBaseUrl + '/' + urlNormalizada;
     }
 
     this.materialSeleccionadoRawUrl = urlCompleta;
