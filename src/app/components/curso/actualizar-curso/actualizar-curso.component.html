@@ -1,86 +1,111 @@
 <app-docente-header></app-docente-header>
 
-<div class="container-fluid" style="background-color: #F5F5F5;">
+<div class="container-fluid py-4 min-vh-100" style="background-color: #080c14;">
   <div class="row">
     <nav class="col-md-3 col-lg-2 sidebar d-md-block p-3">
-      <h5 class="fw-bold mb-4" style="color: #0D47A1;">Panel Docente</h5>
+      <h5 class="fw-bold mb-4 text-white">Panel Docente</h5>
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <button class="nav-link active" id="v-pills-cursos-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cursos" type="button" role="tab" style="border-radius: 0;">Cursos Dictados</button>
-        <button class="nav-link" id="v-pills-comunicacion-tab" data-bs-toggle="pill" data-bs-target="#v-pills-comunicacion" type="button" role="tab" style="border-radius: 0;">Comunicacion</button>
-        <button class="nav-link" id="v-pills-rendimiento-tab" data-bs-toggle="pill" data-bs-target="#v-pills-rendimiento" type="button" role="tab" style="border-radius: 0;">Rendimiento</button>
+        <button class="nav-link active" id="v-pills-cursos-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cursos" type="button" role="tab">Cursos Dictados</button>
+        <button class="nav-link" id="v-pills-comunicacion-tab" data-bs-toggle="pill" data-bs-target="#v-pills-comunicacion" type="button" role="tab">Comunicación</button>
+        <button class="nav-link" id="v-pills-rendimiento-tab" data-bs-toggle="pill" data-bs-target="#v-pills-rendimiento" type="button" role="tab">Rendimiento</button>
       </div>
     </nav>
 
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-2">
       <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-cursos" role="tabpanel" aria-labelledby="v-pills-cursos-tab">
-          <div class="card" style="border: 1px solid #E0E0E0; border-radius: 0; box-shadow: none;">
-            <div class="card-header text-center" style="background-color: #1565C0; color: #FFFFFF; border-radius: 0;">
-              <h2><strong>Actualizar Curso</strong></h2>
+          <div class="card dark-card">
+            <div class="card-header border-bottom border-dark-subtle p-3 text-center">
+              <h3 class="mb-0 text-white fw-bold">Actualizar Curso</h3>
             </div>
-            <div class="card-body">
-              <div class="d-flex justify-content-center mb-3">
-                <img src="img/curso/updCurso.jpg" width="200" height="200" class="img-fluid" alt="Imagen del curso">
+            <div class="card-body p-4">
+              <div class="d-flex justify-content-center mb-4">
+                <img src="img/curso/updCurso.jpg" width="160" height="160" class="img-fluid rounded border border-dark-subtle" alt="Imagen del curso">
               </div>
               <form class="row g-3" (ngSubmit)="actualizarCurso()" *ngIf="curso.idCurso">
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold" style="color: #212121;">Nombre del Curso</label>
-                  <input type="text" class="form-control" name="nombreCurso" [(ngModel)]="curso.nombreCurso" placeholder="Ej: Electricidad Basica" required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
+                  <label class="form-label text-secondary small fw-semibold">Nombre del Curso</label>
+                  <input type="text" class="form-control form-control-dark" name="nombreCurso" [(ngModel)]="curso.nombreCurso" placeholder="Ej: Electricidad Básica" required>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold" style="color: #212121;">Nivel</label>
-                  <select class="form-select" name="nivel" [(ngModel)]="curso.nivel" required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
+                  <label class="form-label text-secondary small fw-semibold">Nivel</label>
+                  <select class="form-select form-control-dark" name="nivel" [(ngModel)]="curso.nivel" required>
                     <option value="">Seleccionar nivel...</option>
-                    <option>Basico</option>
+                    <option>Básico</option>
                     <option>Intermedio</option>
                     <option>Avanzado</option>
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold" style="color: #212121;">Categoria</label>
-                  <select class="form-select" name="idCategoria" [(ngModel)]="curso.idCategoria" required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
+                  <label class="form-label text-secondary small fw-semibold">Categoría</label>
+                  <select class="form-select form-control-dark" name="idCategoria" [(ngModel)]="curso.idCategoria" required>
                     <option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</option>
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold" style="color: #212121;">Duracion (minutos)</label>
-                  <input type="number" class="form-control" name="duracionMin" [(ngModel)]="curso.duracionMin" placeholder="Ej: 120" required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
+                  <label class="form-label text-secondary small fw-semibold">Duración (minutos)</label>
+                  <input type="number" class="form-control form-control-dark" name="duracionMin" [(ngModel)]="curso.duracionMin" placeholder="Ej: 120" required>
                 </div>
                 <div class="col-md-12">
-                  <label class="form-label fw-semibold" style="color: #212121;">Descripcion</label>
-                  <textarea class="form-control" name="descripcion" [(ngModel)]="curso.descripcion" rows="3" placeholder="Describe los objetivos y temario del curso..." required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;"></textarea>
+                  <label class="form-label text-secondary small fw-semibold">Descripción</label>
+                  <textarea class="form-control form-control-dark" name="descripcion" [(ngModel)]="curso.descripcion" rows="3" placeholder="Describe los objetivos y temario del curso..." required></textarea>
                 </div>
                 <div class="col-md-12">
-                  <label class="form-label fw-semibold" style="color: #212121;">Resumen</label>
-                  <textarea class="form-control" name="resumen" [(ngModel)]="curso.resumen" rows="2" placeholder="Breve resumen del curso..." required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;"></textarea>
+                  <label class="form-label text-secondary small fw-semibold">Resumen</label>
+                  <textarea class="form-control form-control-dark" name="resumen" [(ngModel)]="curso.resumen" rows="2" placeholder="Breve resumen del curso..." required></textarea>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold" style="color: #212121;">Imagenes del Curso</label>
-                  <div class="d-flex gap-2">
-                    <input type="text" class="form-control" name="imagenCurso1" [(ngModel)]="curso.imagenCurso1" placeholder="Ruta o URL de la imagen principal" required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
-                    <input type="text" class="form-control" name="imagenCurso2" [(ngModel)]="curso.imagenCurso2" placeholder="Ruta o URL de la imagen secundaria" style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
+                  <label class="form-label text-secondary small fw-semibold">Imágenes del Curso</label>
+                  <div class="d-flex flex-column gap-2">
+                    <div>
+                      <div class="d-flex gap-2 align-items-center">
+                        <input type="text" class="form-control form-control-dark" name="imagenCurso1" [(ngModel)]="curso.imagenCurso1" placeholder="Imagen principal" required>
+                        <input class="form-control form-control-dark" type="file" accept="image/*" (change)="onFileSelected($event, 1)" style="max-width: 140px;">
+                      </div>
+                      <div *ngIf="subiendoImagen1" class="text-primary small mt-1">
+                        <span class="spinner-border spinner-border-sm me-1"></span>Subiendo imagen principal...
+                      </div>
+                      <div *ngIf="curso.imagenCurso1 && !subiendoImagen1" class="d-flex align-items-center gap-2 mt-1">
+                        <img [src]="obtenerUrlImagen(curso.imagenCurso1)" (error)="manejarErrorImagen($event)" style="width: 45px; height: 35px; object-fit: cover; border: 1px solid #1e293b; border-radius: 4px;" alt="Vista previa 1">
+                        <small class="text-secondary text-truncate">{{ curso.imagenCurso1 }}</small>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="d-flex gap-2 align-items-center">
+                        <input type="text" class="form-control form-control-dark" name="imagenCurso2" [(ngModel)]="curso.imagenCurso2" placeholder="Imagen secundaria">
+                        <input class="form-control form-control-dark" type="file" accept="image/*" (change)="onFileSelected($event, 2)" style="max-width: 140px;">
+                      </div>
+                      <div *ngIf="subiendoImagen2" class="text-primary small mt-1">
+                        <span class="spinner-border spinner-border-sm me-1"></span>Subiendo imagen secundaria...
+                      </div>
+                      <div *ngIf="curso.imagenCurso2 && !subiendoImagen2" class="d-flex align-items-center gap-2 mt-1">
+                        <img [src]="obtenerUrlImagen(curso.imagenCurso2)" (error)="manejarErrorImagen($event)" style="width: 45px; height: 35px; object-fit: cover; border: 1px solid #1e293b; border-radius: 4px;" alt="Vista previa 2">
+                        <small class="text-secondary text-truncate">{{ curso.imagenCurso2 }}</small>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold" style="color: #212121;">Estado</label>
-                  <select class="form-select" name="estado" [(ngModel)]="curso.estado" required style="border-radius: 0; border: 1px solid #E0E0E0; color: #212121;">
+                  <label class="form-label text-secondary small fw-semibold">Estado</label>
+                  <select class="form-select form-control-dark" name="estado" [(ngModel)]="curso.estado" required>
                     <option [value]="1">Activo</option>
                     <option [value]="0">Inactivo</option>
                   </select>
                 </div>
-                <div class="col-12 d-flex justify-content-end gap-3 mt-3">
-                  <button type="submit" class="btn btn-primary px-4" style="border-radius: 0; background-color: #1565C0; color: #FFFFFF; border: none;">Actualizar Curso</button>
-                  <button type="reset" class="btn btn-secondary px-4" style="border-radius: 0; background-color: #F5F5F5; color: #212121; border: 1px solid #E0E0E0;">Cancelar</button>
+                <div class="col-12 d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-dark-subtle">
+                  <button type="button" class="btn btn-outline-secondary px-4 btn-sm" (click)="cancelar()">Cancelar</button>
+                  <button type="submit" class="btn btn-primary px-4 btn-sm">Actualizar Curso</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
         <div class="tab-pane fade" id="v-pills-comunicacion" role="tabpanel" aria-labelledby="v-pills-comunicacion-tab">
-          <h5 style="color: #0D47A1;">Seccion de Comunicacion</h5>
+          <h5 class="text-white">Sección de Comunicación</h5>
         </div>
         <div class="tab-pane fade" id="v-pills-rendimiento" role="tabpanel" aria-labelledby="v-pills-rendimiento-tab">
-          <h5 style="color: #0D47A1;">Panel de Rendimiento</h5>
+          <h5 class="text-white">Panel de Rendimiento</h5>
         </div>
       </div>
     </main>

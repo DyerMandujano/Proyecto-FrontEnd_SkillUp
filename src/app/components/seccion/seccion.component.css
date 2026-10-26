@@ -1,131 +1,178 @@
+/* ==========================================================================
+   SKILLUP - SECCIONES DE CURSO
+   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Acentos: Royal Blue (#2563eb) & Electric Sky (#60a5fa)
+   ========================================================================== */
+
 .container-custom {
-  background-color: #FFFFFF;
-  color: #212121;
+  background-color: #080c14;
+  color: #f8fafc;
 }
+
 .sidebar {
-  background-color: #F5F5F5;
-  border-right: 1px solid #E0E0E0;
+  background-color: #0b111e;
+  border-right: 1px solid #1e293b;
 }
+
 .text-custom {
-  color: #212121;
+  color: #f8fafc;
 }
+
 .btn-sidebar {
-  color: #212121;
-  border-radius: 0;
+  color: #94a3b8;
+  border-radius: 8px;
+  padding: 10px 14px;
 }
+
 .btn-sidebar.active {
-  background-color: #1565C0 !important;
-  color: #FFFFFF !important;
+  background-color: #172554 !important;
+  color: #60a5fa !important;
+  border-left: 3px solid #2563eb;
 }
+
 .main-content {
-  background-color: #FFFFFF;
+  background-color: #080c14;
+  color: #cbd5e1;
 }
+
 .custom-btn-primary {
-  background-color: #1565C0;
-  color: #FFFFFF;
-  border: 1px solid #1565C0;
-  border-radius: 0;
-  box-shadow: none;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: 1px solid #2563eb;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: none !important;
 }
+
+.custom-btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
 .custom-btn-info {
-  background-color: #F5F5F5;
-  color: #212121;
-  border: 1px solid #E0E0E0;
-  border-radius: 0;
-  box-shadow: none;
+  background-color: #111b2e;
+  color: #60a5fa;
+  border: 1px solid #1e3a8a;
+  border-radius: 8px;
+  box-shadow: none !important;
 }
+
 .custom-btn-warning {
-  background-color: #F57F17;
-  color: #FFFFFF;
-  border: 1px solid #F57F17;
-  border-radius: 0;
-  box-shadow: none;
+  background-color: #f59e0b;
+  color: #080c14;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: none !important;
 }
+
 .custom-btn-danger {
-  background-color: #C62828;
-  color: #FFFFFF;
-  border: 1px solid #C62828;
-  border-radius: 0;
-  box-shadow: none;
+  background-color: #ef4444;
+  color: #ffffff;
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  box-shadow: none !important;
 }
+
 .custom-btn-success {
-  background-color: #2E7D32;
-  color: #FFFFFF;
-  border: 1px solid #2E7D32;
-  border-radius: 0;
-  box-shadow: none;
+  background-color: #10b981;
+  color: #ffffff;
+  border: 1px solid #10b981;
+  border-radius: 8px;
+  box-shadow: none !important;
 }
+
 .custom-table {
-  background-color: #FFFFFF;
-  border: 1px solid #E0E0E0;
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
 }
+
 .custom-table th, .custom-table td {
-  border: 1px solid #E0E0E0;
-  color: #212121;
+  border: 1px solid #1e293b;
+  color: #cbd5e1;
 }
+
 .custom-table thead {
-  background-color: #F5F5F5;
+  background-color: #0b111e;
+  color: #94a3b8;
 }
+
 .custom-alert-info {
-  background-color: #F5F5F5;
-  color: #212121;
-  border: 1px solid #E0E0E0;
-  border-radius: 0;
-}
-.custom-badge {
-  border-radius: 0;
-}
-.bg-custom-success {
-  background-color: #2E7D32;
-  color: #FFFFFF;
-}
-.bg-custom-danger {
-  background-color: #C62828;
-  color: #FFFFFF;
-}
-.bg-custom-dark {
-  background-color: #0D47A1;
-}
-.custom-list-item {
-  border: 1px solid #E0E0E0;
-  border-radius: 0;
-  background-color: #FFFFFF;
-}
-.custom-input {
-  border: 1px solid #E0E0E0;
-  border-radius: 0;
-  background-color: #FFFFFF;
-  color: #212121;
-  box-shadow: none;
-}
-.custom-input:focus {
-  border-color: #1565C0;
-  box-shadow: none;
-}
-.metric-card {
-  background-color: #FFFFFF;
-  border: 1px solid #E0E0E0;
-  border-radius: 0;
-  padding: 1rem;
-  text-align: center;
-}
-.course-performance, .activity-card {
-  background-color: #FFFFFF;
-  border: 1px solid #E0E0E0;
-  border-radius: 0;
+  background-color: #0b111e;
+  color: #94a3b8;
+  border: 1px dashed #1e293b;
+  border-radius: 10px;
   padding: 1.5rem;
 }
+
+.custom-badge {
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.bg-custom-success {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.bg-custom-danger {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.bg-custom-dark {
+  background-color: #0b111e;
+}
+
+.custom-list-item {
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  background-color: #0f172a;
+  color: #cbd5e1;
+}
+
+.custom-input {
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  background-color: #0b111e;
+  color: #f8fafc;
+  box-shadow: none !important;
+}
+
+.custom-input:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.metric-card {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.course-performance, .activity-card {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
 .text-custom-muted {
-  color: #616161 !important;
+  color: #94a3b8 !important;
 }
+
 .text-custom-success {
-  color: #2E7D32 !important;
+  color: #34d399 !important;
 }
+
 .text-custom-primary {
-  color: #1565C0 !important;
+  color: #60a5fa !important;
 }
+
 .custom-progress {
-  border-radius: 0;
-  background-color: #F5F5F5;
-  height: 10px;
+  border-radius: 4px;
+  background-color: #1e293b;
+  height: 8px;
 }

@@ -1,0 +1,255 @@
+<div class="activacion-page">
+  <!-- Top Navigation Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="brand">
+        <a routerLink="/" class="brand-link">Skill<span>UP</span></a>
+      </div>
+      <div class="header-actions">
+        <a routerLink="/mis-solicitudes" class="btn-tracking">
+          <i class="bi bi-clock-history"></i> Mis Solicitudes
+        </a>
+        <button (click)="volver()" class="btn-back">
+          <i class="bi bi-arrow-left"></i> Volver a Mis Cursos
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-body">
+    <div class="form-wrapper">
+
+      <!-- Status banner -->
+      <div class="info-banner">
+        <div class="banner-icon">
+          <i class="bi bi-shield-exclamation"></i>
+        </div>
+        <div class="banner-text">
+          <h3>Solicitud de Activación de Cuenta</h3>
+          <p>
+            Tu cuenta fue deshabilitada temporalmente por haber alcanzado el límite de 2 intentos en la evaluación final. 
+            Completa este formulario adjuntando el comprobante de reactivación para que el administrador valide tu pago y restablezca tus intentos de evaluación.
+          </p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <!-- Columna Izquierda: Información de pago y cuentas -->
+        <div class="payment-info-card">
+          <h4><i class="bi bi-wallet2"></i> Canales de Pago</h4>
+          <p class="section-subtitle">Realiza el pago del monto predeterminado y adjunta la constancia.</p>
+
+          <!-- Tarjetas de métodos de pago -->
+          <div class="methods-selector">
+            <button 
+              type="button" 
+              class="method-btn" 
+              [class.active]="metodoPago === 'Yape'"
+              (click)="seleccionarMetodo('Yape')">
+              <i class="bi bi-phone"></i>
+              <span>Yape / Plin</span>
+            </button>
+            <button 
+              type="button" 
+              class="method-btn" 
+              [class.active]="metodoPago === 'Transferencia'"
+              (click)="seleccionarMetodo('Transferencia')">
+              <i class="bi bi-bank"></i>
+              <span>Transferencia</span>
+            </button>
+          </div>
+
+          <!-- Detalle de Yape -->
+          <div *ngIf="metodoPago === 'Yape'" class="method-details yape-box">
+            <div class="qr-placeholder">
+              <i class="bi bi-qr-code" style="font-size: 4rem; color: #7B1FA2;"></i>
+              <span class="qr-tag">Yape / Plin</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Número de Celular:</span>
+              <span class="value highlight">987 654 321</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Titular:</span>
+              <span class="value">SkillUp Educación Online S.A.C.</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Concepto:</span>
+              <span class="value">Reactivación de Cuenta - Evaluación</span>
+            </div>
+          </div>
+
+          <!-- Detalle de Transferencia -->
+          <div *ngIf="metodoPago === 'Transferencia'" class="method-details bank-box">
+            <div class="bank-item">
+              <div class="bank-name">
+                <i class="bi bi-building"></i> Banco de Crédito del Perú (BCP)
+              </div>
+              <div class="detail-row">
+                <span class="label">Cuenta Corriente Soles:</span>
+                <span class="value">191-98765432-0-15</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">CCI Interbancario:</span>
+                <span class="value">002-191009876543201588</span>
+              </div>
+            </div>
+
+            <div class="bank-item" style="margin-top: 1rem;">
+              <div class="bank-name">
+                <i class="bi bi-building"></i> BBVA Continental
+              </div>
+              <div class="detail-row">
+                <span class="label">Cuenta Corriente:</span>
+                <span class="value">0011-0123-0100045678</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">CCI Interbancario:</span>
+                <span class="value">011-12300010004567845</span>
+              </div>
+            </div>
+
+            <div class="detail-row" style="margin-top: 0.8rem;">
+              <span class="label">Titular:</span>
+              <span class="value">SkillUp Educación Online S.A.C.</span>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Importante -->
+          <div class="notice-card">
+            <i class="bi bi-clock-history"></i>
+            <div>
+              <strong>Tiempo de Validación:</strong>
+              <p>El administrador validará los datos enviados y obtendrás respuesta en un plazo máximo de <strong>24 horas</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Formulario de Registro de Solicitud -->
+        <div class="form-card">
+          <h4><i class="bi bi-file-earmark-text"></i> Datos del Comprobante</h4>
+          <p class="section-subtitle">Ingresa la información del depósito o transferencia realizada.</p>
+
+          <form (ngSubmit)="enviarSolicitud()" #solicitudForm="ngForm">
+
+            <!-- Monto predeterminado (readonly) -->
+            <div class="form-group">
+              <label for="montoInput" class="form-label">
+                Monto Predeterminado de Reactivación
+              </label>
+              <div class="amount-input-group">
+                <span class="currency-symbol">S/</span>
+                <input 
+                  type="text" 
+                  id="montoInput" 
+                  [value]="montoPredeterminado.toFixed(2)" 
+                  readonly 
+                  class="form-control readonly-input">
+                <span class="fixed-badge"><i class="bi bi-lock-fill"></i> Tarifa Fija</span>
+              </div>
+              <small class="helper-text">Monto estándar para el restablecimiento de intentos de evaluación académica.</small>
+            </div>
+
+            <!-- Método de pago seleccionado -->
+            <div class="form-group">
+              <label class="form-label">Método de Pago Seleccionado</label>
+              <input 
+                type="text" 
+                [value]="metodoPago === 'Yape' ? 'Yape / Plin' : 'Transferencia Bancaria'" 
+                readonly 
+                class="form-control readonly-input">
+            </div>
+
+            <!-- Número de Operación -->
+            <div class="form-group">
+              <label for="numOperacionInput" class="form-label">
+                Número de Operación <span class="required">*</span>
+              </label>
+              <div class="input-icon-wrapper">
+                <i class="bi bi-hash"></i>
+                <input 
+                  type="text" 
+                  id="numOperacionInput"
+                  name="numOperacion"
+                  [(ngModel)]="numOperacion"
+                  required
+                  placeholder="Ej: 009845123 o 1234567"
+                  class="form-control"
+                  autocomplete="off">
+              </div>
+              <small class="helper-text">Código único de operación emitido por tu banco o app Yape/Plin.</small>
+            </div>
+
+            <!-- Subir Comprobante -->
+            <div class="form-group">
+              <label class="form-label">
+                Comprobante de Pago (Imagen o PDF) <span class="required">*</span>
+              </label>
+
+              <div *ngIf="!archivoComprobante" class="upload-dropzone" (click)="fileInput.click()">
+                <i class="bi bi-cloud-arrow-up-fill upload-icon"></i>
+                <span class="upload-title">Haz clic aquí para seleccionar tu comprobante</span>
+                <span class="upload-sub">Formatos permitidos: JPG, PNG, WEBP, PDF (Máx. 10MB)</span>
+                <input 
+                  type="file" 
+                  #fileInput 
+                  (change)="onFileSelected($event)" 
+                  accept="image/jpeg,image/png,image/webp,application/pdf" 
+                  style="display: none;">
+              </div>
+
+              <!-- Archivo seleccionado -->
+              <div *ngIf="archivoComprobante" class="selected-file-card">
+                <div class="file-info">
+                  <i class="bi" [ngClass]="previewUrl ? 'bi-file-earmark-image' : 'bi-file-earmark-pdf'"></i>
+                  <div class="file-text">
+                    <span class="file-name">{{ nombreArchivo }}</span>
+                    <span class="file-size">{{ (archivoComprobante.size / 1024).toFixed(1) }} KB</span>
+                  </div>
+                </div>
+                <button type="button" class="btn-remove-file" (click)="removerArchivo()" title="Quitar archivo">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </div>
+
+              <!-- Vista previa si es imagen -->
+              <div *ngIf="previewUrl" class="image-preview-container">
+                <img [src]="previewUrl" alt="Vista previa del comprobante" class="img-preview">
+              </div>
+            </div>
+
+            <!-- Observación -->
+            <div class="form-group">
+              <label for="observacionInput" class="form-label">Observación o Mensaje (Opcional)</label>
+              <textarea 
+                id="observacionInput"
+                name="observacion"
+                [(ngModel)]="observacion"
+                rows="3"
+                class="form-control"
+                placeholder="Indica información adicional si es necesario..."></textarea>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="form-actions">
+              <button 
+                type="submit" 
+                class="btn-submit" 
+                [disabled]="enviando || !numOperacion || !archivoComprobante">
+                <span *ngIf="enviando" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!enviando" class="bi bi-send-fill me-1"></i>
+                {{ enviando ? 'Enviando solicitud...' : 'ENVIAR SOLICITUD' }}
+              </button>
+
+              <button type="button" class="btn-cancel" (click)="volver()">
+                Cancelar
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>

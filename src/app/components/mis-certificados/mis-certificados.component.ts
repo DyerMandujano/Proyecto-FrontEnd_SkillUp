@@ -103,7 +103,7 @@ export class MisCertificadosComponent implements OnInit {
     if (this.idEstudiante) {
         this.router.navigate(['/visualizar-cursos', this.idEstudiante]);
     } else {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
     }
   }
 }

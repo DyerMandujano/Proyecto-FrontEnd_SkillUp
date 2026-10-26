@@ -56,6 +56,10 @@ export class AuthService {
 
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('idEstudiante');
+    localStorage.removeItem('idDocente');
+    localStorage.removeItem('idRolEspecifico');
+    localStorage.removeItem('redirectAfterLogin');
   }
 
   getToken(): string | null {

@@ -53,4 +53,8 @@ export class ActualizarSeccionComponent implements OnInit {
       }
     });
   }
+
+  cancelar(): void {
+    this.router.navigate(['/seccion/curso', this.seccion.idCurso]);
+  }
 }

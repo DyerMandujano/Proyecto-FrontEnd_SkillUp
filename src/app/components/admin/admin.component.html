@@ -150,7 +150,7 @@
       <section *ngIf="seccionActiva === 'pagos'" class="seccion-panel">
         <div class="panel-header flex-header">
           <div>
-            <h2>Gestión de Renovación de Membresía (HU17)</h2>
+            <h2>Gestión de Renovación de Membresía</h2>
             <p class="subtitulo">Valida y aprueba o rechaza solicitudes de depósito con vouchers bancarios.</p>
           </div>
 
@@ -192,9 +192,9 @@
                 <td>{{ s.fecha_subida || '-' }}</td>
                 <td>
                   <span class="badge-estado" [ngClass]="{
-                    'estado-pendiente': s.estado?.toLowerCase() === 'pendiente',
-                    'estado-aprobado': s.estado?.toLowerCase() === 'aprobado',
-                    'estado-rechazado': s.estado?.toLowerCase() === 'rechazado'
+                    'estado-pendiente': s.estado.toLowerCase() === 'pendiente',
+                    'estado-aprobado': s.estado.toLowerCase() === 'aprobado',
+                    'estado-rechazado': s.estado.toLowerCase() === 'rechazado'
                   }">
                     {{ s.estado }}
                   </span>
@@ -204,15 +204,24 @@
                   <span *ngIf="!s.observacion" class="txt-muted">-</span>
                 </td>
                 <td class="acciones-celda">
+                  <button class="btn-sm btn-visualizar" (click)="abrirModalDetalle(s)" title="Ver detalle completo y comprobante adjunto">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    Visualizar
+                  </button>
+
                   <ng-container *ngIf="s.estado?.toLowerCase() === 'pendiente'">
-                    <button class="btn-sm btn-aprobar" (click)="aprobarSolicitud(s)" title="Aprobar pago y reactivar 30 días">
+                    <button class="btn-sm btn-aprobar" (click)="aprobarSolicitud(s)" title="Aprobar pago y reactivar cuenta">
                       ✓ Aprobar
                     </button>
                     <button class="btn-sm btn-rechazar" (click)="abrirModalRechazo(s)" title="Rechazar con motivo obligatorio">
                       ✕ Rechazar
                     </button>
                   </ng-container>
-                  <span *ngIf="s.estado?.toLowerCase() !== 'pendiente'" class="txt-muted">
+
+                  <span *ngIf="s.estado?.toLowerCase() !== 'pendiente'" class="txt-muted badge-procesado">
                     Procesado
                   </span>
                 </td>
@@ -273,7 +282,7 @@
                 <td>{{ u.nombre_completo || u.nombres }}</td>
                 <td>{{ u.username }}</td>
                 <td>
-                  <span class="badge-role-tag" [ngClass]="'role-' + u.rol?.toLowerCase()">
+                  <span class="badge-role-tag" [ngClass]="'role-' + u.rol.toLowerCase()">
                     {{ u.rol | uppercase }}
                   </span>
                 </td>
@@ -399,6 +408,178 @@
         <button class="btn-peligro" (click)="confirmarRechazo()" [disabled]="cargando || !motivoRechazo.trim()">
           Confirmar Rechazo
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================== -->
+  <!-- MODAL: DETALLE COMPLETO DE LA SOLICITUD Y VOUCHER    -->
+  <!-- ==================================================== -->
+  <div *ngIf="modalDetalleAbierto && solicitudDetalle" class="modal-backdrop">
+    <div class="modal-card modal-card-lg">
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <span class="modal-badge-id">Solicitud #{{ solicitudDetalle.id_solicitud }}</span>
+          <h3>Detalle de Solicitud de Membresía / Reactivación</h3>
+        </div>
+        <button class="btn-close" (click)="cerrarModalDetalle()">✕</button>
+      </div>
+
+      <div class="modal-body modal-body-scrollable">
+        <div class="detalle-grid">
+          
+          <!-- COLUMNA IZQUIERDA: INFORMACIÓN DE LA SOLICITUD Y ALUMNO -->
+          <div class="detalle-info-col">
+            
+            <div class="info-group-box">
+              <h4 class="info-group-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Datos del Estudiante
+              </h4>
+              <div class="info-row">
+                <span class="info-lbl">Estudiante:</span>
+                <span class="info-val fw-bold">{{ solicitudDetalle.estudianteNombre || 'Estudiante #' + solicitudDetalle.id_estudiante }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-lbl">DNI:</span>
+                <span class="info-val">{{ solicitudDetalle.estudianteDni || '-' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-lbl">Correo / Usuario:</span>
+                <span class="info-val text-primary">{{ solicitudDetalle.username || '-' }}</span>
+              </div>
+            </div>
+
+            <div class="info-group-box">
+              <h4 class="info-group-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                  <line x1="2" y1="10" x2="22" y2="10"></line>
+                </svg>
+                Datos del Depósito / Pago
+              </h4>
+              <div class="info-row">
+                <span class="info-lbl">Método de Pago:</span>
+                <span class="info-val">
+                  <span class="metodo-badge" [class.metodo-yape]="solicitudDetalle.metodo_pago === 'Yape'">
+                    {{ solicitudDetalle.metodo_pago }}
+                  </span>
+                </span>
+              </div>
+              <div class="info-row highlight-row">
+                <span class="info-lbl">N° de Operación:</span>
+                <span class="info-val operacion-code">{{ solicitudDetalle.num_operacion }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-lbl">Monto Declarado:</span>
+                <span class="info-val monto-highlight">S/ {{ solicitudDetalle.monto | number:'1.2-2' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-lbl">Fecha de Subida:</span>
+                <span class="info-val">{{ solicitudDetalle.fecha_subida || '-' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-lbl">Estado Actual:</span>
+                <span class="info-val">
+                  <span class="badge-estado" [ngClass]="{
+                    'estado-pendiente': solicitudDetalle.estado.toLowerCase() === 'pendiente',
+                    'estado-aprobado': solicitudDetalle.estado.toLowerCase() === 'aprobado',
+                    'estado-rechazado': solicitudDetalle.estado.toLowerCase() === 'rechazado'
+                  }">
+                    {{ solicitudDetalle.estado }}
+                  </span>
+                </span>
+              </div>
+              <div class="info-row" *ngIf="solicitudDetalle.fecha_revision">
+                <span class="info-lbl">Fecha Revisión:</span>
+                <span class="info-val">{{ solicitudDetalle.fecha_revision }}</span>
+              </div>
+            </div>
+
+            <!-- OBSERVACIONES -->
+            <div class="info-group-box" *ngIf="solicitudDetalle.observacion">
+              <h4 class="info-group-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                {{ solicitudDetalle.estado.toLowerCase() === 'rechazado' ? 'Motivo del Rechazo' : 'Nota / Observación' }}
+              </h4>
+              <p class="observacion-caja" [class.caja-rechazo]="solicitudDetalle.estado.toLowerCase() === 'rechazado'">
+                {{ solicitudDetalle.observacion }}
+              </p>
+            </div>
+
+          </div>
+
+          <!-- COLUMNA DERECHA: VISOR DEL COMPROBANTE -->
+          <div class="detalle-voucher-col">
+            <div class="voucher-box-header">
+              <h4>Comprobante de Pago (Voucher / Captura)</h4>
+              <a *ngIf="solicitudDetalle.imagen_comprobante" 
+                 [href]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" 
+                 target="_blank" 
+                 class="btn-abrir-externo" 
+                 title="Abrir comprobante en tamaño completo">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                Ver pantalla completa
+              </a>
+            </div>
+
+            <!-- Imagen -->
+            <div *ngIf="solicitudDetalle.imagen_comprobante && !esPdf(solicitudDetalle.imagen_comprobante)" class="voucher-img-wrapper">
+              <a [href]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" target="_blank" title="Clic para ampliar imagen">
+                <img [src]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" 
+                     alt="Comprobante de pago" 
+                     class="voucher-img-preview" />
+              </a>
+              <span class="voucher-hint">🔍 Clic en la imagen para abrirla en tamaño original</span>
+            </div>
+
+            <!-- PDF -->
+            <div *ngIf="solicitudDetalle.imagen_comprobante && esPdf(solicitudDetalle.imagen_comprobante)" class="voucher-pdf-wrapper">
+              <div class="pdf-icon-card">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#D32F2F" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <p>Comprobante en formato PDF</p>
+                <a [href]="obtenerUrlComprobante(solicitudDetalle.imagen_comprobante)" target="_blank" class="btn-primario btn-sm">
+                  Abrir documento PDF
+                </a>
+              </div>
+            </div>
+
+            <!-- Sin archivo -->
+            <div *ngIf="!solicitudDetalle.imagen_comprobante" class="voucher-empty">
+              <span class="empty-icon">📁</span>
+              <p>No se subió imagen o comprobante para esta solicitud.</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <ng-container *ngIf="solicitudDetalle.estado.toLowerCase() === 'pendiente'">
+          <button class="btn-aprobar btn-modal-action" (click)="aprobarDesdeDetalle()">
+            ✓ Aprobar Pago y Reactivar
+          </button>
+          <button class="btn-rechazar btn-modal-action" (click)="rechazarDesdeDetalle()">
+            ✕ Rechazar con Observación
+          </button>
+        </ng-container>
+        <button class="btn-secundario" (click)="cerrarModalDetalle()">Cerrar</button>
       </div>
     </div>
   </div>

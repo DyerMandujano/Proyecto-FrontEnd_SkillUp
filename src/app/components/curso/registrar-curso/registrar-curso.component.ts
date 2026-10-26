@@ -63,19 +63,50 @@ export class RegistrarCursoComponent implements OnInit {
     });
   }
 
+  subiendoImagen1: boolean = false;
+  subiendoImagen2: boolean = false;
+
+  obtenerUrlImagen(imagen: string | null | undefined): string {
+    return this.cursoService.obtenerUrlImagen(imagen);
+  }
+
+  manejarErrorImagen(event: Event): void {
+    this.cursoService.manejarErrorImagen(event);
+  }
+
   onFileSelected(event: any, tipo: number): void {
     const file: File = event.target.files[0];
-
-    if (!file) {
-        return;
-    }
-
-    const fileName = file.name;
+    if (!file) return;
 
     if (tipo === 1) {
-      this.nuevoCurso.imagenCurso1 = fileName;
+      this.subiendoImagen1 = true;
     } else {
-      this.nuevoCurso.imagenCurso2 = fileName;
+      this.subiendoImagen2 = true;
     }
+
+    this.cursoService.subirImagen(file).subscribe({
+      next: (res) => {
+        if (tipo === 1) {
+          this.nuevoCurso.imagenCurso1 = res.fileName;
+          this.subiendoImagen1 = false;
+        } else {
+          this.nuevoCurso.imagenCurso2 = res.fileName;
+          this.subiendoImagen2 = false;
+        }
+      },
+      error: () => {
+        if (tipo === 1) {
+          this.nuevoCurso.imagenCurso1 = file.name;
+          this.subiendoImagen1 = false;
+        } else {
+          this.nuevoCurso.imagenCurso2 = file.name;
+          this.subiendoImagen2 = false;
+        }
+      }
+    });
+  }
+
+  cancelar(): void {
+    this.router.navigate(['/docente', this.idDocente]);
   }
 }

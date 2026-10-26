@@ -1,8 +1,14 @@
+/* ==========================================================================
+   SKILLUP - LECCIONES DE CURSO
+   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Acentos: Royal Blue (#2563eb) & Electric Sky (#60a5fa)
+   ========================================================================== */
+
 .main-container {
-  background-color: #FFFFFF;
-  color: #212121;
+  background-color: #080c14;
+  color: #f8fafc;
   min-height: 100vh;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
 }
 
 .row-container {
@@ -11,123 +17,172 @@
 
 .sidebar {
   width: 250px;
-  background-color: #F5F5F5;
+  background-color: #0b111e;
   padding: 20px;
-  border-right: 1px solid #E0E0E0;
+  border-right: 1px solid #1e293b;
+  flex-shrink: 0;
 }
 
 .sidebar-title {
-  color: #0D47A1;
-  font-weight: bold;
+  color: #ffffff;
+  font-weight: 800;
   margin-bottom: 20px;
   font-size: 18px;
+  letter-spacing: -0.02em;
 }
 
 .nav-menu {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .nav-item {
   background: none;
   border: none;
   text-align: left;
-  padding: 10px;
-  color: #616161;
+  padding: 10px 14px;
+  color: #94a3b8;
   cursor: pointer;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.nav-item:hover {
+  background-color: #111b2e;
+  color: #f8fafc;
 }
 
 .nav-item.active {
-  background-color: #1565C0;
-  color: #FFFFFF;
+  background-color: #172554;
+  color: #60a5fa;
+  border-left: 3px solid #2563eb;
 }
 
 .content {
   flex-grow: 1;
-  padding: 20px;
+  padding: 24px 32px;
+  background-color: #080c14;
 }
 
 .section-title {
-  color: #0D47A1;
-  font-weight: bold;
+  color: #ffffff;
+  font-weight: 800;
   margin-bottom: 20px;
   font-size: 22px;
+  letter-spacing: -0.02em;
 }
 
 .actions {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .btn {
-  padding: 10px 15px;
+  padding: 9px 16px;
   border: none;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: none !important;
 }
 
 .btn-primary {
-  background-color: #1565C0;
-  color: #FFFFFF;
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
 }
 
 .btn-secondary {
-  background-color: #F5F5F5;
-  color: #212121;
-  border: 1px solid #E0E0E0;
+  background-color: #111b2e;
+  color: #cbd5e1;
+  border: 1px solid #1e293b;
+}
+
+.btn-secondary:hover {
+  background-color: #172554;
+  color: #ffffff;
 }
 
 .btn-warning {
-  background-color: #F57F17;
-  color: #FFFFFF;
+  background-color: #f59e0b;
+  color: #080c14;
 }
 
 .btn-danger {
-  background-color: #C62828;
-  color: #FFFFFF;
+  background-color: #ef4444;
+  color: #ffffff;
 }
 
 .alert-info {
-  background-color: #F5F5F5;
-  color: #616161;
-  padding: 15px;
+  background-color: #0b111e;
+  color: #94a3b8;
+  padding: 20px;
   text-align: center;
-  border: 1px solid #E0E0E0;
+  border: 1px dashed #1e293b;
+  border-radius: 10px;
 }
 
 .custom-table {
   width: 100%;
   border-collapse: collapse;
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
 }
 
 .custom-table th, .custom-table td {
-  padding: 12px;
+  padding: 12px 14px;
   text-align: left;
-  border-bottom: 1px solid #E0E0E0;
+  border-bottom: 1px solid #1e293b;
+  color: #cbd5e1;
 }
 
 .custom-table th {
-  background-color: #F5F5F5;
-  color: #0D47A1;
+  background-color: #0b111e;
+  color: #94a3b8;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 
 .badge {
-  padding: 5px 10px;
-  color: #FFFFFF;
+  padding: 4px 10px;
+  color: #ffffff;
   font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
 }
 
 .badge-success {
-  background-color: #2E7D32;
+  background-color: #10b981;
 }
 
 .badge-danger {
-  background-color: #C62828;
+  background-color: #ef4444;
 }
 
 .action-buttons {
   display: flex;
-  gap: 5px;
+  gap: 6px;
+}
+
+@media (max-width: 768px) {
+  .row-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #1e293b;
+  }
+  .content {
+    padding: 16px;
+  }
 }

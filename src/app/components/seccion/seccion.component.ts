@@ -50,10 +50,11 @@ export class SeccionComponent implements OnInit {
   }
 
   volverAlPanelDeCursos(): void {
-    if (this.idDocente) {
-      this.router.navigate([`/docente/${this.idDocente}`]);
+    const id = this.idDocente || Number(localStorage.getItem('idDocente'));
+    if (id) {
+      this.router.navigate([`/docente/${id}`]);
     } else {
-      alert('No se pudo determinar el docente. Intenta ingresar nuevamente desde el panel principal.');
+      this.router.navigate(['/']);
     }
   }
   

@@ -1,0 +1,444 @@
+/* ==========================================================================
+   SKILLUP - ESTADO DE SOLICITUD
+   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Sin sombras y 100% responsive
+   ========================================================================== */
+
+.tracking-page {
+  min-height: 100vh;
+  background-color: #080c14;
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  background-color: #080c14;
+  border-bottom: 1px solid #161f30;
+  padding: 0.85rem 2rem;
+  box-shadow: none !important;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.brand-link {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+.brand-link span {
+  color: #60a5fa;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-new-request {
+  background-color: #2563eb;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 0.88rem;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.15s;
+  box-shadow: none !important;
+}
+
+.btn-new-request:hover {
+  background-color: #1d4ed8;
+  color: #ffffff;
+}
+
+.btn-back {
+  background-color: transparent;
+  color: #94a3b8;
+  border: 1px solid #1e293b;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  font-size: 0.88rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.15s;
+  box-shadow: none !important;
+}
+
+.btn-back:hover {
+  background-color: #111b2e;
+  color: #ffffff;
+}
+
+.page-body {
+  flex: 1;
+  padding: 2.5rem 1.5rem;
+}
+
+.content-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.page-title-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title-section h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.btn-refresh {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  color: #cbd5e1;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s;
+  box-shadow: none !important;
+}
+
+.btn-refresh:hover {
+  background-color: #172554;
+  color: #60a5fa;
+  border-color: #2563eb;
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: none !important;
+}
+
+.summary-card .card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.card-total .card-icon {
+  background-color: #101e38;
+  border: 1px solid #1e3a8a;
+  color: #60a5fa;
+}
+
+.card-pending .card-icon {
+  background-color: #271b12;
+  border: 1px solid #9a3412;
+  color: #fb923c;
+}
+
+.card-approved .card-icon {
+  background-color: #062817;
+  border: 1px solid #065f46;
+  color: #34d399;
+}
+
+.card-rejected .card-icon {
+  background-color: #280e11;
+  border: 1px solid #7f1d1d;
+  color: #f87171;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-info .count {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.card-info .title {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.loading-state, .empty-card {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background-color: #0f172a;
+  border: 1px dashed #1e293b;
+  border-radius: 12px;
+  color: #94a3b8;
+}
+
+.solicitudes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.solicitud-card {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-left-width: 5px;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: none !important;
+  transition: border-color 0.15s;
+}
+
+.border-pending {
+  border-left-color: #f59e0b;
+}
+
+.border-approved {
+  border-left-color: #10b981;
+}
+
+.border-rejected {
+  border-left-color: #ef4444;
+}
+
+.solicitud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #1e293b;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.id-date {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.solicitud-id {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.solicitud-date {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.badge-status {
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.badge-pending {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.badge-approved {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.badge-rejected {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.data-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-label {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.2rem;
+}
+
+.data-val {
+  font-size: 0.95rem;
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+.data-val.code {
+  font-family: monospace;
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  color: #60a5fa;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.data-val.price {
+  color: #34d399;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.text-purple {
+  color: #c084fc;
+}
+
+.notes-box {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  margin-bottom: 0.85rem;
+}
+
+.rejection-box {
+  background-color: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-left: 4px solid #ef4444;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.rejection-title {
+  font-weight: 700;
+  color: #f87171;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.rejection-text {
+  color: #fca5a5;
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.approval-box {
+  background-color: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-left: 4px solid #10b981;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+  color: #34d399;
+}
+
+.pending-notice {
+  background-color: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: #fbbf24;
+  margin-bottom: 0.85rem;
+}
+
+.voucher-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #1e293b;
+}
+
+.voucher-label {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.voucher-link {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.voucher-link:hover {
+  color: #38bdf8;
+  text-decoration: underline;
+}

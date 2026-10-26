@@ -1,249 +1,289 @@
-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: #FFFFFF; 
+/* ==========================================================================
+   SKILLUP - DETALLE Y DESCRIPCIÓN DEL CURSO
+   Estilo: Dark Navy (#080C14 / #0B111E / #0F172A)
+   Acentos: Royal Blue (#2563EB) & Sky Blue (#60A5FA)
+   Sin sombras y 100% responsive
+   ========================================================================== */
+
+:host {
+  display: block;
+  background-color: #080c14;
+  color: #f8fafc;
+  min-height: 100vh;
 }
 
-.skillup-title {
-    background-color: #1565C0; 
-    color: #FFFFFF; 
-    padding: 10px;
-    border-radius: 0;
-    text-align: center;
-    margin: 0;
+.curso-page-wrapper {
+  background-color: #080c14;
+  color: #f8fafc;
+  min-height: 100vh;
 }
 
-.curriculum-sidebar {
-    min-height: 100vh;
-    background-color: #F5F5F5;
-    border-right: 1px solid #E0E0E0;
+/* NAVBAR SUPERIOR COHERENTE */
+.curso-nav {
+  background-color: #080c14;
+  border-bottom: 1px solid #1e293b;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
 }
 
-.lesson-item {
-    border-bottom: 1px solid #E0E0E0;
-    padding-bottom: 10px;
+.text-primary-accent {
+  color: #3b82f6 !important;
 }
 
-.lesson-title {
-    font-weight: bold;
-    color: #212121; 
-    margin-bottom: 5px;
+.tracking-tight {
+  letter-spacing: -0.025em;
 }
 
-.resources-btn {
-    font-size: 0.8rem;
-    padding: 2px 8px;
-    border-color: #1565C0; 
-    color: #1565C0; 
-    border-radius: 0;
+/* HERO CARD DEL CURSO */
+.curso-hero-card {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: none !important;
 }
 
-.resources-btn:hover {
-    background-color: #1565C0; 
-    color: #FFFFFF; 
+.curso-hero-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
 }
 
-.resource-link {
-    color: #1565C0; 
-    font-size: 0.9rem;
+.curso-hero-summary {
+  font-size: 1.05rem;
+  color: #94a3b8;
+  line-height: 1.6;
 }
 
-.resource-link:hover {
-    color: #0D47A1; 
-}
-
-.progress-section {
-    border: 1px solid #E0E0E0;
-    border-radius: 0;
-    padding: 20px;
-    background: #FFFFFF; 
-}
-
-.progress {
-    height: 10px;
-    border-radius: 0;
-}
-
-.progress-bar {
-    background-color: #1565C0; 
-}
-
-.lesson-video iframe {
-    border-radius: 0;
-}
-
-.nav-tabs .nav-link {
-    color: #212121; 
-    border-radius: 0;
-}
-
-.nav-tabs .nav-link.active {
-    background-color: #1565C0; 
-    color: #FFFFFF; 
-    border-radius: 0;
-}
-
-.lesson-description, .qa-section, .student-notes, .reviews-section, .announcements-section, .tools-section {
-    border: 1px solid #E0E0E0;
-    border-radius: 0;
-    padding: 20px;
-    background: #FFFFFF; 
-}
-
-.lesson-description h6, .qa-section h6, .student-notes h6, .reviews-section h6, .announcements-section h6, .tools-section h6 {
-    color: #1565C0; 
-    font-weight: bold;
-}
-
-.lesson-controls .btn {
-    min-width: 120px;
-    border-radius: 0;
-}
-
-.review-card {
-    border: 1px solid #E0E0E0;
-    border-radius: 0;
-    padding: 15px;
-    margin-bottom: 15px;
-    background: #FFFFFF; 
-}
-
-.star {
-    color: #F57F17; 
-}
-
-.metric-card {
-    border: 1px solid #E0E0E0;
-    border-radius: 0;
-    padding: 20px;
-    text-align: center;
-    background: #FFFFFF; 
-}
-
-.metric-card h4 {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #212121; 
-}
-
-.metric-card small {
-    color: #616161;
-}
-
-.course-performance {
-    border: 1px solid #E0E0E0;
-    border-radius: 0;
-    padding: 20px;
-    background: #FFFFFF; 
-}
-
-.activity-card {
-    border: 1px solid #E0E0E0;
-    border-radius: 0;
-    padding: 20px;
-    background: #FFFFFF; 
-}
-
-.course-header {
-    background: #FFFFFF; 
-    color: #212121; 
-    padding: 40px 0;
-    border-bottom: 1px solid #E0E0E0;
-}
-
-.course-video {
-    border-radius: 0;
-}
-
-.rating {
-    display: flex;
-    align-items: center;
-}
-
-.rating .star {
-    font-size: 1.2rem;
-}
-
-.instructor-info {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.instructor-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 0;
-    margin-right: 15px;
-}
-
-.course-content {
-    margin-top: 30px;
-}
-
-.section-title {
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #212121; 
-}
-
-.enroll-section {
-    text-align: center;
-    margin-top: 30px;
-}
-
-.enroll-btn {
-    background-color: #1565C0; 
-    color: #FFFFFF; 
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    border-radius: 0;
-}
-
-.enroll-btn:hover {
-    background-color: #0D47A1; 
-}
-
-.curriculum-item {
-    padding: 10px 0;
-    border-bottom: 1px solid #E0E0E0;
-}
-
-.module-card {
-  background: #F5F5F5;
-  border-radius: 0;
-  padding: 1.5rem;
-  border-left: 4px solid #1565C0;
-  transition: transform 0.2s;
-}
-
-.module-card:hover {
-  transform: translateY(-2px);
-  box-shadow: none;
-}
-
-.module-title {
-  color: #212121;
+/* PILLS Y CHIPS */
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 0.82rem;
   font-weight: 600;
-  margin-bottom: 1rem;
+  box-shadow: none !important;
 }
 
-.lesson-list {
-  list-style: none;
-  padding-left: 0;
-  margin-bottom: 0;
+.pill-badge-blue {
+  background-color: #101e38;
+  border: 1px solid #1e3a8a;
+  color: #60a5fa;
 }
 
-.lesson-list li {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #E0E0E0;
+.pill-badge-slate {
+  background-color: #111b2e;
+  border: 1px solid #1e293b;
+  color: #cbd5e1;
+}
+
+/* CAJA MULTIMEDIA & MATRÍCULA */
+.curso-media-box {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: none !important;
+}
+
+.media-cover-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #080c14;
+  border: 1px solid #1e293b;
+}
+
+.media-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumb-img {
+  width: 72px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+  cursor: pointer;
+  opacity: 0.65;
+  transition: all 0.15s ease;
+}
+
+.thumb-img:hover {
+  opacity: 1;
+  border-color: #3b82f6;
+}
+
+.thumb-img.active-thumb {
+  opacity: 1;
+  border: 2px solid #2563eb;
+}
+
+/* TARJETAS DE CONTENIDO */
+.curso-content-card {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 1.75rem;
+  box-shadow: none !important;
+}
+
+.card-section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
   display: flex;
   align-items: center;
 }
 
-.lesson-list li:last-child {
-  border-bottom: none;
+.card-section-text {
+  color: #cbd5e1;
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+/* TEMARIO / MÓDULOS / LECCIONES */
+.modules-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.module-item {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: none !important;
+}
+
+.module-header {
+  background-color: #0e1729;
+  border-bottom: 1px solid #162035;
+}
+
+.lesson-sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lesson-subitem {
+  border-top: 1px solid #162035;
+  transition: background-color 0.15s ease;
+}
+
+.lesson-subitem:first-child {
+  border-top: none;
+}
+
+.lesson-subitem:hover {
+  background-color: #131d33;
+}
+
+.empty-syllabus {
+  background-color: #0b111e;
+  border: 1px dashed #1e293b;
+  border-radius: 10px;
+}
+
+.syllabus-locked-banner {
+  background-color: #0b111e;
+  border: 1px dashed #1e293b;
+  box-shadow: none !important;
+}
+
+.review-notice-box {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  box-shadow: none !important;
+}
+
+/* INSTRUCTOR */
+.instructor-avatar-wrap {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-color: #1e293b;
+  color: #60a5fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  border: 1px solid #334155;
+}
+
+/* SIDEBAR DE RESEÑAS */
+.sticky-sidebar {
+  position: sticky;
+  top: 85px;
+}
+
+.review-form-box {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  box-shadow: none !important;
+}
+
+.reviews-scroll-container {
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.reviews-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.reviews-scroll-container::-webkit-scrollbar-track {
+  background: #080c14;
+}
+
+.reviews-scroll-container::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+
+.review-item-card {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  box-shadow: none !important;
+}
+
+/* RESPONSIVE */
+@media (max-width: 991px) {
+  .curso-hero-title {
+    font-size: 1.8rem;
+  }
+
+  .curso-hero-card {
+    padding: 1.5rem;
+  }
+
+  .sticky-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 576px) {
+  .curso-hero-title {
+    font-size: 1.5rem;
+  }
+
+  .curso-hero-card,
+  .curso-content-card {
+    padding: 1.25rem;
+  }
 }

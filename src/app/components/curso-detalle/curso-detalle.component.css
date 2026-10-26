@@ -1,16 +1,237 @@
-.bg-skillup-estudiante { background-color: #FFFFFF; }
-.bg-skillup-tarjeta { background-color: #FFFFFF; border: 1px solid #E0E0E0; }
-.bg-dark-custom { background-color: #F5F5F5 !important; }
-.btn-yellow { background-color: #F57F17; color: #FFFFFF; font-weight: 600; border: none; }
-.btn-yellow:hover { background-color: #E65100; }
-.custom-tabs-container { background-color: #FFFFFF; border-bottom: 1px solid #E0E0E0 !important; }
-.tab-btn { background-color: transparent; color: #616161; border: none; padding: 0.8rem 1.5rem; font-weight: 500; border-bottom: 3px solid transparent; }
-.tab-btn:hover { color: #212121; }
-.tab-btn.active { color: #1565C0; border-bottom: 3px solid #1565C0; }
-.tab-content-box { background-color: #FFFFFF; min-height: 250px; }
-.custom-input, .custom-textarea { background-color: #F5F5F5; border: 1px solid #E0E0E0; color: #212121; }
-.custom-input:focus, .custom-textarea:focus { border-color: #1565C0; }
-.custom-input::placeholder, .custom-textarea::placeholder { color: #9E9E9E; }
-.empty-state-box { border: 1px dashed #E0E0E0; background-color: #F5F5F5; }
-.fadeIn { animation: fadeIn 0.3s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* ==========================================================================
+   SKILLUP - AULA VIRTUAL Y REPRODUCTOR DE CLASES (CURSO DETALLE)
+   Dark Navy Slate (#080C14 / #0F172A / #0B111E)
+   Acentos: Royal Blue (#2563EB) & Electric Sky (#60A5FA)
+   Sin sombras y 100% responsive
+   ========================================================================== */
+
+:host {
+  display: block;
+  background-color: #080c14;
+  color: #f8fafc;
+  min-height: 100vh;
+}
+
+.aula-wrapper {
+  background-color: #080c14;
+  color: #f8fafc;
+  min-height: 100vh;
+}
+
+.border-dark-subtle {
+  border-color: #1e293b !important;
+}
+
+.text-primary-accent {
+  color: #60a5fa !important;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.brand-logo-small {
+  width: 38px;
+  height: 38px;
+  background-color: #101e38;
+  border: 1px solid #1e3a8a;
+  border-radius: 8px;
+  font-size: 1.25rem;
+}
+
+/* TARJETAS PANEL DARK */
+.dark-panel {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  box-shadow: none !important;
+}
+
+/* BARRA DE PROGRESO */
+.progress-dark {
+  background-color: #1e293b;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* SCROLLBARS Y TEMARIO */
+.syllabus-scroll-box {
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.syllabus-scroll-box::-webkit-scrollbar {
+  width: 5px;
+}
+
+.syllabus-scroll-box::-webkit-scrollbar-track {
+  background: #080c14;
+}
+
+.syllabus-scroll-box::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+
+.module-group {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: none !important;
+}
+
+.module-group-header {
+  cursor: pointer;
+  background-color: #0e1729;
+  border-bottom: 1px solid #162035;
+  transition: background-color 0.15s ease;
+}
+
+.module-group-header:hover {
+  background-color: #131e35;
+}
+
+.lesson-accordion-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lesson-accordion-item {
+  border-top: 1px solid #162035;
+  transition: background-color 0.15s ease;
+  box-shadow: none !important;
+}
+
+.lesson-accordion-item:first-child {
+  border-top: none;
+}
+
+.lesson-accordion-item:hover {
+  background-color: #101a2f;
+}
+
+.lesson-accordion-item.lesson-active {
+  background-color: #101e38;
+  border-left: 3px solid #2563eb;
+}
+
+.btn-resources-pill {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  background-color: #111b2e;
+  border: 1px solid #1e293b;
+  color: #60a5fa;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: none !important;
+}
+
+.btn-resources-pill:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.resource-doc-link {
+  color: #cbd5e1;
+  font-size: 0.8rem;
+  transition: color 0.15s ease;
+}
+
+.resource-doc-link:hover {
+  color: #60a5fa;
+}
+
+/* REPRODUCTOR */
+.player-header {
+  background-color: #0b111e;
+  border-bottom: 1px solid #1e293b;
+}
+
+.player-footer {
+  background-color: #0b111e;
+  border-top: 1px solid #1e293b;
+}
+
+.empty-player-state {
+  min-height: 450px;
+  background-color: #080c14;
+}
+
+.bg-dark-subtle-box {
+  background-color: #0b111e;
+  color: #cbd5e1;
+}
+
+/* PESTAÑAS */
+.tabs-header {
+  background-color: #0b111e;
+  border-bottom: 1px solid #1e293b;
+}
+
+.tab-item-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #94a3b8;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tab-item-btn:hover {
+  color: #f8fafc;
+}
+
+.tab-item-btn.active {
+  color: #60a5fa;
+  border-bottom: 2px solid #2563eb;
+  font-weight: 600;
+}
+
+/* INPUTS DARK */
+.form-control-dark {
+  background-color: #0b111e !important;
+  border: 1px solid #1e293b !important;
+  color: #f8fafc !important;
+  border-radius: 6px;
+  box-shadow: none !important;
+}
+
+.form-control-dark:focus {
+  border-color: #2563eb !important;
+  outline: none !important;
+}
+
+.form-control-dark::placeholder {
+  color: #64748b !important;
+}
+
+.empty-panel {
+  background-color: #0b111e;
+  border: 1px dashed #1e293b;
+}
+
+.forum-item {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  box-shadow: none !important;
+}
+
+/* DOCX PREVIEW WRAPPER EN TEMA OSCURO */
+.docx-preview-dark {
+  background: #ffffff;
+  color: #1e293b;
+  border-radius: 6px;
+  padding: 10px;
+}

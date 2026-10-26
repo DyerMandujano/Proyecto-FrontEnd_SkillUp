@@ -46,4 +46,7 @@ export class RegistrarSeccionComponent implements OnInit {
     });
   }
 
+  cancelar() {
+    this.router.navigate(['/seccion/curso', this.idCurso]);
+  }
 }

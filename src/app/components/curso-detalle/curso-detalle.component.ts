@@ -11,6 +11,8 @@ import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
 import { FormsModule } from '@angular/forms'; 
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
+import * as XLSX from 'xlsx';
+import { renderAsync } from 'docx-preview';
 
 @Component({
   selector: 'app-curso-detalle',
@@ -37,7 +39,19 @@ export class CursoDetalleComponent implements OnInit {
   vistaActiva: 'video' | 'material' = 'video';
   materialSeleccionadoUrl: SafeResourceUrl | null = null;
   materialSeleccionadoRawUrl: string | null = null; 
+  materialSeleccionadoNombre: string = '';
+  tipoMaterialActual: 'pdf' | 'imagen' | 'word' | 'excel' | 'otro' = 'pdf';
   esPdf: boolean = false;
+  cargandoMaterial: boolean = false;
+  errorCargaMaterial: boolean = false;
+  docxRenderError: boolean = false;
+
+  // Variables para hojas Excel
+  excelWorkbook: any = null;
+  excelSheetNames: string[] = [];
+  hojaExcelActiva: string = '';
+  excelData: any[][] = [];
+
   pestanaActiva: string = 'descripcion';
 
   nuevaPregunta: string = '';
@@ -230,7 +244,28 @@ export class CursoDetalleComponent implements OnInit {
     this.router.navigate(['/evaluacion/seccion', this.currentSeccion.idSeccion]);
   }
 
-  verMaterialEnPantalla(urlRuta: string | undefined): void {
+  getIconoMaterial(url: string | undefined): string {
+    if (!url) return 'bi-file-earmark-text text-secondary';
+    const u = url.split('?')[0].toLowerCase();
+    if (u.endsWith('.pdf')) return 'bi-file-earmark-pdf-fill text-danger';
+    if (u.endsWith('.doc') || u.endsWith('.docx')) return 'bi-file-earmark-word-fill text-primary';
+    if (u.endsWith('.xls') || u.endsWith('.xlsx') || u.endsWith('.csv')) return 'bi-file-earmark-excel-fill text-success';
+    if (u.endsWith('.png') || u.endsWith('.jpg') || u.endsWith('.jpeg') || u.endsWith('.gif') || u.endsWith('.webp') || u.endsWith('.svg')) return 'bi-file-earmark-image-fill text-warning';
+    return 'bi-file-earmark-text-fill text-secondary';
+  }
+
+  extraerNombreDeUrl(url: string): string {
+    if (!url) return 'Recurso de aprendizaje';
+    const partes = url.replace(/\\/g, '/').split('/');
+    const nombre = partes[partes.length - 1];
+    try {
+      return decodeURIComponent(nombre.replace(/^\d+_/, ''));
+    } catch (e) {
+      return nombre.replace(/^\d+_/, '');
+    }
+  }
+
+  verMaterialEnPantalla(urlRuta: string | undefined, nombreArchivo?: string): void {
     if (!urlRuta) {
       this.materialSeleccionadoUrl = null;
       this.materialSeleccionadoRawUrl = null; 
@@ -239,52 +274,173 @@ export class CursoDetalleComponent implements OnInit {
     }
     const urlNormalizada = urlRuta.replace(/\\/g, '/');
     const urlMinuscula = urlNormalizada.toLowerCase();
-    const esDocx = urlMinuscula.endsWith('.docx') || urlMinuscula.endsWith('.doc');
-    this.esPdf = urlMinuscula.endsWith('.pdf');
-    let urlCompleta = '';
 
+let urlCompleta = '';
     const backendBaseUrl = environment.apiUrl.replace(/\/api\/?$/, '');
-    if (urlNormalizada.startsWith('uploads/')) {
-      urlCompleta = `${backendBaseUrl}/${urlNormalizada}`;
-    } else if (urlNormalizada.startsWith('http')) {
+    if (urlNormalizada.startsWith('http')) {
       urlCompleta = urlNormalizada;
+    } else if (urlNormalizada.startsWith('uploads/')) {
+      urlCompleta = ${backendBaseUrl}/;
+    } else if (urlNormalizada.startsWith('/uploads/')) {
+      urlCompleta = ${backendBaseUrl};
     } else {
-      urlCompleta = `${backendBaseUrl}/${urlNormalizada}`;
+      urlCompleta = ${backendBaseUrl}/;
     }
 
     this.materialSeleccionadoRawUrl = urlCompleta;
-    if (esDocx) {
-      const msViewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(urlCompleta)}`;
-      this.materialSeleccionadoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(msViewerUrl);
-    } else {
+    this.materialSeleccionadoNombre = nombreArchivo || this.extraerNombreDeUrl(urlCompleta);
+    
+    // Resetear estados de visualización previa
+    this.cargandoMaterial = true;
+    this.errorCargaMaterial = false;
+    this.docxRenderError = false;
+    this.excelData = [];
+    this.excelSheetNames = [];
+    this.hojaExcelActiva = '';
+    this.materialSeleccionadoUrl = null;
+
+    if (urlMinuscula.endsWith('.pdf')) {
+      this.tipoMaterialActual = 'pdf';
+      this.esPdf = true;
       this.materialSeleccionadoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(urlCompleta);
+      this.cargandoMaterial = false;
+    } else if (urlMinuscula.endsWith('.png') || urlMinuscula.endsWith('.jpg') || urlMinuscula.endsWith('.jpeg') || 
+               urlMinuscula.endsWith('.gif') || urlMinuscula.endsWith('.webp') || urlMinuscula.endsWith('.svg')) {
+      this.tipoMaterialActual = 'imagen';
+      this.esPdf = false;
+      this.materialSeleccionadoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(urlCompleta);
+      this.cargandoMaterial = false;
+    } else if (urlMinuscula.endsWith('.xlsx') || urlMinuscula.endsWith('.xls') || urlMinuscula.endsWith('.csv')) {
+      this.tipoMaterialActual = 'excel';
+      this.esPdf = false;
+      this.cargarExcel(urlCompleta);
+    } else if (urlMinuscula.endsWith('.docx') || urlMinuscula.endsWith('.doc')) {
+      this.tipoMaterialActual = 'word';
+      this.esPdf = false;
+      if (urlMinuscula.endsWith('.docx')) {
+        this.cargarDocx(urlCompleta);
+      } else {
+        // Archivos .doc binarios antiguos (Word 97-2003): no son XML zipeado, se muestra tarjeta de descarga directa
+        this.cargandoMaterial = false;
+        this.docxRenderError = true;
+      }
+    } else {
+      this.tipoMaterialActual = 'otro';
+      this.esPdf = false;
+      this.cargandoMaterial = false;
     }
+
     this.vistaActiva = 'material'; 
+  }
+
+  cargarExcel(url: string): void {
+    if (!this.isBrowser) {
+      this.cargandoMaterial = false;
+      return;
+    }
+    fetch(url)
+      .then(res => {
+        if (!res.ok) throw new Error('Error al descargar el archivo Excel');
+        return res.arrayBuffer();
+      })
+      .then(buffer => {
+        const workbook = XLSX.read(buffer, { type: 'array' });
+        this.excelWorkbook = workbook;
+        this.excelSheetNames = workbook.SheetNames || [];
+        if (this.excelSheetNames.length > 0) {
+          this.seleccionarHojaExcel(this.excelSheetNames[0]);
+        }
+        this.cargandoMaterial = false;
+      })
+      .catch(err => {
+        console.error('Error al procesar hoja Excel:', err);
+        this.errorCargaMaterial = true;
+        this.cargandoMaterial = false;
+      });
+  }
+
+  seleccionarHojaExcel(sheetName: string): void {
+    this.hojaExcelActiva = sheetName;
+    if (!this.excelWorkbook) return;
+    const sheet = this.excelWorkbook.Sheets[sheetName];
+    if (sheet) {
+      this.excelData = (XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' }) as any[][]) || [];
+    } else {
+      this.excelData = [];
+    }
+  }
+
+  cargarDocx(url: string): void {
+    if (!this.isBrowser) {
+      this.cargandoMaterial = false;
+      return;
+    }
+    fetch(url)
+      .then(res => {
+        if (!res.ok) throw new Error('Error al descargar el documento Word');
+        return res.arrayBuffer();
+      })
+      .then(buffer => {
+        this.cargandoMaterial = false;
+        setTimeout(() => {
+          const container = document.getElementById('docxViewerContainer');
+          if (container) {
+            container.innerHTML = '';
+            renderAsync(buffer, container, undefined, {
+              className: 'docx-rendered',
+              inWrapper: true,
+              ignoreWidth: false,
+              ignoreHeight: false
+            }).catch(err => {
+              console.warn('Fallo renderizado DOCX nativo, mostrando tarjeta de descarga:', err);
+              this.docxRenderError = true;
+            });
+          } else {
+            this.docxRenderError = true;
+          }
+        }, 100);
+      })
+      .catch(err => {
+        console.error('Error cargando documento Word:', err);
+        this.errorCargaMaterial = true;
+        this.cargandoMaterial = false;
+      });
   }
 
   volverAlVideo(): void {
     this.vistaActiva = 'video';
     this.materialSeleccionadoUrl = null;
     this.materialSeleccionadoRawUrl = null;
+    this.materialSeleccionadoNombre = '';
     this.esPdf = false; 
+    this.excelData = [];
+    this.excelSheetNames = [];
   }
 
   descargarMaterial(): void {
     if (this.materialSeleccionadoRawUrl) {
       const url = this.materialSeleccionadoRawUrl;
       const partesUrl = url.split('/');
-      const nombreArchivo = partesUrl.length > 0 ? partesUrl[partesUrl.length - 1] : 'recurso-aprendizaje';
+      let nombreDescarga = this.materialSeleccionadoNombre || (partesUrl.length > 0 ? partesUrl[partesUrl.length - 1] : 'recurso-aprendizaje');
+      
+      const lastDotIndex = url.lastIndexOf('.');
+      if (lastDotIndex !== -1) {
+        const extensionOriginal = url.substring(lastDotIndex).split('?')[0];
+        if (extensionOriginal && !nombreDescarga.toLowerCase().endsWith(extensionOriginal.toLowerCase())) {
+          nombreDescarga += extensionOriginal;
+        }
+      }
 
       fetch(url)
         .then(response => {
-          if (!response.ok) throw new Error('Error');
+          if (!response.ok) throw new Error('Error al descargar');
           return response.blob();
         })
         .then(blob => {
           const blobUrl = URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = blobUrl;
-          link.download = nombreArchivo;
+          link.download = nombreDescarga;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -294,7 +450,7 @@ export class CursoDetalleComponent implements OnInit {
           const link = document.createElement('a');
           link.href = url;
           link.target = '_blank';
-          link.download = nombreArchivo;
+          link.download = nombreDescarga;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);

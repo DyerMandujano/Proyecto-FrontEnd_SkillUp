@@ -38,6 +38,10 @@ export class AdminComponent implements OnInit {
   motivoRechazo: string = '';
   errorRechazo: string | null = null;
 
+  // Modal detalle completo de solicitud y comprobante
+  modalDetalleAbierto: boolean = false;
+  solicitudDetalle: SolicitudPagoResponse | null = null;
+
   // ==========================================
   // HU18: GESTIÓN DE USUARIOS
   // ==========================================
@@ -196,6 +200,41 @@ export class AdminComponent implements OnInit {
         this.cargando = false;
       }
     });
+  }
+
+  abrirModalDetalle(s: SolicitudPagoResponse): void {
+    this.solicitudDetalle = s;
+    this.modalDetalleAbierto = true;
+  }
+
+  cerrarModalDetalle(): void {
+    this.modalDetalleAbierto = false;
+    this.solicitudDetalle = null;
+  }
+
+  rechazarDesdeDetalle(): void {
+    if (!this.solicitudDetalle) return;
+    const s = this.solicitudDetalle;
+    this.cerrarModalDetalle();
+    this.abrirModalRechazo(s);
+  }
+
+  aprobarDesdeDetalle(): void {
+    if (!this.solicitudDetalle) return;
+    const s = this.solicitudDetalle;
+    this.cerrarModalDetalle();
+    this.aprobarSolicitud(s);
+  }
+
+  obtenerUrlComprobante(ruta: string | undefined): string {
+    if (!ruta) return '';
+    if (ruta.startsWith('http')) return ruta;
+    return ruta.startsWith('/') ? ruta : `/${ruta}`;
+  }
+
+  esPdf(ruta: string | undefined): boolean {
+    if (!ruta) return false;
+    return ruta.toLowerCase().endsWith('.pdf');
   }
 
   // ==========================================

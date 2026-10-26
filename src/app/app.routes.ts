@@ -15,42 +15,28 @@ import { EstudianteComponent } from './components/estudiante/estudiante.componen
 import { VisualizarCursosComponent } from './components/estudiante/visualizar-cursos/visualizar-cursos.component';
 import { CursoDescripcionComponent } from './components/curso-descripcion/curso-descripcion.component'; 
 import { CursoDetalleComponent } from './components/curso-detalle/curso-detalle.component';
-import { AuthGuard } from './guards/auth.guard';
 
 import { HomeComponent } from './components/home/home.component';
 import { EvaluacionCursoComponent } from './components/evaluacion-curso/evaluacion-curso.component';
 import { MisCertificadosComponent } from './components/mis-certificados/mis-certificados.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { AdminGuard } from './guards/admin.guard';
+import { SolicitudActivacionComponent } from './components/solicitud-activacion/solicitud-activacion.component';
+import { EstadoSolicitudComponent } from './components/estado-solicitud/estado-solicitud.component';
+
+// Guards de Seguridad
+import { RoleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
+  // ==========================================
+  // RUTAS PÚBLICAS (Sin autenticación requerida)
+  // ==========================================
   {
     path: '',
     component: HomeComponent 
   },
   {
-    path: 'admin',
-    redirectTo: 'admin/dashboard',
-    pathMatch: 'full'
-  },
-  {
-    path: 'admin/dashboard',
-    component: AdminComponent,
-    canActivate: [AdminGuard]
-  },
-  {
-    path: 'visualizar-cursos/:id',
-    component: VisualizarCursosComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'curso/:id',
     component: CursoDescripcionComponent
-  },
-  {
-    path: 'curso/:id/lecciones',
-    component: CursoDetalleComponent,
-    canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -60,59 +46,135 @@ export const routes: Routes = [
     path: 'registro',
     component: AutenticacionComponent
   },
+
+  // ==========================================
+  // RUTAS ADMINISTRADOR
+  // ==========================================
   {
-    path: 'cursos',
-    component: CursoComponent
-  },
-  {
-    path: 'actualizar-curso/:id',
-    component: ActualizarCursoComponent
-  },
-  {
-    path: 'docente/:id',
-    component: DocenteComponent
-  },
-  { 
-    path: 'actualizar-leccion/:id', 
-    component: ActualizarLeccionComponent 
+    path: 'admin',
+    redirectTo: 'admin/dashboard',
+    pathMatch: 'full'
   },
   {
-    path: 'docente/:id/registrar-curso',
-    component: RegistrarCursoComponent
+    path: 'admin/dashboard',
+    component: AdminComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['admin'] }
   },
-  {
-    path: 'seccion/curso/:id',
-    component: SeccionComponent
-  },
-  {
-    path: 'curso/:id/registrar-seccion',
-    component: RegistrarSeccionComponent
-  },
-  {
-    path: 'actualizar-seccion/:id',
-    component: ActualizarSeccionComponent
-  },
-  {
-    path: 'leccion/seccion/:id',
-    component: LeccionComponent
-  },
-  {
-    path: 'seccion/:id/registrar-leccion',
-    component: RegistrarLeccionComponent
-  },
-  {
-    path: 'evaluacion/seccion/:id',
-    component: EvaluacionCursoComponent
-  },
-  {
-    path: 'certificados/estudiante/:id',
-    component: MisCertificadosComponent
-  },
+
+  // ==========================================
+  // RUTAS EXCLUSIVAS DE ESTUDIANTE (o Admin)
+  // ==========================================
   {
     path: 'estudiante/dashboard',
     component: EstudianteComponent,
-    canActivate: [AuthGuard]
+    canActivate: [RoleGuard],
+    data: { roles: ['estudiante'] }
   },
+  {
+    path: 'visualizar-cursos/:id',
+    component: VisualizarCursosComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['estudiante'], checkOwnership: true }
+  },
+  {
+    path: 'curso/:id/lecciones',
+    component: CursoDetalleComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['estudiante', 'docente'] }
+  },
+  {
+    path: 'evaluacion/seccion/:id',
+    component: EvaluacionCursoComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['estudiante'] }
+  },
+  {
+    path: 'certificados/estudiante/:id',
+    component: MisCertificadosComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['estudiante'], checkOwnership: true }
+  },
+  {
+    path: 'solicitud-activacion',
+    component: SolicitudActivacionComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['estudiante'] }
+  },
+  {
+    path: 'mis-solicitudes',
+    component: EstadoSolicitudComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['estudiante'] }
+  },
+
+  // ==========================================
+  // RUTAS EXCLUSIVAS DE DOCENTE (o Admin)
+  // ==========================================
+  {
+    path: 'cursos',
+    component: CursoComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['docente'] }
+  },
+  {
+    path: 'docente/:id',
+    component: DocenteComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['docente'], checkOwnership: true }
+  },
+  {
+    path: 'docente/:id/registrar-curso',
+    component: RegistrarCursoComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['docente'], checkOwnership: true }
+  },
+  {
+    path: 'actualizar-curso/:id',
+    component: ActualizarCursoComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['docente'] }
+  },
+  {
+    path: 'seccion/curso/:id',
+    component: SeccionComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['docente'] }
+  },
+  {
+    path: 'curso/:id/registrar-seccion',
+    component: RegistrarSeccionComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['docente'] }
+  },
+  {
+    path: 'actualizar-seccion/:id',
+    component: ActualizarSeccionComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['docente'] }
+  },
+  {
+    path: 'leccion/seccion/:id',
+    component: LeccionComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['docente'] }
+  },
+  {
+    path: 'seccion/:id/registrar-leccion',
+    component: RegistrarLeccionComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['docente'] }
+  },
+  { 
+    path: 'actualizar-leccion/:id', 
+    component: ActualizarLeccionComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['docente'] }
+  },
+
+  // ==========================================
+  // WILDCARD (Cualquier ruta inexistente)
+  // ==========================================
   {
     path: '**',
     redirectTo: ''
