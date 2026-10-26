@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { EstudianteService } from '../../services/estudiante.service';
 import { MatriculaService } from '../../services/matricula.service';
 import { ReseniaService, ReseniaCurso } from '../../services/resenia.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-curso-descripcion',
@@ -25,6 +26,10 @@ export class CursoDescripcionComponent implements OnInit {
   cursoId!: number;
   cargando: boolean = true;
   error: string = '';
+  
+  // Estado de Autenticación y Matrícula
+  estaAutenticado: boolean = false;
+  usuarioActual: any = null;
   idEstudiante: number | null = null;
   estaMatriculado: boolean = false;
 
@@ -46,23 +51,34 @@ export class CursoDescripcionComponent implements OnInit {
     private leccionService: LeccionService,
     private estudianteService: EstudianteService,
     private matriculaService: MatriculaService,
-    private reseniaService: ReseniaService
+    private reseniaService: ReseniaService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.cursoId = +this.route.snapshot.paramMap.get('id')!;
     localStorage.setItem('cursoId', this.cursoId.toString());
 
-    const idFromParams = this.route.snapshot.queryParamMap.get('estudianteId');
-    const idFromStorage = localStorage.getItem('idEstudiante') || localStorage.getItem('idRolEspecifico');
-    if (idFromParams) {
-      this.idEstudiante = +idFromParams;
-    } else if (idFromStorage) {
-      this.idEstudiante = +idFromStorage;
-    }
+    // 1. Validar estrictamente la sesión activa mediante AuthService
+    this.estaAutenticado = this.authService.isLoggedIn();
+    this.usuarioActual = this.authService.getCurrentUser();
 
-    if (this.idEstudiante) {
-      this.verificarMatriculaActual();
+    // 2. Solo si el usuario ha iniciado sesión válidamente, verificamos si es estudiante y si está matriculado
+    if (this.estaAutenticado && this.usuarioActual) {
+      const rol = (this.usuarioActual.rol || '').toLowerCase().trim();
+      if (rol === 'estudiante') {
+        this.idEstudiante = this.usuarioActual.idRolEspecifico || null;
+      }
+      
+      if (this.idEstudiante) {
+        this.verificarMatriculaActual();
+      } else {
+        this.estaMatriculado = false;
+      }
+    } else {
+      // Usuario visitante / no autenticado
+      this.idEstudiante = null;
+      this.estaMatriculado = false;
     }
     
     this.cargarCurso();
@@ -70,7 +86,7 @@ export class CursoDescripcionComponent implements OnInit {
   }
 
   verificarMatriculaActual() {
-    if (this.idEstudiante && this.cursoId) {
+    if (this.estaAutenticado && this.idEstudiante && this.cursoId) {
       this.matriculaService.verificarMatricula(this.idEstudiante, this.cursoId).subscribe({
         next: (matriculado) => {
           this.estaMatriculado = matriculado;
@@ -79,6 +95,41 @@ export class CursoDescripcionComponent implements OnInit {
           this.estaMatriculado = false;
         }
       });
+    } else {
+      this.estaMatriculado = false;
+    }
+  }
+
+  registrarMatricula(): void {
+    // Si todavía no se ha logueado, redirigir directamente al login
+    if (!this.estaAutenticado || !this.idEstudiante) {
+      localStorage.setItem('redirectAfterLogin', `/curso/${this.cursoId}`);
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // Si ya está logueado, procesar la matrícula
+    this.matriculaService.insertarMatricula(this.idEstudiante, this.cursoId)
+      .subscribe({
+        next: (resp) => {
+          this.estaMatriculado = true;
+          this.router.navigate([`/curso/${this.cursoId}/lecciones`]);
+        },
+        error: (err) => {
+          console.error('Error al matricularse en el curso:', err);
+        }
+      });
+  }
+
+  obtenerRutaPanel(): string {
+    if (!this.usuarioActual) return '/login';
+    const rol = (this.usuarioActual.rol || '').toLowerCase().trim();
+    if (rol === 'docente') {
+      return `/docente/${this.usuarioActual.idRolEspecifico}`;
+    } else if (rol === 'admin') {
+      return '/admin/dashboard';
+    } else {
+      return `/visualizar-cursos/${this.usuarioActual.idRolEspecifico}`;
     }
   }
 
@@ -109,8 +160,8 @@ export class CursoDescripcionComponent implements OnInit {
     this.mensajeErrorResenia = null;
     this.mensajeExitoResenia = null;
 
-    if (!this.idEstudiante) {
-      this.mensajeErrorResenia = 'Debes iniciar sesión como estudiante para calificar este curso.';
+    if (!this.estaAutenticado || !this.idEstudiante) {
+      this.mensajeErrorResenia = 'Debes iniciar sesión para calificar este curso.';
       return;
     }
 
@@ -119,7 +170,6 @@ export class CursoDescripcionComponent implements OnInit {
       return;
     }
 
-    // Escenario 2: Validar calificación obligatoria de 1 a 5
     if (!this.calificacionSeleccionada || this.calificacionSeleccionada < 1 || this.calificacionSeleccionada > 5) {
       this.mensajeErrorResenia = 'Por favor selecciona una puntuación de 1 a 5 estrellas para tu reseña.';
       return;
@@ -162,27 +212,6 @@ export class CursoDescripcionComponent implements OnInit {
         this.cargando = false;
       }
     });
-  }
-
-  registrarMatricula(): void {
-    const idEstudianteLS = localStorage.getItem('idEstudiante');
-    const idCursoLS = localStorage.getItem('cursoId');
-
-    if (!idEstudianteLS || !idCursoLS) {
-      return;
-    }
-
-    const idEstudiante = +idEstudianteLS;
-    const idCurso = +idCursoLS;
-
-    this.matriculaService.insertarMatricula(idEstudiante, idCurso)
-      .subscribe({
-        next: (resp) => {
-          this.router.navigate([`/curso/${idCurso}/lecciones`]);
-        },
-        error: (err) => {
-        }
-      });
   }
 
   cargarSecciones() {

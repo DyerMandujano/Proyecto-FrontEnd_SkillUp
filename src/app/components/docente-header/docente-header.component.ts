@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { DocenteSessionService } from '../../services/docente-session.service';
 
 @Component({
   selector: 'app-docente-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './docente-header.component.html',
   styleUrl: './docente-header.component.css'
 })

@@ -1,80 +1,725 @@
+/* ==========================================================================
+   SKILLUP - HOME COMPONENT STYLES
+   Dark Navy Slate (#080c14 / #0b111e / #0f172a)
+   Acentos: Royal Blue (#2563eb) & Electric Sky (#60a5fa)
+   Estricto: Cero sombras (no box-shadows) y 100% responsive
+   ========================================================================== */
+
 :host {
   display: block;
+  background-color: #080c14;
+  color: #f8fafc;
   min-height: 100vh;
   width: 100%;
-  background-color: #FFFFFF;
-  color: #212121;
 }
 
-.hero-section {
-  background-color: #0D47A1;
-  color: #FFFFFF;
-  padding: 80px 0;
+/* ==========================================================================
+   HEADER / NAVBAR
+   ========================================================================== */
+.home-header {
+  background-color: #080c14;
+  border-bottom: 1px solid #161f30;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0 1rem;
 }
 
-.hero-section h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+.header-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
 }
 
-.hero-section p {
-  font-size: 1.1rem;
-  opacity: 0.9;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  flex: 1;
+}
+
+/* Logo */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+}
+
+.brand-accent {
+  color: #60a5fa;
+}
+
+/* Nav Items */
+.nav-link-item {
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+
+.nav-link-item:hover {
+  color: #ffffff;
+}
+
+/* Barra de Búsqueda */
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+}
+
+.search-input {
+  width: 100%;
+  background-color: #0d1527 !important;
+  border: 1px solid #1e293b !important;
+  color: #f8fafc !important;
+  border-radius: 8px !important;
+  padding: 7px 38px 7px 14px !important;
+  font-size: 0.88rem !important;
+  transition: border-color 0.15s ease;
+}
+
+.search-input::placeholder {
+  color: #64748b !important;
+}
+
+.search-input:focus {
+  border-color: #2563eb !important;
+  outline: none !important;
+}
+
+.search-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.search-btn:hover {
+  color: #ffffff;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Acciones Derecha */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.btn-login {
+  color: #e2e8f0;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.btn-login:hover {
+  color: #ffffff;
+  background-color: #111b2e;
+}
+
+.btn-register {
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-register:hover {
+  background-color: #1d4ed8;
+  color: #ffffff;
+}
+
+/* Botón Hamburguesa Móvil */
+.mobile-toggle {
+  background: transparent;
+  border: 1px solid #1e293b;
+  color: #f8fafc;
+  font-size: 1.4rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  background-color: #0b111e;
+  border-top: 1px solid #1e293b;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.search-wrapper-mobile {
+  position: relative;
+  width: 100%;
+}
+
+.mobile-nav-link {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.mobile-nav-link:hover {
+  background-color: #131d31;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   HERO WRAPPER & HERO CARD (Idéntico a la imagen de referencia)
+   ========================================================================== */
+.hero-wrapper {
+  padding: 2.5rem 1rem 3.5rem;
+}
+
+.hero-card {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  border-radius: 20px;
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  max-width: 1140px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Badge Superior */
+.hero-badge-container {
   margin-bottom: 2rem;
 }
 
-.hero-btn {
-  background-color: #FFFFFF;
-  color: #0D47A1;
-  padding: 12px 32px;
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #101e38;
+  border: 1px solid #1e3a8a;
+  color: #60a5fa;
+  font-size: 0.82rem;
   font-weight: 600;
-  font-size: 1rem;
-  border: none;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
 }
 
-.hero-btn:hover {
-  background-color: #F5F5F5;
-  color: #0D47A1;
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #3b82f6;
+  border-radius: 50%;
 }
 
-.features-section {
-  padding: 60px 0;
-  background-color: #F5F5F5;
+/* Título */
+.hero-title {
+  font-size: clamp(2.1rem, 4.2vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.03em;
 }
 
-.feature-card {
-  background-color: #FFFFFF;
-  border: 1px solid #E0E0E0;
-  padding: 30px;
-  text-align: center;
+.hero-title-accent {
+  color: #60a5fa;
+}
+
+/* Descripción */
+.hero-description {
+  max-width: 620px;
+  margin: 0 auto 2.25rem;
+  font-size: 1.05rem;
+  color: #94a3b8;
+  line-height: 1.65;
+}
+
+/* Botones Hero */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+}
+
+.btn-hero-primary {
+  background-color: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.96rem;
+  padding: 12px 26px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-hero-primary:hover {
+  background-color: #1d4ed8;
+  color: #ffffff;
+}
+
+.btn-hero-secondary {
+  background-color: #111b2e;
+  border: 1px solid #334155;
+  color: #f8fafc;
+  font-weight: 600;
+  font-size: 0.96rem;
+  padding: 12px 26px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.btn-hero-secondary:hover {
+  background-color: #16243d;
+  border-color: #64748b;
+  color: #ffffff;
+}
+
+/* Fila de Estadísticas */
+.hero-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #162035;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stat-number {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.08em;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 38px;
+  background-color: #1e293b;
+}
+
+/* ==========================================================================
+     SECCIÓN: CURSOS DESTACADOS
+     ========================================================================== */
+.section-cursos {
+  padding: 3rem 1rem 5rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+}
+
+.section-subtitle {
+  color: #94a3b8;
+  font-size: 0.98rem;
+  margin-bottom: 0;
+}
+
+.link-ver-todos {
+  color: #60a5fa;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.15s ease;
+}
+
+.link-ver-todos:hover {
+  color: #38bdf8;
+}
+
+/* Grid de Cursos */
+.cursos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.curso-card {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease;
+}
+
+.curso-card:hover {
+  border-color: #2563eb;
+}
+
+.curso-cover {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  background-color: #111b2e;
+  overflow: hidden;
+}
+
+.curso-cover img {
+  width: 100%;
   height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.feature-card h3 {
-  font-size: 1.2rem;
+.curso-card:hover .curso-cover img {
+  transform: scale(1.03);
+}
+
+.curso-categoria-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(11, 17, 30, 0.85);
+  border: 1px solid #1e3a8a;
+  color: #93c5fd;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: #212121;
-  margin-top: 1rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.curso-info {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.curso-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.65rem;
+}
+
+.meta-tag {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+}
+
+.curso-titulo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.35;
   margin-bottom: 0.5rem;
 }
 
-.feature-card p {
-  color: #616161;
-  font-size: 0.95rem;
+.curso-desc {
+  font-size: 0.86rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
 }
 
-.feature-icon {
-  font-size: 2.5rem;
-  color: #1565C0;
+.curso-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.85rem;
+  border-top: 1px solid #1e293b;
 }
 
-footer {
-  background-color: #212121;
-  color: #BDBDBD;
-  padding: 30px 0;
-  text-align: center;
+.curso-rating {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.rating-val {
+  font-weight: 700;
+  color: #f8fafc;
+  margin-right: 3px;
+}
+
+.rating-count {
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+.btn-ver-curso {
+  background-color: #172554;
+  border: 1px solid #1e40af;
+  color: #93c5fd;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.btn-ver-curso:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+     SECCIÓN: FEATURES / POR QUÉ ELEGIR SKILLUP
+     ========================================================================== */
+.section-features {
+  padding: 4.5rem 1rem;
+  background-color: #0b111e;
+  border-top: 1px solid #161f30;
+  border-bottom: 1px solid #161f30;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-icon-box {
+  width: 48px;
+  height: 48px;
+  background-color: #101e38;
+  border: 1px solid #1e3a8a;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #60a5fa;
+  font-size: 1.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.feature-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.65rem;
+}
+
+.feature-desc {
+  color: #94a3b8;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+     FOOTER PROFESIONAL
+     ========================================================================== */
+.home-footer {
+  background-color: #060a10;
+  border-top: 1px solid #161f30;
+  padding: 4rem 1rem 2rem;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand-col {
+  max-width: 340px;
+}
+
+.footer-tagline {
+  color: #94a3b8;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.footer-col-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+}
+
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.footer-links-list a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color 0.15s ease;
+}
+
+.footer-links-list a:hover {
+  color: #60a5fa;
+}
+
+.footer-text-item {
+  color: #94a3b8;
+  font-size: 0.88rem;
+  cursor: default;
+  user-select: none;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 2rem;
+  border-top: 1px solid #161f30;
+  color: #64748b;
+  font-size: 0.82rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-bottom-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Tablets y Móviles)
+   ========================================================================== */
+@media (max-width: 992px) {
+  .hero-card {
+    padding: 3rem 1.5rem 2.5rem;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-card {
+    padding: 2.25rem 1.25rem 2rem;
+    border-radius: 16px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-stats-row {
+    gap: 1.5rem;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.68rem;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

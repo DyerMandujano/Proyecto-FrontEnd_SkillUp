@@ -1,17 +1,22 @@
-header {
-  background-color: #0D47A1;
-  color: #FFFFFF;
+/* ==========================================================================
+   SKILLUP - DOCENTE HEADER
+   Dark Navy Slate (#080c14)
+   ========================================================================== */
+
+:host {
+  display: block;
 }
 
-img {
-  border: 1px solid #E0E0E0;
+.docente-subnav {
+  background-color: #080c14;
+  border-bottom: 1px solid #1e293b;
+  box-shadow: none !important;
 }
 
-a {
-  color: #FFFFFF;
-  text-decoration: none;
+.tracking-tight {
+  letter-spacing: -0.025em;
 }
 
-a:hover {
-  text-decoration: underline;
+.text-primary-accent {
+  color: #60a5fa !important;
 }

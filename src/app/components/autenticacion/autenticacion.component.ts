@@ -692,7 +692,13 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
         if (rolNormalizado === 'docente') {
           this.router.navigate(['docente', response.idRolEspecifico]);
         } else if (rolNormalizado === 'estudiante') {
-          this.router.navigate(['/visualizar-cursos', response.idRolEspecifico]);
+          const redirect = localStorage.getItem('redirectAfterLogin');
+          if (redirect) {
+            localStorage.removeItem('redirectAfterLogin');
+            this.router.navigateByUrl(redirect);
+          } else {
+            this.router.navigate(['/visualizar-cursos', response.idRolEspecifico]);
+          }
         } else if (rolNormalizado === 'admin') {
           this.router.navigate(['/admin/dashboard']);
         } else {

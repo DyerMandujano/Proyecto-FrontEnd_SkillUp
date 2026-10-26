@@ -1,122 +1,163 @@
-<div class="container-fluid bg-skillup-estudiante text-body min-vh-100 p-4">
-  
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="text-dark fw-bold" *ngIf="curso">{{ curso.nombreCurso }}</h2>
-    <button class="btn btn-outline-dark px-4" style="border-radius: 0;" (click)="regresarCursos()">
-      <i class="bi bi-arrow-left-short"></i> Regresar a Cursos
-    </button>
-  </div>
+<!-- ==========================================================================
+     SKILLUP - AULA VIRTUAL Y REPRODUCTOR DE CLASES (CURSO DETALLE)
+     Dark Navy Slate (#080C14 / #0F172A / #0B111E)
+     Acentos: Royal Blue (#2563EB) & Electric Sky (#60A5FA)
+     Sin sombras y 100% responsive
+     ========================================================================== -->
 
+<div class="aula-wrapper min-vh-100 p-3 p-md-4">
+  
+  <!-- CABECERA SUPERIOR -->
+  <header class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3 pb-3 border-bottom border-dark-subtle">
+    <div class="d-flex align-items-center gap-3">
+      <div class="brand-logo-small d-none d-sm-flex align-items-center justify-content-center">
+        <i class="bi bi-mortarboard-fill text-primary"></i>
+      </div>
+      <div>
+        <span class="text-secondary small text-uppercase tracking-wider fw-semibold d-block">Aula Virtual SkillUp</span>
+        <h2 class="text-white fw-bold mb-0 fs-4 fs-md-3" *ngIf="curso">{{ curso.nombreCurso }}</h2>
+      </div>
+    </div>
+    
+    <button class="btn btn-outline-secondary btn-sm px-3" (click)="regresarCursos()">
+      <i class="bi bi-arrow-left me-1"></i> Regresar a Cursos
+    </button>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL: TEMARIO + VISOR -->
   <div class="row g-4">
     
+    <!-- COLUMNA IZQUIERDA: TEMARIO Y PROGRESO -->
     <div class="col-lg-4 col-md-5">
-      <div class="card bg-skillup-tarjeta text-dark border-0 p-3" style="border-radius: 0;">
-        <h5 class="fw-bold mb-3 border-bottom pb-3"><i class="bi bi-journal-bookmark-fill me-2 text-warning"></i>Contenido del Curso</h5>
-        
-        @for (seccion of secciones; track seccion.idSeccion) {
-          <div class="mb-3 border-bottom pb-2">
-            
-            <div 
-              class="d-flex justify-content-between align-items-center p-2 bg-light" 
-              style="cursor: pointer; border-radius: 0;" 
-              (click)="toggleSection(seccion.idSeccion)">
-              <span class="fw-semibold text-muted">{{ seccion.nombreSeccion }}</span>
-              <i class="bi" [ngClass]="isSectionExpanded(seccion.idSeccion) ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
-            </div>
-
-            @if (isSectionExpanded(seccion.idSeccion)) {
-              <ul class="list-unstyled mt-2 ps-2">
-                @for (leccion of getLeccionesBySeccion(seccion.idSeccion); track leccion.idLeccion) {
-                  <li class="mb-2 p-2" style="border-radius: 0;" [ngClass]="{'bg-light border-start border-warning border-3': currentLesson?.idLeccion === leccion.idLeccion}">
-                    
-                    <div 
-                      class="d-flex justify-content-between align-items-center" 
-                      style="cursor: pointer;" 
-                      (click)="seleccionarLeccion(leccion, seccion)">
-                      <span class="text-dark small fw-medium">
-                        <i class="bi me-2" [ngClass]="isLessonCompleted(leccion.idLeccion) ? 'bi-check-circle-fill text-success' : 'bi-play-circle'"></i>
-                        {{ leccion.nombreLeccion }}
-                      </span>
-                    </div>
-
-                    @if (leccion.materiales && leccion.materiales.length > 0) {
-                      <div class="mt-2 text-start">
-                        <button 
-                          class="btn btn-sm btn-outline-dark py-0 px-2" 
-                          style="font-size: 0.75rem; border-radius: 0;" 
-                          (click)="$event.stopPropagation(); toggleResources(leccion.idLeccion)">
-                          <i class="bi bi-folder2-open me-1"></i> Recursos
-                        </button>
-                        
-                        @if (areResourcesExpanded(leccion.idLeccion)) {
-                          <ul class="list-unstyled ps-3 mt-2 mb-0 border-start" style="font-size: 0.85rem;">
-                            @for (material of leccion.materiales; track material.idMaterial) {
-                              <li class="my-1">
-                                <a 
-                                  (click)="$event.stopPropagation(); verMaterialEnPantalla(material.urlMaterial, material.nombreArchivo)" 
-                                  class="text-info text-decoration-none d-block text-truncate" 
-                                  style="cursor: pointer;"
-                                  title="Ver {{ material.nombreArchivo }}">
-                                  <i class="bi {{ getIconoMaterial(material.urlMaterial) }} me-1"></i>
-                                  {{ material.nombreArchivo || 'Documento de apoyo' }}
-                                </a>
-                              </li>
-                            }
-                          </ul>
-                        }
-                      </div>
-                    }
-
-                  </li>
-                } @empty {
-                  <li class="text-muted small ps-2">No hay lecciones en esta sección.</li>
-                }
-              </ul>
-            }
-
+      
+      <!-- TARJETA DE PROGRESO -->
+      <div class="card dark-panel p-3 mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="fw-semibold text-white small">Tu Progreso del Curso</span>
+          <span class="badge bg-primary-subtle text-primary-accent fw-bold">
+            {{ getProgressPercentage() | number:'1.0-0' }}%
+          </span>
+        </div>
+        <div class="progress progress-dark mb-2">
+          <div 
+            class="progress-bar bg-primary" 
+            role="progressbar" 
+            [style.width.%]="getProgressPercentage()">
           </div>
-        } @empty {
-          <p class="text-muted small text-center my-3">Este curso aún no tiene secciones registradas.</p>
-        }
+        </div>
+        <small class="text-secondary">{{ getProgressText() }}</small>
+      </div>
+
+      <!-- TARJETA DE CONTENIDO DEL CURSO -->
+      <div class="card dark-panel p-3">
+        <h5 class="fw-bold mb-3 border-bottom pb-3 text-white border-dark-subtle d-flex align-items-center gap-2">
+          <i class="bi bi-journal-bookmark-fill text-primary-accent"></i>
+          <span>Temario del Curso</span>
+        </h5>
+        
+        <div class="syllabus-scroll-box">
+          @for (seccion of secciones; track seccion.idSeccion) {
+            <div class="module-group mb-2">
+              
+              <!-- Encabezado de Sección -->
+              <div 
+                class="module-group-header d-flex justify-content-between align-items-center p-2 rounded-2" 
+                (click)="toggleSection(seccion.idSeccion)">
+                <span class="fw-semibold small text-white text-truncate pe-2">
+                  {{ seccion.nombreSeccion }}
+                </span>
+                <i class="bi" [ngClass]="isSectionExpanded(seccion.idSeccion) ? 'bi-chevron-up text-primary-accent' : 'bi-chevron-down text-secondary'"></i>
+              </div>
+
+              <!-- Listado de Lecciones -->
+              @if (isSectionExpanded(seccion.idSeccion)) {
+                <ul class="lesson-accordion-list list-unstyled mt-1 ps-1 mb-0">
+                  @for (leccion of getLeccionesBySeccion(seccion.idSeccion); track leccion.idLeccion) {
+                    <li 
+                      class="lesson-accordion-item p-2 rounded-2 mb-1" 
+                      [class.lesson-active]="currentLesson?.idLeccion === leccion.idLeccion">
+                      
+                      <div 
+                        class="d-flex justify-content-between align-items-center cursor-pointer" 
+                        (click)="seleccionarLeccion(leccion, seccion)">
+                        <span class="small fw-medium d-flex align-items-center gap-2" [class.text-white]="currentLesson?.idLeccion === leccion.idLeccion" [class.text-secondary]="currentLesson?.idLeccion !== leccion.idLeccion">
+                          <i class="bi" [ngClass]="isLessonCompleted(leccion.idLeccion) ? 'bi-check-circle-fill text-success' : 'bi-play-circle'"></i>
+                          <span class="text-truncate">{{ leccion.nombreLeccion }}</span>
+                        </span>
+                      </div>
+
+                      <!-- Recursos adjuntos de la lección -->
+                      @if (leccion.materiales && leccion.materiales.length > 0) {
+                        <div class="mt-2 text-start">
+                          <button 
+                            class="btn btn-resources-pill" 
+                            (click)="$event.stopPropagation(); toggleResources(leccion.idLeccion)">
+                            <i class="bi bi-folder2-open me-1"></i> {{ leccion.materiales.length }} Recursos
+                          </button>
+                          
+                          @if (areResourcesExpanded(leccion.idLeccion)) {
+                            <ul class="list-unstyled ps-2 mt-2 mb-0 border-start border-dark-subtle" style="font-size: 0.82rem;">
+                              @for (material of leccion.materiales; track material.idMaterial) {
+                                <li class="my-1">
+                                  <a 
+                                    (click)="$event.stopPropagation(); verMaterialEnPantalla(material.urlMaterial, material.nombreArchivo)" 
+                                    class="resource-doc-link text-decoration-none d-block text-truncate" 
+                                    title="Ver {{ material.nombreArchivo }}">
+                                    <i class="bi {{ getIconoMaterial(material.urlMaterial) }} me-1 text-primary-accent"></i>
+                                    {{ material.nombreArchivo || 'Documento de apoyo' }}
+                                  </a>
+                                </li>
+                              }
+                            </ul>
+                          }
+                        </div>
+                      }
+
+                    </li>
+                  } @empty {
+                    <li class="text-secondary small ps-2 py-1">No hay lecciones en este módulo.</li>
+                  }
+                </ul>
+              }
+
+            </div>
+          } @empty {
+            <p class="text-secondary small text-center my-3">Este curso aún no tiene módulos registrados.</p>
+          }
+        </div>
 
       </div>
     </div>
 
+    <!-- COLUMNA DERECHA: REPRODUCTOR Y RECURSOS -->
     <div class="col-lg-8 col-md-7">
       
-      <div class="card bg-skillup-tarjeta text-dark border-0 p-3 mb-4" style="border-radius: 0;">
-        <h6 class="fw-semibold mb-2">Tu Progreso</h6>
-        <div class="progress bg-dark-custom mb-2" style="height: 12px; border-radius: 0;">
-          <div 
-            class="progress-bar bg-warning text-dark fw-bold" 
-            role="progressbar" 
-            [style.width.%]="getProgressPercentage()"
-            style="font-size: 0.7rem; transition: width 0.5s ease; border-radius: 0;">
-            {{ getProgressPercentage() | number:'1.0-0' }}% Completado
-          </div>
-        </div>
-        <small class="text-muted">{{ getProgressText() }}</small>
-      </div>
-
-      <div class="card bg-skillup-tarjeta text-dark border-0 overflow-hidden mb-4" style="border-radius: 0;">
+      <!-- REPRODUCTOR / VISOR PRINCIPAL -->
+      <div class="card dark-panel overflow-hidden mb-4">
         
-        <div class="card-header bg-dark-custom border-0 p-3 d-flex justify-content-between align-items-center">
-          <h5 class="mb-0 fw-bold text-truncate text-warning" *ngIf="currentLesson">
+        <!-- Header del Reproductor -->
+        <div class="player-header p-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <h5 class="mb-0 fw-bold text-truncate text-white" *ngIf="currentLesson">
+            <i class="bi bi-play-btn-fill text-primary-accent me-2"></i>
             {{ currentLesson.nombreLeccion }}
+          </h5>
+          <h5 class="mb-0 fw-bold text-white" *ngIf="!currentLesson">
+            Selecciona una lección
           </h5>
           
           <div *ngIf="vistaActiva === 'material'" class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-dark px-3" style="border-radius: 0;" (click)="descargarMaterial()" title="Descargar archivo a mi PC">
+            <button class="btn btn-outline-secondary btn-sm px-3" (click)="descargarMaterial()" title="Descargar archivo">
               <i class="bi bi-download me-1"></i> Descargar
             </button>
             
-            <button class="btn btn-sm btn-yellow px-3" style="border-radius: 0;" (click)="volverAlVideo()">
+            <button class="btn btn-primary btn-sm px-3" (click)="volverAlVideo()">
               <i class="bi bi-camera-video-fill me-1"></i> Volver al Video
             </button>
           </div>
         </div>
 
-        <div class="card-body p-0 bg-light" style="min-height: 500px; position: relative;">
+        <!-- Cuerpo del Reproductor -->
+        <div class="player-body bg-black" style="min-height: 480px; position: relative;">
           
           @if (vistaActiva === 'video') {
             @if (currentLesson && currentLesson.urlVideo) {
@@ -130,21 +171,21 @@
                 </iframe>
               </div>
             } @else {
-              <div class="d-flex flex-column justify-content-center align-items-center text-center p-5 position-absolute top-50 start-50 translate-middle w-100">
-                <i class="bi bi-play-btn text-muted" style="font-size: 4rem;"></i>
-                <p class="text-muted mt-3 fs-5">Selecciona una lección en el panel izquierdo para comenzar a estudiar.</p>
+              <div class="empty-player-state d-flex flex-column justify-content-center align-items-center text-center p-5">
+                <i class="bi bi-play-circle text-secondary" style="font-size: 4rem;"></i>
+                <p class="text-secondary mt-3 fs-6">Selecciona una lección del panel izquierdo para comenzar a aprender.</p>
               </div>
             }
           }
 
           @if (vistaActiva === 'material') {
-            <!-- 1. Indicador de carga -->
+            <!-- 1. Cargando -->
             @if (cargandoMaterial) {
-              <div class="d-flex flex-column justify-content-center align-items-center p-5 text-muted" style="min-height: 520px;">
-                <div class="spinner-border text-warning mb-3" role="status">
-                  <span class="visually-hidden">Cargando...</span>
+              <div class="d-flex flex-column justify-content-center align-items-center p-5 text-secondary" style="min-height: 480px;">
+                <div class="spinner-border text-primary mb-3" role="status">
+                  <span class="visually-hidden">Cargando recurso...</span>
                 </div>
-                <span class="fs-6 fw-semibold text-secondary">Cargando recurso de aprendizaje...</span>
+                <span class="fs-6 fw-semibold">Cargando recurso de aprendizaje...</span>
               </div>
             } @else if (tipoMaterialActual === 'pdf' && materialSeleccionadoUrl) {
               <!-- 2. Visor PDF -->
@@ -153,30 +194,29 @@
                   [src]="materialSeleccionadoUrl" 
                   width="100%" 
                   height="100%" 
-                  style="border: none; background: #ffffff;">
-                  Tu navegador no soporta la previsualización interna de este PDF.
+                  style="border: none; background: #080c14;">
+                  Tu navegador no soporta la previsualización directa de este PDF.
                 </iframe>
               </div>
             } @else if (tipoMaterialActual === 'imagen' && materialSeleccionadoRawUrl) {
               <!-- 3. Visor de Imagen -->
-              <div class="d-flex justify-content-center align-items-center p-4" style="min-height: 550px; background: #212529;">
+              <div class="d-flex justify-content-center align-items-center p-4" style="min-height: 480px; background: #080c14;">
                 <img [src]="materialSeleccionadoRawUrl" [alt]="materialSeleccionadoNombre" 
-                     class="img-fluid shadow-lg rounded" style="max-height: 550px; object-fit: contain;">
+                     class="img-fluid rounded border border-dark-subtle" style="max-height: 520px; object-fit: contain;">
               </div>
             } @else if (tipoMaterialActual === 'excel' && !errorCargaMaterial) {
-              <!-- 4. Visor Excel interactivo con SheetJS -->
-              <div class="p-3 bg-white" style="min-height: 520px;">
-                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+              <!-- 4. Visor Excel interactivo -->
+              <div class="p-3 bg-dark-subtle-box" style="min-height: 480px;">
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-dark-subtle">
                   <div>
                     <h6 class="mb-0 fw-bold text-success"><i class="bi bi-file-earmark-excel-fill me-1"></i>{{ materialSeleccionadoNombre }}</h6>
-                    <small class="text-muted">Vista interactiva de hoja de cálculo</small>
+                    <small class="text-secondary">Vista previa de hoja de cálculo</small>
                   </div>
                   <button class="btn btn-sm btn-outline-success" (click)="descargarMaterial()">
-                    <i class="bi bi-file-earmark-arrow-down me-1"></i> Descargar Excel (.xlsx)
+                    <i class="bi bi-download me-1"></i> Descargar Excel (.xlsx)
                   </button>
                 </div>
 
-                <!-- Selector de pestañas de hojas -->
                 <ul class="nav nav-tabs mb-2" *ngIf="excelSheetNames.length > 1">
                   <li class="nav-item" *ngFor="let hoja of excelSheetNames">
                     <button class="nav-link btn-sm" [class.active]="hojaExcelActiva === hoja" 
@@ -186,46 +226,45 @@
                   </li>
                 </ul>
 
-                <!-- Tabla de celdas -->
-                <div class="table-responsive" style="max-height: 500px; overflow: auto; border: 1px solid #dee2e6; border-radius: 4px;">
-                  <table class="table table-sm table-bordered table-hover mb-0" style="font-size: 0.85rem;">
+                <div class="table-responsive" style="max-height: 420px; overflow: auto; border: 1px solid #1e293b; border-radius: 6px;">
+                  <table class="table table-dark table-sm table-bordered table-hover mb-0" style="font-size: 0.85rem;">
                     <tbody>
-                      <tr *ngFor="let fila of excelData; let rIdx = index" [class.table-light]="rIdx === 0">
-                        <td *ngFor="let celda of fila" [class.fw-bold]="rIdx === 0" [class.bg-light]="rIdx === 0">
+                      <tr *ngFor="let fila of excelData; let rIdx = index">
+                        <td *ngFor="let celda of fila" [class.fw-bold]="rIdx === 0" [class.text-primary-accent]="rIdx === 0">
                           {{ celda }}
                         </td>
                       </tr>
                       <tr *ngIf="excelData.length === 0">
-                        <td class="text-center text-muted p-4">La hoja seleccionada no contiene datos visibles.</td>
+                        <td class="text-center text-secondary p-4">La hoja seleccionada no contiene datos visibles.</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
             } @else if (tipoMaterialActual === 'word' && !docxRenderError && !errorCargaMaterial) {
-              <!-- 5. Visor Word renderizado con docx-preview -->
-              <div class="p-3 bg-white" style="min-height: 520px; max-height: 650px; overflow-y: auto;">
-                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+              <!-- 5. Visor Word con docx-preview -->
+              <div class="p-3 bg-dark-subtle-box" style="min-height: 480px; max-height: 600px; overflow-y: auto;">
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-dark-subtle">
                   <div>
-                    <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-file-earmark-word-fill me-1"></i>{{ materialSeleccionadoNombre }}</h6>
-                    <small class="text-muted">Documento Microsoft Word</small>
+                    <h6 class="mb-0 fw-bold text-primary-accent"><i class="bi bi-file-earmark-word-fill me-1"></i>{{ materialSeleccionadoNombre }}</h6>
+                    <small class="text-secondary">Documento Microsoft Word</small>
                   </div>
-                  <button class="btn btn-sm btn-outline-primary" (click)="descargarMaterial()">
+                  <button class="btn btn-sm btn-outline-secondary" (click)="descargarMaterial()">
                     <i class="bi bi-download me-1"></i> Descargar Word (.docx)
                   </button>
                 </div>
-                <div id="docxViewerContainer" class="docx-preview-wrapper"></div>
+                <div id="docxViewerContainer" class="docx-preview-dark"></div>
               </div>
             } @else {
-              <!-- 6. Tarjeta de consulta y descarga directa -->
-              <div class="d-flex flex-column justify-content-center align-items-center p-5 text-center bg-white" style="min-height: 500px;">
-                <i class="bi fs-1" [class]="getIconoMaterial(materialSeleccionadoRawUrl || '')" style="font-size: 5rem !important;"></i>
-                <h4 class="mt-3 fw-bold text-dark">{{ materialSeleccionadoNombre }}</h4>
-                <p class="text-muted mb-4" style="max-width: 500px;">
-                  Este recurso de apoyo está disponible para consulta y descarga. Puedes descargarlo en tu equipo para abrirlo directamente.
+              <!-- 6. Descarga directa -->
+              <div class="d-flex flex-column justify-content-center align-items-center p-5 text-center" style="min-height: 480px; background: #080c14;">
+                <i class="bi fs-1 text-primary-accent mb-2" [class]="getIconoMaterial(materialSeleccionadoRawUrl || '')" style="font-size: 4rem !important;"></i>
+                <h5 class="mt-2 fw-bold text-white">{{ materialSeleccionadoNombre }}</h5>
+                <p class="text-secondary mb-4" style="max-width: 500px; font-size: 0.9rem;">
+                  Este recurso de apoyo está disponible para descarga. Puedes guardarlo en tu equipo para abrirlo con el programa correspondiente.
                 </p>
-                <button class="btn btn-primary px-4 py-2 shadow-sm" style="border-radius: 4px;" (click)="descargarMaterial()">
-                  <i class="bi bi-download me-2"></i> Descargar Documento
+                <button class="btn btn-primary px-4 py-2" (click)="descargarMaterial()">
+                  <i class="bi bi-download me-2"></i> Descargar Recurso
                 </button>
               </div>
             }
@@ -233,76 +272,89 @@
 
         </div>
 
-        <div class="card-footer bg-dark-custom border-0 p-3 d-flex justify-content-between">
-          <button class="btn btn-outline-dark text-dark px-3" style="border-radius: 0;" (click)="anteriorLeccion()" [disabled]="!currentLesson">
-            <i class="bi bi-chevron-left"></i> Anterior
+        <!-- Footer con Botones de Navegación -->
+        <div class="player-footer p-3 d-flex justify-content-between align-items-center border-top border-dark-subtle">
+          <button class="btn btn-outline-secondary px-3 btn-sm" (click)="anteriorLeccion()" [disabled]="!currentLesson">
+            <i class="bi bi-chevron-left me-1"></i> Anterior
           </button>
           
-          <button class="btn btn-success px-4" style="border-radius: 0;" *ngIf="esUltimaLeccion()" (click)="irAEvaluacion()">
+          <button class="btn btn-success px-4 btn-sm fw-bold" *ngIf="esUltimaLeccion()" (click)="irAEvaluacion()">
             <i class="bi bi-journal-check me-1"></i> Rendir Evaluación Final
           </button>
           
-          <button class="btn btn-outline-dark text-dark px-3" style="border-radius: 0;" *ngIf="!esUltimaLeccion()" (click)="siguienteLeccion()" [disabled]="!currentLesson">
-            Siguiente <i class="bi bi-chevron-right"></i>
+          <button class="btn btn-primary px-3 btn-sm" *ngIf="!esUltimaLeccion()" (click)="siguienteLeccion()" [disabled]="!currentLesson">
+            Siguiente <i class="bi bi-chevron-right ms-1"></i>
           </button>
         </div>
 
       </div> 
 
-      <div class="card bg-skillup-tarjeta border-0 overflow-hidden mt-4" style="border-radius: 0;" *ngIf="currentLesson">
+      <!-- PESTAÑAS: DESCRIPCIÓN, PREGUNTAS Y NOTAS -->
+      <div class="card dark-panel overflow-hidden" *ngIf="currentLesson">
         
-        <div class="card-header border-0 p-0 custom-tabs-container">
-          <div class="d-flex custom-tabs-nav px-3 pt-3">
-            <button class="tab-btn" [class.active]="pestanaActiva === 'descripcion'" (click)="cambiarPestana('descripcion')">
-              <i class="bi bi-info-circle me-1"></i> Descripción General
+        <div class="tabs-header border-bottom border-dark-subtle">
+          <div class="d-flex px-3 pt-2">
+            <button class="tab-item-btn" [class.active]="pestanaActiva === 'descripcion'" (click)="cambiarPestana('descripcion')">
+              <i class="bi bi-info-circle me-1"></i> Descripción
             </button>
-            <button class="tab-btn" [class.active]="pestanaActiva === 'preguntas'" (click)="cambiarPestana('preguntas')">
-              <i class="bi bi-chat-left-text me-1"></i> Preguntas y Respuestas
+            <button class="tab-item-btn" [class.active]="pestanaActiva === 'preguntas'" (click)="cambiarPestana('preguntas')">
+              <i class="bi bi-chat-left-text me-1"></i> Dudas y Foro
             </button>
-            <button class="tab-btn" [class.active]="pestanaActiva === 'notas'" (click)="cambiarPestana('notas')">
+            <button class="tab-item-btn" [class.active]="pestanaActiva === 'notas'" (click)="cambiarPestana('notas')">
               <i class="bi bi-pencil-square me-1"></i> Mis Notas
             </button>
           </div>
         </div>
 
-        <div class="card-body tab-content-box p-4 text-dark">
+        <div class="p-4">
           
+          <!-- Pestaña 1: Descripción -->
           @if (pestanaActiva === 'descripcion') {
-            <div class="fadeIn">
-              <h5 class="fw-bold mb-3 text-dark">Acerca de esta lección: {{ currentLesson.nombreLeccion }}</h5>
-              <div class="d-flex flex-wrap gap-4 mb-4 text-body small">
-                <div><i class="bi bi-clock me-1 text-warning"></i> {{ currentLesson.duracion }} minutos</div>
-                <div><i class="bi bi-bar-chart me-1 text-warning"></i> Nivel Básico</div>
-                <div><i class="bi bi-paperclip me-1 text-warning"></i> {{ currentLesson ? currentLesson.materiales.length : 0 }} recursos adjuntos</div>
+            <div>
+              <h5 class="fw-bold mb-3 text-white">Acerca de esta lección: {{ currentLesson.nombreLeccion }}</h5>
+              <div class="d-flex flex-wrap gap-4 mb-3 text-secondary small">
+                <div><i class="bi bi-clock me-1 text-primary-accent"></i> {{ currentLesson.duracion }} minutos</div>
+                <div><i class="bi bi-bar-chart me-1 text-primary-accent"></i> Formación Especializada</div>
+                <div><i class="bi bi-paperclip me-1 text-primary-accent"></i> {{ currentLesson ? currentLesson.materiales.length : 0 }} recursos adjuntos</div>
               </div>
-              <p class="text-muted">En esta sesión cubriremos los aspectos fundamentales de esta técnica. Recuerda descargar los recursos adjuntos ubicados en el panel izquierdo para complementar el video. Presta especial atención a las medidas de seguridad mencionadas por el instructor.</p>
+              <p class="text-secondary small leading-relaxed mb-0">
+                En esta sesión revisamos los fundamentos técnicos y las mejores prácticas. Descarga los materiales complementarios desde el menú del temario para profundizar y resolver las guías paso a paso.
+              </p>
             </div>
           }
 
+          <!-- Pestaña 2: Foro -->
           @if (pestanaActiva === 'preguntas') {
-            <div class="fadeIn">
-              <h5 class="fw-bold mb-3 text-dark">Foro de la Lección</h5>
-              <p class="text-muted mb-4 small">¿Tienes dudas sobre lo explicado en el video? Deja tu pregunta y la comunidad te ayudará.</p>
+            <div>
+              <h5 class="fw-bold mb-2 text-white">Foro de Dudas</h5>
+              <p class="text-secondary mb-3 small">¿Tienes alguna pregunta sobre el contenido del video? Escríbela aquí.</p>
               
-              <div class="input-group mb-4">
-                <input type="text" [(ngModel)]="nuevaPregunta" (keyup.enter)="enviarPregunta()" class="form-control custom-input text-body" placeholder="Escribe tu duda aquí..." style="border-radius: 0;">
-                <button class="btn btn-yellow px-4" style="border-radius: 0;" type="button" (click)="enviarPregunta()"><i class="bi bi-send-fill me-1"></i> Enviar</button>
+              <div class="input-group mb-3">
+                <input 
+                  type="text" 
+                  [(ngModel)]="nuevaPregunta" 
+                  (keyup.enter)="enviarPregunta()" 
+                  class="form-control form-control-dark" 
+                  placeholder="Escribe tu consulta...">
+                <button class="btn btn-primary" type="button" (click)="enviarPregunta()">
+                  <i class="bi bi-send-fill me-1"></i> Publicar
+                </button>
               </div>
 
               @if (preguntasForo.length === 0) {
-                <div class="text-center p-4 empty-state-box" style="border-radius: 0;">
-                  <i class="bi bi-chat-dots text-muted fs-2 mb-2 d-block"></i>
-                  <p class="text-body small mb-0">Aún no hay preguntas en esta lección. ¡Sé el primero en participar!</p>
+                <div class="text-center p-4 empty-panel rounded-2">
+                  <i class="bi bi-chat-dots text-secondary fs-3 mb-2 d-block"></i>
+                  <p class="text-secondary small mb-0">Aún no hay dudas en esta lección. ¡Sé el primero en participar!</p>
                 </div>
               } @else {
-                <div class="d-flex flex-column gap-3 mt-4">
+                <div class="d-flex flex-column gap-2 mt-3">
                   @for (pregunta of preguntasForo; track $index) {
-                    <div class="bg-light p-3 border" style="border-radius: 0;">
-                      <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-warning fw-bold small"><i class="bi bi-person-circle me-1"></i> {{ pregunta.autor }}</span>
-                        <span class="text-muted small">{{ pregunta.fecha | date:'shortTime' }}</span>
+                    <div class="forum-item p-3 rounded-2">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="text-primary-accent fw-bold small"><i class="bi bi-person-circle me-1"></i> {{ pregunta.autor }}</span>
+                        <span class="text-muted small" style="font-size: 0.75rem;">{{ pregunta.fecha | date:'shortTime' }}</span>
                       </div>
-                      <p class="mb-0 text-body small">{{ pregunta.texto }}</p>
+                      <p class="mb-0 text-light small">{{ pregunta.texto }}</p>
                     </div>
                   }
                 </div>
@@ -310,27 +362,37 @@
             </div>
           }
 
+          <!-- Pestaña 3: Mis Notas -->
           @if (pestanaActiva === 'notas') {
-            <div class="fadeIn">
+            <div>
               <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="fw-bold mb-0 text-dark">Mis Apuntes</h5>
-                <span class="badge bg-light text-body fw-normal border">Privado</span>
+                <h5 class="fw-bold mb-0 text-white">Mis Apuntes Privados</h5>
+                <span class="badge bg-secondary-subtle text-secondary fw-normal">Solo tú puedes verlos</span>
               </div>
-              <p class="text-muted mb-3 small">Crea notas que solo tú podrás ver para repasar antes de la evaluación.</p>
+              <p class="text-secondary mb-3 small">Crea notas rápidas para repasar antes de presentar la evaluación final.</p>
               
-              <textarea [(ngModel)]="nuevaNota" class="form-control custom-textarea text-body mb-3" rows="4" placeholder="Ej: Minuto 4:20 - Tip importante sobre las proporciones de mezcla..." style="border-radius: 0;"></textarea>
+              <textarea 
+                [(ngModel)]="nuevaNota" 
+                class="form-control form-control-dark mb-3" 
+                rows="3" 
+                placeholder="Ej: Minuto 4:15 - Repasar sintaxis del comando...">
+              </textarea>
               
-              <div class="d-flex justify-content-end">
-                <button class="btn btn-yellow px-4" style="border-radius: 0;" (click)="guardarNota()"><i class="bi bi-save me-1"></i> Guardar Nota</button>
+              <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-primary btn-sm" (click)="guardarNota()">
+                  <i class="bi bi-save me-1"></i> Guardar Nota
+                </button>
               </div>
 
               @if (misNotas.length > 0) {
-                <div class="mt-4 pt-3 border-top d-flex flex-column gap-3">
-                  <h6 class="text-warning fw-semibold mb-1">Tus notas guardadas:</h6>
+                <div class="pt-3 border-top border-dark-subtle d-flex flex-column gap-2">
+                  <h6 class="text-primary-accent fw-semibold small mb-1">Tus notas:</h6>
                   @for (nota of misNotas; track $index) {
-                    <div class="bg-light p-3 border position-relative" style="border-radius: 0;">
-                      <span class="position-absolute top-0 end-0 mt-2 me-2 text-muted" style="font-size: 0.75rem;"><i class="bi bi-clock me-1"></i>{{ nota.fecha | date:'short' }}</span>
-                      <p class="mb-0 text-body small pe-4">{{ nota.texto }}</p>
+                    <div class="forum-item p-3 rounded-2 position-relative">
+                      <span class="position-absolute top-0 end-0 mt-2 me-2 text-muted" style="font-size: 0.72rem;">
+                        <i class="bi bi-clock me-1"></i>{{ nota.fecha | date:'short' }}
+                      </span>
+                      <p class="mb-0 text-light small pe-4">{{ nota.texto }}</p>
                     </div>
                   }
                 </div>

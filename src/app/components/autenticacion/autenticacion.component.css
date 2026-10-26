@@ -1,25 +1,32 @@
+/* ==========================================================================
+   SKILLUP - AUTENTICACIÓN (LOGIN & REGISTRO)
+   Paleta: Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Acentos: Royal Blue (#2563eb) & Electric Sky (#60a5fa)
+   Sin sombras y 100% responsive
+   ========================================================================== */
+
 :host {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  background-color: #080c14;
   padding: 20px;
   box-sizing: border-box;
 }
 
 .contenedorPrincipal {
-  background-color: #FFFFFF;
-  border: 1px solid #e2e8f0;
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
   border-radius: 20px;
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
   position: relative;
-  width: 820px;
+  width: 840px;
   max-width: 100%;
   min-height: 840px;
   overflow: hidden;
   display: flex;
+  box-shadow: none !important;
 }
 
 .contenedor-formulario {
@@ -43,7 +50,7 @@
 }
 
 form {
-  background-color: #FFFFFF;
+  background-color: #0f172a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,7 +75,7 @@ form {
   width: 6px;
 }
 .contenedor-registro form::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
+  background-color: #1e293b;
   border-radius: 6px;
 }
 
@@ -81,20 +88,21 @@ form {
 }
 
 .encabezado-formulario h1 {
-  font-weight: 700;
-  margin: 0 0 4px;
-  font-size: 1.6rem;
-  color: #0c4a6e;
+  font-weight: 800;
+  margin: 0 0 6px;
+  font-size: 1.65rem;
+  color: #ffffff;
+  letter-spacing: -0.02em;
 }
 
 .subtitulo-formulario {
-  font-size: 0.8rem;
-  color: #64748b;
+  font-size: 0.85rem;
+  color: #94a3b8;
   margin: 0;
 }
 
 /* ========================================================
-   CAMPOS, ETIQUETAS, SEPARADORES Y PLACEHOLDERS
+   CAMPOS, ETIQUETAS Y PLACEHOLDERS
    ======================================================== */
 .campo-formulario {
   width: 100%;
@@ -115,7 +123,7 @@ form {
 .campo-etiqueta {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #1e293b;
+  color: #cbd5e1;
   margin: 0;
 }
 
@@ -134,54 +142,53 @@ form {
 /* Inputs y Selects */
 input.input-formulario,
 select.input-formulario {
-  background-color: #f8fafc;
-  border: 1.5px solid #cbd5e1;
+  background-color: #0b111e !important;
+  border: 1px solid #1e293b !important;
   padding: 10px 14px;
   width: 100%;
-  border-radius: 10px;
-  font-size: 0.875rem;
-  color: #0f172a;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  color: #f8fafc !important;
   box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.15s ease;
   font-family: inherit;
+  box-shadow: none !important;
 }
 
 input.input-formulario::placeholder {
-  color: #94a3b8;
+  color: #64748b !important;
   opacity: 1;
   font-size: 0.85rem;
 }
 
 input.input-formulario:focus,
 select.input-formulario:focus {
-  outline: none;
-  border-color: #2563eb;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  outline: none !important;
+  border-color: #2563eb !important;
+  background-color: #0b111e !important;
+  box-shadow: none !important;
 }
 
 .input-separado {
   margin-bottom: 8px !important;
 }
 
-/* ========================================================
-   VALIDACIONES: BORDE ROJO Y MENSAJE EXPLICATIVO AMIGABLE
-   ======================================================== */
+/* Validaciones y Errores */
 input.input-formulario.input-error,
 select.input-formulario.input-error {
   border-color: #ef4444 !important;
-  background-color: #fef2f2 !important;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12) !important;
+  background-color: rgba(239, 68, 68, 0.08) !important;
+  box-shadow: none !important;
 }
 
 .mensaje-error-campo {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #b91c1c;
-  background-color: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
+  color: #fca5a5;
+  background-color: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
   padding: 5px 10px;
   font-size: 0.76rem;
   font-weight: 500;
@@ -206,10 +213,10 @@ select.input-formulario.input-error {
 }
 
 .mensaje-exito-campo {
-  color: #15803d;
-  background-color: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 8px;
+  color: #34d399;
+  background-color: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 6px;
   padding: 5px 10px;
   font-size: 0.76rem;
   font-weight: 600;
@@ -240,14 +247,13 @@ select.input-formulario.input-error {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #64748b;
+  color: #94a3b8;
   border-radius: 6px;
-  transition: color 0.2s, background-color 0.2s;
+  transition: color 0.15s;
 }
 
 .btn-toggle-ojito:hover {
-  color: #2563eb;
-  background-color: rgba(37, 99, 235, 0.08);
+  color: #60a5fa;
 }
 
 .icono-ojo {
@@ -258,8 +264,8 @@ select.input-formulario.input-error {
 /* Requisitos de seguridad de contraseña */
 .requisitos-contrasenia {
   width: 100%;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
   border-radius: 8px;
   padding: 8px 12px;
   margin-top: 6px;
@@ -277,11 +283,11 @@ select.input-formulario.input-error {
   align-items: center;
   gap: 6px;
   color: #64748b;
-  transition: color 0.2s ease;
+  transition: color 0.15s ease;
 }
 
 .requisito-item.cumplido {
-  color: #16a34a;
+  color: #34d399;
   font-weight: 600;
 }
 
@@ -309,19 +315,19 @@ select.input-formulario.input-error {
   cursor: pointer;
   padding: 9px 12px;
   border-radius: 8px;
-  border: 1.5px solid #cbd5e1;
-  background: #f8fafc;
-  transition: all 0.2s ease;
+  border: 1px solid #1e293b;
+  background: #0b111e;
+  transition: all 0.15s ease;
 }
 
 .radio-opcion:hover {
-  border-color: #94a3b8;
-  background: #f1f5f9;
+  border-color: #334155;
+  background: #111b2e;
 }
 
 .radio-opcion input[type="radio"] {
   cursor: pointer;
-  accent-color: #0284c7;
+  accent-color: #2563eb;
   width: 16px;
   height: 16px;
 }
@@ -329,7 +335,7 @@ select.input-formulario.input-error {
 .radio-texto {
   font-size: 0.84rem;
   font-weight: 600;
-  color: #334155;
+  color: #cbd5e1;
 }
 
 /* Mensajes de error general */
@@ -337,9 +343,9 @@ select.input-formulario.input-error {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #b91c1c;
-  background-color: #fef2f2;
-  border: 1px solid #fecaca;
+  color: #fca5a5;
+  background-color: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 0.8rem;
@@ -354,9 +360,9 @@ select.input-formulario.input-error {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #15803d;
-  background-color: #f0fdf4;
-  border: 1px solid #bbf7d0;
+  color: #34d399;
+  background-color: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 0.8rem;
@@ -372,32 +378,29 @@ select.input-formulario.input-error {
    ======================================================== */
 button.btn {
   border: none;
-  background-color: #0284c7;
-  color: #FFFFFF;
-  font-size: 0.82rem;
-  font-weight: 600;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 700;
   padding: 12px 36px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+  transition: all 0.15s ease;
+  box-shadow: none !important;
   margin-top: 10px;
 }
 
 button.btn:hover:not(:disabled) {
-  background-color: #0369a1;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+  background-color: #1d4ed8;
+  color: #ffffff;
 }
 
 button.btn:disabled {
-  background-color: #cbd5e1;
+  background-color: #1e293b;
   color: #64748b;
   cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
 }
 
 .btn-registro {
@@ -414,16 +417,30 @@ button.btn:disabled {
   margin: 12px 0 6px 0;
 }
 
+.enlace-olvido-contrasenia {
+  font-size: 0.82rem;
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.enlace-olvido-contrasenia:hover {
+  color: #38bdf8;
+  text-decoration: underline;
+}
+
 .enlace-deshabilitado {
   font-size: 0.78rem;
-  color: #94a3b8;
+  color: #64748b;
   font-weight: 500;
   cursor: not-allowed;
   user-select: none;
 }
 
 /* ========================================================
-   SUPERPOSICIÓN / SLIDER PANEL LATERAL
+   SUPERPOSICIÓN / SLIDER PANEL LATERAL (Dark Navy & Blue)
    ======================================================== */
 .contenedor-superposicion {
   position: absolute;
@@ -437,8 +454,9 @@ button.btn:disabled {
 }
 
 .superposicion {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%);
-  color: #FFFFFF;
+  background: #101c38;
+  border-left: 1px solid #1e3a8a;
+  color: #ffffff;
   position: relative;
   left: -100%;
   height: 100%;
@@ -472,45 +490,40 @@ button.btn:disabled {
   transform: translateX(0);
 }
 
-h2.encabezado-panel {
-  font-weight: 700;
-  margin: 0 0 1rem;
-  font-size: 1.6rem;
-  color: #FFFFFF;
+.panel-superposicion h1 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #ffffff;
 }
 
-p.texto-panel {
-  font-size: 0.9rem;
-  font-weight: 400;
-  line-height: 1.5;
-  margin: 0 0 25px 0;
-  color: #f0f9ff;
+.panel-superposicion p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  color: #cbd5e1;
 }
 
-button.btn.fantasma {
-  background-color: transparent;
-  border: 2px solid #FFFFFF;
-  color: #FFFFFF;
-  padding: 10px 32px;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.5px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: none;
+button.transparente {
+  background-color: transparent !important;
+  border: 1.5px solid #60a5fa !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
 }
 
-button.btn.fantasma:hover {
-  background-color: #FFFFFF;
-  color: #0369a1;
-  transform: translateY(-1px);
+button.transparente:hover {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
 }
 
-/* Transiciones al alternar panel */
+/* Clases de animación activa */
 .contenedorPrincipal.panel-derecho-activo .contenedor-inicio-sesion {
   transform: translateX(100%);
+}
+
+.contenedorPrincipal.panel-derecho-activo .contenedor-superposicion {
+  transform: translateX(-100%);
 }
 
 .contenedorPrincipal.panel-derecho-activo .contenedor-registro {
@@ -518,15 +531,6 @@ button.btn.fantasma:hover {
   opacity: 1;
   z-index: 5;
   animation: mostrar 0.6s;
-}
-
-@keyframes mostrar {
-  0%, 49.99% { opacity: 0; z-index: 1; }
-  50%, 100% { opacity: 1; z-index: 5; }
-}
-
-.contenedorPrincipal.panel-derecho-activo .contenedor-superposicion {
-  transform: translateX(-100%);
 }
 
 .contenedorPrincipal.panel-derecho-activo .superposicion {
@@ -541,129 +545,64 @@ button.btn.fantasma:hover {
   transform: translateX(20%);
 }
 
+@keyframes mostrar {
+  0%, 49.99% { opacity: 0; z-index: 1; }
+  50%, 100% { opacity: 1; z-index: 5; }
+}
+
 @keyframes animacionFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ========================================================
-   ENLACE DE OLVIDO DE CONTRASEÑA
+   CAPTCHA
    ======================================================== */
-.contenedor-olvido-contrasenia {
-  margin: 6px 0 14px;
-  text-align: right;
-  width: 100%;
-}
-
-.enlace-olvido {
-  color: #0284c7;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: color 0.15s ease;
-}
-
-.enlace-olvido:hover {
-  color: #0369a1;
-  text-decoration: underline;
-}
-
-/* ========================================================
-   ALERTA DE BLOQUEO TEMPORAL (1 MINUTO TRAS 3 INTENTOS)
-   ======================================================== */
-.alerta-bloqueo-temporal {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #FEF2F2;
-  border: 1px solid #F87171;
-  color: #B91C1C;
-  padding: 10px 14px;
+.campo-captcha-wrapper {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
   border-radius: 8px;
-  font-size: 0.85rem;
-  margin: 10px 0;
-  animation: animacionFadeIn 0.3s ease-out;
-}
-
-.alerta-bloqueo-temporal .icono-reloj {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  animation: pulsoReloj 1.5s infinite;
-}
-
-@keyframes pulsoReloj {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-}
-
-/* ========================================================
-   CAPTCHA ANTI-IA / ANTI-BOT INTERACTIVO
-   ======================================================== */
-.bloque-captcha {
-  margin: 10px 0 14px;
   padding: 12px 14px;
-  background: #F8FAFC;
-  border: 1px dashed #94A3B8;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin: 10px 0;
   width: 100%;
-  animation: animacionFadeIn 0.3s ease-out;
+  box-sizing: border-box;
 }
 
 .etiqueta-captcha {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #334155;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  display: block;
+  margin-bottom: 6px;
+  text-align: left;
 }
 
-.etiqueta-captcha .icono-escudo {
-  width: 16px;
-  height: 16px;
-  color: #0284c7;
-}
-
-.fila-captcha-visual {
+.captcha-contenedor {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  justify-content: center;
+  margin-bottom: 8px;
 }
 
-.caja-codigo-captcha {
+.canvas-captcha {
   position: relative;
-  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
+  background-color: #111b2e;
   padding: 8px 18px;
   border-radius: 6px;
-  border: 1px solid #94A3B8;
+  border: 1px solid #1e293b;
   letter-spacing: 6px;
   user-select: none;
   overflow: hidden;
   display: inline-block;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .texto-captcha {
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.35rem;
   font-weight: 900;
-  color: #0f172a;
+  color: #60a5fa;
   text-decoration: line-through;
-  text-shadow: 2px 2px 3px rgba(0,0,0,0.25);
   display: inline-block;
   transform: skew(-6deg);
 }
@@ -689,22 +628,22 @@ button.btn.fantasma:hover {
 }
 
 .btn-recargar-captcha {
-  background: #FFFFFF;
-  border: 1px solid #CBD5E1;
+  background: #111b2e;
+  border: 1px solid #1e293b;
   border-radius: 6px;
   padding: 8px 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #475569;
-  transition: all 0.2s;
+  color: #94a3b8;
+  transition: all 0.15s;
 }
 
 .btn-recargar-captcha:hover:not(:disabled) {
-  background: #F1F5F9;
-  color: #0284c7;
-  border-color: #0284c7;
+  background: #172554;
+  color: #60a5fa;
+  border-color: #2563eb;
 }
 
 .icono-refresco {
@@ -721,13 +660,13 @@ button.btn.fantasma:hover {
 
 .error-captcha {
   font-size: 0.78rem;
-  color: #DC2626;
+  color: #fca5a5;
   text-align: center;
   font-weight: 600;
 }
 
 /* ========================================================
-   ESTILOS MODAL RECUPERACIÓN DE CONTRASEÑA (HU-22)
+   MODAL RECUPERACIÓN DE CONTRASEÑA
    ======================================================== */
 .modal-backdrop-recuperar {
   position: fixed;
@@ -735,8 +674,7 @@ button.btn.fantasma:hover {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.75);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -750,13 +688,14 @@ button.btn.fantasma:hover {
 }
 
 .modal-card-recuperar {
-  background: #FFFFFF;
+  background: #0f172a;
+  border: 1px solid #1e293b;
   border-radius: 14px;
   width: 90%;
   max-width: 440px;
   padding: 28px 24px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
   position: relative;
+  box-shadow: none !important;
   animation: slideUpModal 0.25s ease-out;
 }
 
@@ -773,13 +712,13 @@ button.btn.fantasma:hover {
   border: none;
   font-size: 1.8rem;
   line-height: 1;
-  color: #757575;
+  color: #94a3b8;
   cursor: pointer;
   transition: color 0.15s ease;
 }
 
 .btn-cerrar-modal:hover {
-  color: #212121;
+  color: #ffffff;
 }
 
 .modal-recuperar-header {
@@ -791,13 +730,15 @@ button.btn.fantasma:hover {
   display: inline-flex;
   padding: 12px;
   border-radius: 50%;
-  background: #E0F2FE;
+  background: #101e38;
+  border: 1px solid #1e3a8a;
+  color: #60a5fa;
   margin-bottom: 12px;
 }
 
 .modal-recuperar-header h2 {
   font-size: 1.35rem;
-  color: #0369a1;
+  color: #ffffff;
   font-weight: 700;
   margin: 0;
 }
@@ -810,19 +751,19 @@ button.btn.fantasma:hover {
 
 .instruccion-modal {
   font-size: 0.9rem;
-  color: #616161;
+  color: #94a3b8;
   line-height: 1.45;
   margin: 0;
   text-align: center;
 }
 
 .alerta-usuario-encontrado {
-  background-color: #E8F5E9;
-  color: #1B5E20;
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #34d399;
   padding: 10px 14px;
   border-radius: 6px;
   font-size: 0.9rem;
-  border-left: 4px solid #2E7D32;
+  border: 1px solid rgba(16, 185, 129, 0.3);
   text-align: center;
 }
 
@@ -836,7 +777,7 @@ button.btn.fantasma:hover {
 .campo-recuperar label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #424242;
+  color: #cbd5e1;
 }
 
 .campo-recuperar .input-formulario {
@@ -865,7 +806,7 @@ button.btn.fantasma:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #64748B;
+  color: #94a3b8;
   padding: 4px;
 }
 
@@ -881,13 +822,14 @@ button.btn.fantasma:hover {
 }
 
 .btn-secundario {
-  background-color: #ECEFF1 !important;
-  color: #455A64 !important;
-  border: 1px solid #CFD8DC !important;
+  background-color: #111b2e !important;
+  color: #cbd5e1 !important;
+  border: 1px solid #1e293b !important;
 }
 
 .btn-secundario:hover {
-  background-color: #CFD8DC !important;
+  background-color: #172554 !important;
+  color: #ffffff !important;
 }
 
 .exito-view {
@@ -900,14 +842,66 @@ button.btn.fantasma:hover {
   display: inline-flex;
   padding: 12px;
   border-radius: 50%;
-  background: #E8F5E9;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
   margin-bottom: 8px;
 }
 
 .exito-view h3 {
-  color: #1B5E20;
+  color: #34d399;
   margin: 0 0 6px 0;
   font-size: 1.25rem;
   font-weight: 700;
 }
 
+/* ========================================================
+   RESPONSIVE DESIGN (Móvil & Tablet)
+   ======================================================== */
+@media (max-width: 768px) {
+  :host {
+    padding: 12px;
+  }
+
+  .contenedorPrincipal {
+    min-height: auto;
+    flex-direction: column;
+    border-radius: 14px;
+  }
+
+  .contenedor-superposicion {
+    display: none;
+  }
+
+  .contenedor-formulario {
+    position: relative;
+    width: 100%;
+    left: 0 !important;
+    transform: none !important;
+  }
+
+  .contenedor-inicio-sesion {
+    display: flex;
+  }
+
+  .contenedor-registro {
+    display: none;
+  }
+
+  .contenedorPrincipal.panel-derecho-activo .contenedor-inicio-sesion {
+    display: none;
+  }
+
+  .contenedorPrincipal.panel-derecho-activo .contenedor-registro {
+    display: flex;
+    opacity: 1;
+    z-index: 2;
+  }
+
+  form {
+    padding: 24px 18px;
+  }
+
+  .contenedor-registro form {
+    padding: 24px 18px;
+  }
+}

@@ -1,57 +1,52 @@
-body {
-    background-color: #F5F5F5;
-    color: #212121;
+/* ==========================================================================
+   SKILLUP - LISTADO DE DOCENTES
+   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Sin sombras y 100% responsive
+   ========================================================================== */
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #080c14;
+  color: #f8fafc;
 }
-.sidebar {
-    background-color: #FFFFFF;
-    border-right: 1px solid #E0E0E0;
-    height: 100vh;
-    position: sticky;
-    top: 0;
+
+.tracking-wider {
+  letter-spacing: 0.05em;
 }
-.sidebar .nav-link {
-    color: #212121;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+
+.dark-card {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: none !important;
 }
-.sidebar .nav-link.active, .sidebar .nav-link:hover {
-    background-color: #1565C0;
-    color: #FFFFFF;
+
+.custom-dark-table {
+  width: 100%;
+  border-collapse: collapse;
 }
-.metric-card {
-    background-color: #FFFFFF;
-    padding: 1.5rem;
-    text-align: center;
-    border: 1px solid #E0E0E0;
+
+.custom-dark-table th {
+  background-color: #0b111e;
+  color: #94a3b8;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  padding: 14px 16px;
+  border-bottom: 1px solid #1e293b;
 }
-.course-performance, .activity-card {
-    background-color: #FFFFFF;
-    padding: 1.5rem;
-    border: 1px solid #E0E0E0;
+
+.custom-dark-table td {
+  background-color: #0f172a;
+  color: #cbd5e1;
+  padding: 14px 16px;
+  border-top: 1px solid #162035;
+  border-bottom: none;
 }
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-th, td {
-    padding: 12px;
-    border: 1px solid #E0E0E0;
-    text-align: left;
-}
-th {
-    background-color: #1565C0;
-    color: #FFFFFF;
-}
-.btn-warning {
-    background-color: #F57F17;
-    color: #FFFFFF;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-}
-.btn-warning:hover {
-    background-color: #C62828;
-}
-h1 {
-    color: #0D47A1;
+
+.custom-dark-table tbody tr:hover td {
+  background-color: #131d33;
 }

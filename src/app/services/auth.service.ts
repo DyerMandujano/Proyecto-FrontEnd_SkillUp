@@ -41,6 +41,14 @@ export class AuthService {
     };
 
     localStorage.setItem('currentUser', JSON.stringify(userData));
+    if (response.idRolEspecifico) {
+      localStorage.setItem('idRolEspecifico', response.idRolEspecifico.toString());
+      if (response.rol && response.rol.toLowerCase() === 'estudiante') {
+        localStorage.setItem('idEstudiante', response.idRolEspecifico.toString());
+      } else if (response.rol && response.rol.toLowerCase() === 'docente') {
+        localStorage.setItem('idDocente', response.idRolEspecifico.toString());
+      }
+    }
   }
 
   getCurrentUser(): LoginResponse | null {
@@ -55,6 +63,10 @@ export class AuthService {
 
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('idEstudiante');
+    localStorage.removeItem('idDocente');
+    localStorage.removeItem('idRolEspecifico');
+    localStorage.removeItem('redirectAfterLogin');
   }
 
   getToken(): string | null {

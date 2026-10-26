@@ -1,111 +1,385 @@
-body {
-  background-color: #F5F5F5;
-  color: #212121;
+/* ==========================================================================
+   SKILLUP - PANEL DEL DOCENTE / INSTRUCTOR
+   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Acentos: Royal Blue (#2563eb) & Electric Sky (#60a5fa)
+   Sin sombras y 100% responsive
+   ========================================================================== */
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #080c14;
+  color: #f8fafc;
 }
 
-.sidebar {
-  background-color: #FFFFFF;
-  border-right: 1px solid #E0E0E0;
-  height: 100vh;
-  position: sticky;
-  top: 0;
+.docente-wrapper {
+  background-color: #080c14;
+  color: #f8fafc;
+  min-height: 100vh;
 }
 
-.sidebar .nav-link {
-  color: #616161;
+/* NAVBAR SUPERIOR */
+.docente-nav {
+  background-color: #080c14;
+  border-bottom: 1px solid #1e293b;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.text-primary-accent {
+  color: #60a5fa !important;
+}
+
+.border-dark-subtle {
+  border-color: #1e293b !important;
+}
+
+/* AVATAR INSTRUCTOR */
+.docente-avatar-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #101e38;
+  border: 1px solid #1e3a8a;
+  color: #60a5fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+/* BOTONES DEL HEADER */
+.btn-export-excel {
+  background-color: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 6px 14px;
+  transition: all 0.15s ease;
+  box-shadow: none !important;
+}
+
+.btn-export-excel:hover {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.btn-config-dark {
+  background-color: #111b2e;
+  border: 1px solid #1e293b;
+  color: #cbd5e1;
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  padding: 6px 14px;
+  transition: all 0.15s ease;
+  box-shadow: none !important;
 }
 
-.sidebar .nav-link.active,
-.sidebar .nav-link:hover {
-  background-color: #1565C0;
-  color: #FFFFFF;
+.btn-config-dark:hover {
+  background-color: #172554;
+  border-color: #2563eb;
+  color: #ffffff;
 }
 
-.metric-card {
-  background: #FFFFFF;
-  padding: 1.5rem;
-  border: 1px solid #E0E0E0;
-  text-align: center;
+.btn-logout-dark {
+  background-color: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 6px 14px;
+  transition: all 0.15s ease;
+  box-shadow: none !important;
 }
 
-.course-performance,
-.activity-card {
-  background: #FFFFFF;
-  padding: 1.5rem;
-  border: 1px solid #E0E0E0;
+.btn-logout-dark:hover {
+  background-color: #ef4444;
+  color: #ffffff;
 }
 
-canvas {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 300px;
-  max-height: 400px;
+/* SIDEBAR DOCENTE */
+.sidebar-panel {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  height: fit-content;
+  box-shadow: none !important;
 }
 
-.card-body {
-  min-height: 450px;
+.sidebar-heading {
+  font-size: 0.75rem;
+  padding: 4px 10px;
 }
 
-.btn-group .btn.active {
-  background-color: #1565C0;
-  color: #FFFFFF;
-  border-color: #1565C0;
-}
-
-.modal-lg {
-  max-width: 800px;
-}
-
-.btn {
-  transition: none;
-}
-
-.card {
-  border: 1px solid #E0E0E0;
-  background-color: #FFFFFF;
-}
-
-.progress {
-  background-color: #F5F5F5;
-}
-
-.progress-bar {
-  transition: width 0.5s ease;
-}
-
-.table-hover tbody tr:hover {
-  background-color: #F5F5F5;
-  cursor: pointer;
-}
-
-.badge {
+.sidebar-tab-btn {
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #94a3b8;
   font-weight: 500;
-}
-
-.grafico-container {
+  font-size: 0.92rem;
+  padding: 10px 14px;
+  text-align: left;
   width: 100%;
-  min-height: 400px;
-  position: relative;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  transition: all 0.15s ease;
+  box-shadow: none !important;
 }
 
-.bg-success { background-color: #2E7D32 !important; }
-.bg-danger { background-color: #C62828 !important; }
-.bg-warning { background-color: #F57F17 !important; color: #FFFFFF !important; }
-.bg-primary { background-color: #1565C0 !important; color: #FFFFFF !important; }
+.sidebar-tab-btn:hover {
+  background-color: #131d33;
+  color: #f8fafc;
+}
 
-.btn-primary { background-color: #1565C0; border-color: #1565C0; color: #FFFFFF; }
-.btn-primary:hover { background-color: #0D47A1; border-color: #0D47A1; color: #FFFFFF; }
+.sidebar-tab-btn.active {
+  background-color: #101e38;
+  color: #60a5fa;
+  border-left: 3px solid #2563eb;
+  font-weight: 700;
+}
 
-.btn-success { background-color: #2E7D32; border-color: #2E7D32; color: #FFFFFF; }
-.btn-danger { background-color: #C62828; border-color: #C62828; color: #FFFFFF; }
-.btn-warning { background-color: #F57F17; border-color: #F57F17; color: #FFFFFF; }
-.btn-secondary { background-color: #616161; border-color: #616161; color: #FFFFFF; }
+/* TARJETAS PANEL DARK */
+.dark-panel {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  box-shadow: none !important;
+  color: #f8fafc;
+}
 
-.text-muted { color: #616161 !important; }
-.text-success { color: #2E7D32 !important; }
-.text-danger { color: #C62828 !important; }
-.text-warning { color: #F57F17 !important; }
+/* TABLA DARK */
+.custom-dark-table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-.table-light { background-color: #F5F5F5; }
+.custom-dark-table thead th {
+  background-color: #0b111e;
+  color: #94a3b8;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  padding: 14px 16px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.custom-dark-table tbody td {
+  background-color: #0f172a;
+  color: #cbd5e1;
+  padding: 14px 16px;
+  border-top: 1px solid #162035;
+  border-bottom: none;
+}
+
+.custom-dark-table tbody tr:hover td {
+  background-color: #131d33;
+}
+
+/* BADGES ESTADO Y NIVEL */
+.badge-status-active {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.badge-status-inactive {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.badge-level {
+  background-color: #111b2e;
+  border: 1px solid #1e293b;
+  color: #cbd5e1;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 5px;
+}
+
+.badge-tag {
+  background-color: #111b2e;
+  border: 1px solid #1e293b;
+  color: #60a5fa;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.badge-date {
+  background-color: #111b2e;
+  border: 1px solid #1e293b;
+  color: #94a3b8;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+/* BOTONES DE ACCIÓN EN TABLA */
+.btn-action-edit {
+  background-color: #111b2e;
+  border: 1px solid #1e293b;
+  color: #fbbf24;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  transition: all 0.15s ease;
+  box-shadow: none !important;
+}
+
+.btn-action-edit:hover {
+  background-color: #fbbf24;
+  color: #080c14;
+}
+
+.btn-action-delete {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  transition: all 0.15s ease;
+  box-shadow: none !important;
+}
+
+.btn-action-delete:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.btn-action-sections {
+  background-color: #2563eb;
+  border: 1px solid #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 0.82rem;
+  transition: all 0.15s ease;
+  box-shadow: none !important;
+}
+
+.btn-action-sections:hover {
+  background-color: #1d4ed8;
+}
+
+/* COMUNICACIÓN */
+.query-card {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  box-shadow: none !important;
+}
+
+.avatar-student-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #1e293b;
+  color: #60a5fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+/* DASHBOARD Y RENDIMIENTO */
+.btn-dash-tab {
+  background-color: #111b2e;
+  border: 1px solid #1e293b;
+  color: #cbd5e1;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+  box-shadow: none !important;
+}
+
+.btn-dash-tab:hover {
+  background-color: #172554;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.btn-dash-tab.active {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.kpi-metric-card {
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none !important;
+}
+
+.kpi-val {
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.kpi-lbl {
+  font-size: 0.82rem;
+  margin-top: 4px;
+}
+
+/* INPUTS DARK */
+.form-control-dark {
+  background-color: #0b111e !important;
+  border: 1px solid #1e293b !important;
+  color: #f8fafc !important;
+  border-radius: 6px;
+  box-shadow: none !important;
+}
+
+.form-control-dark:focus {
+  border-color: #2563eb !important;
+  outline: none !important;
+}
+
+.form-control-dark::placeholder {
+  color: #64748b !important;
+}
+
+/* MODALES DARK */
+.bg-modal-dark {
+  background-color: #0f172a !important;
+  border: 1px solid #1e293b !important;
+  color: #f8fafc !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.danger-box {
+  background-color: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}

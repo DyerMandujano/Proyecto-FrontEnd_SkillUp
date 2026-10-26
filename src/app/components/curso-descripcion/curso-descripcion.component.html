@@ -1,195 +1,345 @@
-<div class="container-fluid min-vh-100 p-4" style="background-color: #FFFFFF; color: #212121;">
+<!-- ==========================================================================
+     SKILLUP - DETALLE Y DESCRIPCIÓN DEL CURSO
+     Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+     Acentos: Royal Blue (#2563eb) & Electric Sky (#60a5fa)
+     Sin sombras y 100% responsive
+     ========================================================================== -->
+
+<div class="curso-page-wrapper">
   
-  <header class="text-center py-3 mb-4">
-    <h5 class="fw-bold text-uppercase text-primary" style="color: #1565C0;">SkillUp</h5>
+  <!-- NAVBAR SUPERIOR COHERENTE CON EL SISTEMA -->
+  <header class="curso-nav">
+    <div class="container-xl d-flex align-items-center justify-content-between py-3">
+      <a routerLink="/" class="d-flex align-items-center text-decoration-none">
+        <span class="fs-4 fw-bold text-white tracking-tight">Skill<span class="text-primary-accent">Up</span></span>
+      </a>
+
+      <!-- Acciones de Navegación según Estado de Sesión -->
+      <div class="d-flex align-items-center gap-2 gap-sm-3">
+        <a routerLink="/" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-arrow-left me-1"></i> Explorar cursos
+        </a>
+
+        @if (estaAutenticado) {
+          <a [routerLink]="obtenerRutaPanel()" class="btn btn-primary btn-sm">
+            <i class="bi bi-person-circle me-1"></i> Mi Panel
+          </a>
+        } @else {
+          <a routerLink="/login" class="btn btn-outline-secondary btn-sm">
+            Iniciar sesión
+          </a>
+          <a routerLink="/registro" class="btn btn-primary btn-sm d-none d-sm-inline-block">
+            Crear cuenta
+          </a>
+        }
+      </div>
+    </div>
   </header>
 
-  <main class="px-md-4">
+  <main class="container-xl py-4 py-lg-5">
     
+    <!-- SPINNER DE CARGA -->
     @if (cargando) {
       <div class="text-center py-5">
-        <div class="spinner-border text-primary" role="status"></div>
-        <p class="mt-2 text-muted" style="color: #616161;">Cargando curso...</p>
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando curso...</span>
+        </div>
+        <p class="mt-3 text-secondary">Cargando información del programa formativo...</p>
       </div>
     }
 
+    <!-- ALERTA DE ERROR -->
     @if (error && !cargando) {
-      <div class="alert alert-danger text-center" style="background-color: #C62828; color: #FFFFFF; border-radius: 0;">{{ error }}</div>
+      <div class="alert alert-danger text-center">
+        <i class="bi bi-exclamation-octagon me-2"></i> {{ error }}
+      </div>
     }
 
+    <!-- CONTENIDO DEL CURSO -->
     @if (curso && !cargando) {
-      <div class="card p-4 mb-5" style="border: 1px solid #E0E0E0; border-radius: 0; background-color: #F5F5F5;">
-        <div class="row align-items-center">
-          <div class="col-md-8">
-            <h1 class="text-dark fw-bold display-5 mb-3" style="color: #212121;">{{ curso.nombreCurso }}</h1>
-            <p class="lead text-muted mb-4" style="color: #616161;">{{ curso.resumen }}</p>
-            
-            <div class="d-flex gap-4 mb-3">
-              <span class="text-warning" style="color: #F57F17;">★ {{ promedioCalificacion }} <span class="text-muted ms-2" style="color: #616161;">({{ totalResenias }} reseñas registradas)</span></span>
+      
+      <!-- HERO CARD DEL CURSO -->
+      <section class="curso-hero-card mb-4">
+        <div class="row g-4 align-items-center">
+          
+          <!-- Columna Información Principal -->
+          <div class="col-lg-7">
+            <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
+              <span class="pill-badge pill-badge-blue">
+                <i class="bi bi-bar-chart me-1"></i> Nivel {{ curso.nivel || 'Profesional' }}
+              </span>
+              <span class="pill-badge pill-badge-slate">
+                <i class="bi bi-clock me-1"></i> {{ curso.duracionMin }} minutos
+              </span>
+              <span class="pill-badge pill-badge-slate" *ngIf="curso.fechaPublicacion">
+                <i class="bi bi-calendar3 me-1"></i> Publicado: {{ curso.fechaPublicacion }}
+              </span>
             </div>
+
+            <h1 class="curso-hero-title mb-3">{{ curso.nombreCurso }}</h1>
+            <p class="curso-hero-summary mb-4">{{ curso.resumen || curso.descripcion }}</p>
             
-            <div class="text-muted" style="color: #616161;">
-              <p><strong>Duración:</strong> {{ curso.duracionMin }} minutos</p>
-              <p><strong>Nivel:</strong> {{ curso.nivel }}</p>
-              <p><strong>Publicado:</strong> {{ curso.fechaPublicacion }}</p>
+            <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
+              <div class="d-flex align-items-center text-warning fs-5">
+                <i class="bi bi-star-fill me-1"></i>
+                <span class="fw-bold text-white me-2">{{ promedioCalificacion }}</span>
+              </div>
+              <span class="text-secondary small">
+                ({{ totalResenias }} valoraciones de estudiantes)
+              </span>
             </div>
           </div>
 
-          <div class="col-md-4 text-center">
-            @if (curso.imagenCurso1 || curso.imagenCurso2) {
-              <img [src]="obtenerUrlImagen(imagenSeleccionada || curso.imagenCurso1 || curso.imagenCurso2)" 
-                   (error)="manejarErrorImagen($event)" 
-                   class="img-fluid mb-2" 
-                   style="max-height: 250px; width: 100%; object-fit: cover; border-radius: 0; border: 1px solid #E0E0E0;" 
-                   [alt]="curso.nombreCurso">
+          <!-- Columna Multimedia / Matrícula -->
+          <div class="col-lg-5">
+            <div class="curso-media-box">
+              
+              <!-- Imagen Principal -->
+              <div class="media-cover-wrap mb-2">
+                <img 
+                  [src]="obtenerUrlImagen(imagenSeleccionada || curso.imagenCurso1 || curso.imagenCurso2)" 
+                  (error)="manejarErrorImagen($event)" 
+                  class="media-cover-img" 
+                  [alt]="curso.nombreCurso"
+                />
+              </div>
 
+              <!-- Miniaturas si existen ambas imágenes -->
               @if (curso.imagenCurso1 && curso.imagenCurso2) {
-                <div class="d-flex justify-content-center gap-2 mb-2">
-                  <img [src]="obtenerUrlImagen(curso.imagenCurso1)" 
-                       (click)="seleccionarImagen(curso.imagenCurso1)"
-                       (error)="manejarErrorImagen($event)"
-                       [style.border]="(imagenSeleccionada === curso.imagenCurso1 || !imagenSeleccionada) ? '2px solid #1565C0' : '1px solid #E0E0E0'"
-                       style="width: 55px; height: 45px; object-fit: cover; cursor: pointer;" 
-                       alt="Imagen principal">
-                  <img [src]="obtenerUrlImagen(curso.imagenCurso2)" 
-                       (click)="seleccionarImagen(curso.imagenCurso2)"
-                       (error)="manejarErrorImagen($event)"
-                       [style.border]="imagenSeleccionada === curso.imagenCurso2 ? '2px solid #1565C0' : '1px solid #E0E0E0'"
-                       style="width: 55px; height: 45px; object-fit: cover; cursor: pointer;" 
-                       alt="Imagen secundaria">
+                <div class="d-flex justify-content-center gap-2 mb-3">
+                  <img 
+                    [src]="obtenerUrlImagen(curso.imagenCurso1)" 
+                    (click)="seleccionarImagen(curso.imagenCurso1)"
+                    (error)="manejarErrorImagen($event)"
+                    [class.active-thumb]="(imagenSeleccionada === curso.imagenCurso1 || !imagenSeleccionada)"
+                    class="thumb-img" 
+                    alt="Vista 1"
+                  />
+                  <img 
+                    [src]="obtenerUrlImagen(curso.imagenCurso2)" 
+                    (click)="seleccionarImagen(curso.imagenCurso2)"
+                    (error)="manejarErrorImagen($event)"
+                    [class.active-thumb]="imagenSeleccionada === curso.imagenCurso2"
+                    class="thumb-img" 
+                    alt="Vista 2"
+                  />
                 </div>
               }
-            } @else {
-              <img [src]="obtenerUrlImagen('')" class="img-fluid mb-3" style="max-height: 250px; width: 100%; object-fit: cover; border-radius: 0; border: 1px solid #E0E0E0;" [alt]="curso.nombreCurso">
-            }
-            
-            <div class="mt-2">
-              @if (estaMatriculado) {
-                <a [routerLink]="['/curso', cursoId, 'lecciones']" class="btn btn-success btn-lg w-100" style="background-color: #2E7D32; color: #FFFFFF; border-radius: 0; border: none;">
-                  <i class="bi bi-play-fill me-2"></i>Continuar Curso
-                </a>
-              } @else {
-                <button (click)="registrarMatricula()" class="btn btn-primary btn-lg w-100" style="background-color: #1565C0; color: #FFFFFF; border-radius: 0; border: none;">
-                  <i class="bi bi-door-open me-2"></i>Matricularse al Curso
-                </button>
+
+              <!-- Botón de Matrícula / Acceso -->
+              <div class="mt-3">
+                @if (estaMatriculado) {
+                  <a [routerLink]="['/curso', cursoId, 'lecciones']" class="btn btn-success btn-lg w-100 fw-bold">
+                    <i class="bi bi-play-circle-fill me-2"></i> Continuar Curso
+                  </a>
+                } @else {
+                  <button (click)="registrarMatricula()" class="btn btn-primary btn-lg w-100 fw-bold">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Matricularse al Curso
+                  </button>
+                  <small class="text-secondary text-center d-block mt-2" *ngIf="!estaAutenticado">
+                    <i class="bi bi-shield-lock me-1"></i> Al hacer clic serás dirigido al inicio de sesión para matricularte.
+                  </small>
+                }
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CUERPO PRINCIPAL: RESUMEN, TEMARIO Y RESEÑAS -->
+      <div class="row g-4">
+        
+        <!-- Columna Izquierda: Breve Resumen + Temario + Instructor -->
+        <div class="col-lg-8">
+          
+          <!-- Bloque: Breve Resumen del Curso -->
+          <div class="curso-content-card mb-4">
+            <h3 class="card-section-title mb-3">
+              <i class="bi bi-file-text text-primary-accent me-2"></i>
+              Resumen del Programa
+            </h3>
+            <p class="card-section-text mb-0">
+              {{ curso.resumen || curso.descripcion }}
+            </p>
+          </div>
+
+          <!-- Bloque: Contenido del Curso / Secciones y Lecciones -->
+          <div class="curso-content-card mb-4">
+            <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+              <h3 class="card-section-title m-0">
+                <i class="bi bi-journal-bookmark text-primary-accent me-2"></i>
+                Temario del Curso
+              </h3>
+              <span class="text-secondary small">
+                {{ secciones.length }} módulos académicos
+              </span>
+            </div>
+
+            <!-- Listado de Secciones / Módulos -->
+            <div class="modules-accordion">
+              @for (seccion of secciones; track seccion.idSeccion) {
+                <div class="module-item mb-3">
+                  <div class="module-header d-flex align-items-center justify-content-between p-3">
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="bi bi-folder2-open text-primary-accent"></i>
+                      <span class="fw-bold text-white">{{ seccion.nombreSeccion }}</span>
+                    </div>
+                    <span class="badge bg-secondary-subtle text-secondary small">
+                      {{ getLeccionesBySeccion(seccion.idSeccion).length }} lecciones
+                    </span>
+                  </div>
+
+                  <!-- Lecciones del módulo -->
+                  @if (getLeccionesBySeccion(seccion.idSeccion).length > 0) {
+                    <ul class="lesson-sublist m-0 p-0">
+                      @for (leccion of getLeccionesBySeccion(seccion.idSeccion); track leccion.idLeccion) {
+                        <li class="lesson-subitem d-flex align-items-center justify-content-between px-3 py-2">
+                          <div class="d-flex align-items-center gap-2">
+                            <i class="bi" [ngClass]="estaMatriculado ? 'bi-play-circle text-primary-accent' : 'bi-lock text-secondary'"></i>
+                            <span class="text-secondary small">{{ leccion.nombreLeccion }}</span>
+                          </div>
+                          <span class="text-muted small" *ngIf="leccion.duracion">
+                            {{ leccion.duracion }} min
+                          </span>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+              }
+
+              @if (secciones.length === 0) {
+                <div class="empty-syllabus p-4 text-center">
+                  <i class="bi bi-layers text-secondary fs-3 d-block mb-2"></i>
+                  <span class="text-secondary">Las secciones temáticas se están sincronizando con el servidor.</span>
+                </div>
+              }
+
+              <!-- Aviso de contenido protegido si no está matriculado -->
+              @if (!estaMatriculado) {
+                <div class="syllabus-locked-banner p-3 rounded-2 text-center mt-2">
+                  <i class="bi bi-shield-lock-fill text-primary-accent me-1"></i>
+                  <span class="text-secondary small">
+                    El aula virtual completa, reproductor de clases y materiales descargables se habilitan inmediatamente tras matricularte.
+                  </span>
+                </div>
               }
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="row g-5">
-        <div class="col-lg-8">
-          <section class="card p-4 mb-5" style="border: 1px solid #E0E0E0; border-radius: 0; background-color: #FFFFFF;">
-            <h3 class="fw-bold mb-3" style="color: #1565C0;">Lo que aprenderás</h3>
-            <p class="text-muted fs-5" style="color: #616161;">{{ curso.descripcion }}</p>
-          </section>
-
-          <section class="card p-4 mb-5" style="border: 1px solid #E0E0E0; border-radius: 0; background-color: #FFFFFF;">
-            <h3 class="fw-bold mb-4" style="color: #1565C0;">Contenido del Curso</h3>
-            @for (seccion of secciones; track seccion.idSeccion) {
-              <div class="mb-4">
-                <h5 class="text-dark fw-bold mb-3 border-bottom pb-2" style="color: #212121; border-color: #E0E0E0;">{{ seccion.nombreSeccion }}</h5>
-                <ul class="list-unstyled">
-                  @for (leccion of getLeccionesBySeccion(seccion.idSeccion); track leccion.idLeccion) {
-                    <li class="py-2 text-muted" style="color: #616161;">
-                      <i class="bi bi-play-circle me-2" style="color: #1565C0;"></i> {{ leccion.nombreLeccion }}
-                      <small class="float-end" style="color: #9E9E9E;">({{ leccion.duracion }} min)</small>
-                    </li>
-                  }
-                </ul>
+          <!-- Bloque: Instructor -->
+          <div class="curso-content-card mb-4">
+            <h3 class="card-section-title mb-3">
+              <i class="bi bi-person-workspace text-primary-accent me-2"></i>
+              Instructor del Programa
+            </h3>
+            <div class="d-flex align-items-center gap-3">
+              <div class="instructor-avatar-wrap">
+                <i class="bi bi-person-fill"></i>
               </div>
-            }
-          </section>
-
-          <section class="card p-4 mb-5" style="border: 1px solid #E0E0E0; border-radius: 0; background-color: #FFFFFF;">
-            <h3 class="fw-bold mb-4" style="color: #1565C0;">Instructor</h3>
-            <div class="d-flex align-items-start">
-              <img src="/img/docente/docente.jpg" class="me-4" style="width: 120px; height: 120px; object-fit: cover; border-radius: 0; border: 2px solid #1565C0;">
-              <div class="text-muted" style="color: #616161;">
-                <h5 class="text-dark fw-bold mb-1" style="color: #212121;">Javier Garcia Montes</h5>
-                <p class="mb-1"><strong>Experiencia:</strong> Formación técnica industrial</p>
-                <p class="mb-1"><strong>Grado Académico:</strong> Docente especializado</p>
-                <div class="text-warning mb-2" style="color: #F57F17;">★★★★★ <span class="text-muted" style="color: #616161;">4.8</span></div>
-                <p class="small">Profesional con amplia experiencia en la industria y dedicado a la enseñanza.</p>
+              <div>
+                <h5 class="fw-bold text-white mb-1">Especialista Certificado SkillUp</h5>
+                <p class="text-secondary small mb-0">
+                  Docente calificado con amplia trayectoria en la industria técnica, dedicado a la formación profesional aplicada.
+                </p>
               </div>
             </div>
-          </section>
+          </div>
+
         </div>
 
+        <!-- Columna Derecha: Reseñas y Valoraciones -->
         <div class="col-lg-4">
-          <div class="card p-4" style="border: 1px solid #E0E0E0; border-radius: 0; background-color: #FFFFFF;">
+          <div class="curso-content-card sticky-sidebar">
+            
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h4 class="fw-bold m-0" style="color: #1565C0;">Reseñas del Curso</h4>
-              <span class="badge bg-primary fs-6">{{ promedioCalificacion }} ★</span>
+              <h4 class="card-section-title m-0">Reseñas del Curso</h4>
+              <span class="pill-badge pill-badge-blue">
+                <i class="bi bi-star-fill text-warning me-1"></i> {{ promedioCalificacion }}
+              </span>
             </div>
 
-            <!-- FORMULARIO HU-20: REGISTRAR RESEÑA -->
-            @if (estaMatriculado) {
-              <div class="p-3 mb-4" style="background-color: #F8F9FA; border: 1px solid #BBDEFB; border-left: 4px solid #1565C0;">
-                <h6 class="fw-bold mb-2" style="color: #1565C0;">Califica y Comparte tu Experiencia</h6>
+            <!-- Formulario para estudiantes matriculados -->
+            @if (estaAutenticado && estaMatriculado) {
+              <div class="review-form-box p-3 mb-3">
+                <h6 class="fw-bold text-white mb-2">Comparte tu valoración</h6>
                 
-                <!-- Selector interactivo de estrellas 1 a 5 -->
                 <div class="mb-2">
-                  <label class="small text-muted d-block mb-1">Tu puntuación:</label>
-                  <div class="d-flex gap-2 fs-4" style="cursor: pointer;">
+                  <label class="small text-secondary d-block mb-1">Calificación:</label>
+                  <div class="d-flex gap-2 fs-5" style="cursor: pointer;">
                     <span *ngFor="let s of [1, 2, 3, 4, 5]" 
                           (click)="seleccionarEstrellas(s)" 
-                          [style.color]="s <= calificacionSeleccionada ? '#F57F17' : '#BDBDBD'">
+                          [style.color]="s <= calificacionSeleccionada ? '#fbbf24' : '#475569'">
                       ★
                     </span>
-                    <span class="fs-6 text-muted ms-2 align-self-center" *ngIf="calificacionSeleccionada > 0">
+                    <span class="fs-6 text-secondary ms-2 align-self-center" *ngIf="calificacionSeleccionada > 0">
                       {{ calificacionSeleccionada }} / 5
                     </span>
                   </div>
                 </div>
 
                 <div class="mb-2">
-                  <textarea class="form-control" rows="3" 
-                            placeholder="Escribe tu opinión, qué te pareció el curso y el instructor..." 
-                            [(ngModel)]="comentarioResenia"
-                            style="border-radius: 0; font-size: 0.9rem;"></textarea>
+                  <textarea 
+                    class="form-control" 
+                    rows="3" 
+                    placeholder="Escribe tu opinión sobre el contenido y el instructor..." 
+                    [(ngModel)]="comentarioResenia">
+                  </textarea>
                 </div>
 
-                <div *ngIf="mensajeErrorResenia" class="alert alert-danger p-2 small mb-2" style="border-radius: 0;">
+                <div *ngIf="mensajeErrorResenia" class="alert alert-danger p-2 small mb-2">
                   {{ mensajeErrorResenia }}
                 </div>
-                <div *ngIf="mensajeExitoResenia" class="alert alert-success p-2 small mb-2" style="border-radius: 0;">
+                <div *ngIf="mensajeExitoResenia" class="alert alert-success p-2 small mb-2">
                   {{ mensajeExitoResenia }}
                 </div>
 
-                <button class="btn btn-primary btn-sm w-100 fw-bold" 
-                        (click)="publicarResenia()" 
-                        [disabled]="enviandoResenia"
-                        style="background-color: #1565C0; border-radius: 0;">
+                <button 
+                  class="btn btn-primary btn-sm w-100 fw-bold" 
+                  (click)="publicarResenia()" 
+                  [disabled]="enviandoResenia">
                   {{ enviandoResenia ? 'Publicando...' : 'Publicar Reseña' }}
                 </button>
               </div>
+            } @else if (estaAutenticado && !estaMatriculado) {
+              <!-- Autenticado pero no matriculado -->
+              <div class="review-notice-box p-3 mb-3 text-center rounded-2">
+                <i class="bi bi-info-circle text-primary-accent fs-3 d-block mb-2"></i>
+                <p class="small text-secondary mb-3">Debes estar matriculado en este curso para calificarlo y dejar tu reseña.</p>
+                <button (click)="registrarMatricula()" class="btn btn-primary btn-sm w-100 fw-bold">
+                  <i class="bi bi-box-arrow-in-right me-1"></i> Matricularse al Curso
+                </button>
+              </div>
             } @else {
-              <!-- Escenario 3: Bloqueo indicando requisito de inscripción -->
-              <div class="alert alert-light border p-3 mb-4 small text-muted" style="border-radius: 0; background-color: #ECEFF1;">
-                <i class="bi bi-info-circle me-1 text-primary"></i>
-                <strong>¿Quieres valorar este curso?</strong> Debes estar matriculado para poder calificarlo y registrar tu reseña.
+              <!-- Visitante no autenticado -->
+              <div class="review-notice-box p-3 mb-3 text-center rounded-2">
+                <i class="bi bi-shield-lock text-primary-accent fs-3 d-block mb-2"></i>
+                <p class="small text-secondary mb-3">Inicia sesión y matricúlate para calificar este curso y compartir tu experiencia.</p>
+                <a routerLink="/login" class="btn btn-outline-secondary btn-sm w-100 fw-bold">
+                  <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión para Valorar
+                </a>
               </div>
             }
 
-            <!-- LISTADO DINÁMICO DE RESEÑAS -->
-            <div class="resenias-contenedor" style="max-height: 500px; overflow-y: auto;">
+            <!-- Listado de Reseñas de Estudiantes -->
+            <div class="reviews-scroll-container">
               @for (r of listaResenias; track r.idReseniaCurso) {
-                <div class="p-3 mb-3" style="background-color: #F5F5F5; border: 1px solid #E0E0E0; border-radius: 0;">
+                <div class="review-item-card p-3 mb-2">
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <div style="color: #F57F17; font-size: 1.1rem;">
+                    <div class="text-warning small">
                       <span *ngFor="let s of [1,2,3,4,5]">{{ s <= r.calificacion ? '★' : '☆' }}</span>
                     </div>
-                    <small class="text-muted" style="font-size: 0.75rem;">{{ r.fechaResenia | date:'yyyy-MM-dd' }}</small>
+                    <span class="text-muted small">{{ r.fechaResenia | date:'yyyy-MM-dd' }}</span>
                   </div>
-                  <p class="text-dark small mb-1" style="color: #212121; line-height: 1.4;">"{{ r.comentario }}"</p>
-                  <small class="text-muted fw-bold" style="color: #616161;">- {{ r.nombreEstudiante }}</small>
+                  <p class="text-secondary small mb-1">"{{ r.comentario }}"</p>
+                  <span class="fw-bold text-white small">- {{ r.nombreEstudiante }}</span>
                 </div>
               }
 
               @if (listaResenias.length === 0) {
-                <div class="text-center p-3 text-muted small">
+                <div class="text-center p-3 text-secondary small">
                   Aún no hay reseñas registradas para este curso. ¡Sé el primero en matricularte y opinar!
                 </div>
               }
@@ -197,7 +347,10 @@
 
           </div>
         </div>
+
       </div>
+
     }
+
   </main>
 </div>

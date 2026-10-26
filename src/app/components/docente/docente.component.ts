@@ -10,7 +10,7 @@ import {
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CursoService } from '../../services/curso.service';
 import { Curso } from '../../models/curso.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { LoginResponse } from '../../models/login-response.model';
@@ -31,7 +31,7 @@ const COLORES_GRAFICOS = [
 @Component({
   selector: 'app-docente',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './docente.component.html',
   styleUrls: ['./docente.component.css'],
   host: { ngSkipHydration: 'true' }

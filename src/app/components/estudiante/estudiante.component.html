@@ -1,7 +1,7 @@
 <div class="student-dashboard">
   <nav class="dashboard-navbar">
     <div class="nav-brand">
-      <span class="brand-text">SkillUP</span>
+      <span class="brand-text">Skill<span class="text-primary-accent">UP</span></span>
     </div>
     <div class="nav-actions">
       <button type="button" class="btn-profile" data-bs-toggle="modal" data-bs-target="#configModal">
@@ -17,76 +17,77 @@
   </nav>
 
   <div class="dashboard-content">
-    <section class="welcome-section">
-      <h2>Hola de nuevo, <span style="font-weight: 700;">{{ currentUser?.nombreCompleto }}</span></h2>
-      <p>Continúa aprendiendo y mejora tus habilidades técnicas.</p>
+    <section class="welcome-section mb-4">
+      <h2>Hola de nuevo, <span class="fw-bold text-primary-accent">{{ currentUser?.nombreCompleto }}</span></h2>
+      <p class="text-secondary">Continúa aprendiendo y mejora tus habilidades técnicas.</p>
     </section>
 
-    <section *ngIf="successMessage || errorMessage" style="margin-top: 1rem;">
-        <div *ngIf="successMessage" style="background-color: #2E7D32; color: #FFFFFF; padding: 1rem; margin-bottom: 1rem;">
-            <i class="bi bi-check-circle-fill"></i> {{ successMessage }}
-            <button type="button" style="float: right; background: none; border: none; color: #FFFFFF;" (click)="successMessage = null">X</button>
+    <section *ngIf="successMessage || errorMessage" class="mb-4">
+        <div *ngIf="successMessage" class="alert alert-success d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-check-circle-fill me-2"></i> {{ successMessage }}</span>
+            <button type="button" class="btn-close btn-close-white" (click)="successMessage = null"></button>
         </div>
-        <div *ngIf="errorMessage" style="background-color: #C62828; color: #FFFFFF; padding: 1rem; margin-bottom: 1rem;">
-            <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
-            <button type="button" style="float: right; background: none; border: none; color: #FFFFFF;" (click)="errorMessage = null">X</button>
+        <div *ngIf="errorMessage" class="alert alert-danger d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-exclamation-triangle-fill me-2"></i> {{ errorMessage }}</span>
+            <button type="button" class="btn-close btn-close-white" (click)="errorMessage = null"></button>
         </div>
     </section>
 
-    <section style="margin-top: 2rem;">
-      <h4 class="section-title">Mis Cursos</h4>
-      <p style="color: #616161;">Aquí aparecerán tus cursos inscritos.</p>
+    <section class="mt-4">
+      <h4 class="section-title text-white fw-bold mb-2">Mis Cursos</h4>
+      <p class="text-secondary">Aquí aparecerán tus cursos inscritos.</p>
     </section>
   </div>
 </div>
 
+<!-- Modal Configuración -->
 <div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true" data-bs-backdrop="static">
-  <div class="modal-dialog modal-lg" style="border-radius: 0;">
-    <div class="modal-content" style="border-radius: 0; border: 1px solid #E0E0E0; background-color: #FFFFFF;">
-      <div class="modal-header" style="border-bottom: 1px solid #E0E0E0; border-radius: 0;">
-        <h5 class="modal-title" id="configModalLabel" style="color: #212121;">Configuración de la Cuenta</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-modal-dark">
+      <div class="modal-header border-bottom border-dark-subtle">
+        <h5 class="modal-title text-white fw-bold" id="configModalLabel">Configuración de la Cuenta</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
       <form *ngIf="profileData" (ngSubmit)="onUpdateProfile()">
-        <div class="modal-body">
-          <ul class="nav nav-tabs" id="configTabs" role="tablist" style="border-bottom: 1px solid #E0E0E0;">
+        <div class="modal-body p-4">
+          <ul class="nav nav-tabs border-bottom border-dark-subtle" id="configTabs" role="tablist">
              <li class="nav-item" role="presentation">
-               <button class="nav-link active" id="perfil-tab" data-bs-toggle="tab" data-bs-target="#perfil" type="button" role="tab" aria-controls="perfil" aria-selected="true" style="border-radius: 0; color: #1565C0;">
-                  <i class="bi bi-person-vcard"></i> Editar Perfil
+               <button class="nav-link active" id="perfil-tab" data-bs-toggle="tab" data-bs-target="#perfil" type="button" role="tab" aria-controls="perfil" aria-selected="true">
+                  <i class="bi bi-person-vcard me-1"></i> Editar Perfil
                </button>
              </li>
              <li class="nav-item" role="presentation">
-               <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab" aria-controls="password" aria-selected="false" style="border-radius: 0; color: #616161;">
-                  <i class="bi bi-key"></i> Cambiar Contraseña
+               <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab" aria-controls="password" aria-selected="false">
+                  <i class="bi bi-key me-1"></i> Cambiar Contraseña
                </button>
              </li>
              <li class="nav-item" role="presentation">
-               <button class="nav-link" id="danger-tab" data-bs-toggle="tab" data-bs-target="#danger" type="button" role="tab" aria-controls="danger" aria-selected="false" style="border-radius: 0; color: #C62828;">
-                  <i class="bi bi-exclamation-triangle"></i> Zona de Peligro
+               <button class="nav-link text-danger" id="danger-tab" data-bs-toggle="tab" data-bs-target="#danger" type="button" role="tab" aria-controls="danger" aria-selected="false">
+                  <i class="bi bi-exclamation-triangle me-1"></i> Zona de Peligro
                </button>
              </li>
           </ul>
 
-          <div class="tab-content pt-3" id="configTabsContent">
+          <div class="tab-content pt-4" id="configTabsContent">
             <div class="tab-pane fade show active" id="perfil" role="tabpanel" aria-labelledby="perfil-tab">
-              <h6 class="mb-3" style="color: #212121;">Información Personal</h6>
+              <h6 class="mb-3 text-white fw-semibold">Información Personal</h6>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label for="nombres" class="form-label" style="color: #616161;">Nombres</label>
-                  <input type="text" class="form-control" id="nombres" name="nombres" [(ngModel)]="profileData.nombres" required style="border-radius: 0; border: 1px solid #E0E0E0;">
+                  <label for="nombres" class="form-label text-secondary small">Nombres</label>
+                  <input type="text" class="form-control form-control-dark" id="nombres" name="nombres" [(ngModel)]="profileData.nombres" required>
                 </div>
                 <div class="col-md-6">
-                  <label for="apellidos" class="form-label" style="color: #616161;">Apellidos</label>
-                  <input type="text" class="form-control" id="apellidos" name="apellidos" [(ngModel)]="profileData.apellidos" required style="border-radius: 0; border: 1px solid #E0E0E0;">
+                  <label for="apellidos" class="form-label text-secondary small">Apellidos</label>
+                  <input type="text" class="form-control form-control-dark" id="apellidos" name="apellidos" [(ngModel)]="profileData.apellidos" required>
                 </div>
                 <div class="col-md-6">
-                  <label for="fechaNacimiento" class="form-label" style="color: #616161;">Fecha de Nacimiento</label>
-                  <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" [(ngModel)]="profileData.fechaDeNacimiento" style="border-radius: 0; border: 1px solid #E0E0E0;">
+                  <label for="fechaNacimiento" class="form-label text-secondary small">Fecha de Nacimiento</label>
+                  <input type="date" class="form-control form-control-dark" id="fechaNacimiento" name="fechaNacimiento" [(ngModel)]="profileData.fechaDeNacimiento">
                 </div>
                 <div class="col-md-6">
-                  <label for="genero" class="form-label" style="color: #616161;">Género</label>
-                  <select id="genero" name="genero" class="form-select" [(ngModel)]="profileData.genero" style="border-radius: 0; border: 1px solid #E0E0E0;">
+                  <label for="genero" class="form-label text-secondary small">Género</label>
+                  <select id="genero" name="genero" class="form-select form-control-dark" [(ngModel)]="profileData.genero">
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino">Femenino</option>
                     <option value="Otro">Otro</option>
@@ -97,21 +98,22 @@
             </div>
 
             <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
-                <h6 class="mb-3" style="color: #212121;">Actualizar Contraseña</h6>
+                <h6 class="mb-3 text-white fw-semibold">Actualizar Contraseña</h6>
                 <div class="mb-3">
-                    <label for="nuevaPassword" class="form-label" style="color: #616161;">Nueva Contraseña</label>
-                    <input type="password" class="form-control" id="nuevaPassword" name="nuevaPassword" autocomplete="new-password" style="border-radius: 0; border: 1px solid #E0E0E0;">
+                    <label for="nuevaPassword" class="form-label text-secondary small">Nueva Contraseña</label>
+                    <input type="password" class="form-control form-control-dark" id="nuevaPassword" name="nuevaPassword" autocomplete="new-password">
                 </div>
                 <div class="mb-3">
-                    <label for="confirmarPassword" class="form-label" style="color: #616161;">Confirmar Nueva Contraseña</label>
-                    <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword" autocomplete="new-password" style="border-radius: 0; border: 1px solid #E0E0E0;">
+                    <label for="confirmarPassword" class="form-label text-secondary small">Confirmar Nueva Contraseña</label>
+                    <input type="password" class="form-control form-control-dark" id="confirmarPassword" name="confirmarPassword" autocomplete="new-password">
                 </div>
             </div>
 
             <div class="tab-pane fade" id="danger" role="tabpanel" aria-labelledby="danger-tab">
-                 <div class="p-3" style="border: 1px solid #C62828; background-color: #F5F5F5;">
-                    <h5 style="color: #C62828;">Dar de baja la cuenta</h5>
-                    <button type="button" class="btn" style="background-color: #C62828; color: #FFFFFF; border-radius: 0;" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                 <div class="p-3 danger-box rounded-2">
+                    <h6 class="text-danger fw-bold mb-2">Dar de baja la cuenta</h6>
+                    <p class="text-secondary small mb-3">Si das de baja tu cuenta perderás el acceso a tus cursos y progreso formativo de manera permanente.</p>
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
                       Solicitar baja de mi cuenta
                     </button>
                  </div>
@@ -119,37 +121,38 @@
           </div>
         </div>
 
-        <div class="modal-footer" style="border-top: 1px solid #E0E0E0;">
-          <button type="button" class="btn" style="background-color: #757575; color: #FFFFFF; border-radius: 0;" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn" style="background-color: #1565C0; color: #FFFFFF; border-radius: 0;">Guardar Cambios</button>
+        <div class="modal-footer border-top border-dark-subtle">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary btn-sm">Guardar Cambios</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 
+<!-- Modal Confirmar Baja -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" style="border-radius: 0;">
-    <div class="modal-content" style="border-radius: 0; border: 1px solid #E0E0E0;">
-      <div class="modal-header" style="background-color: #C62828; color: #FFFFFF; border-radius: 0;">
-        <h5 class="modal-title" id="deleteConfirmModalLabel">¿Estás absolutamente seguro?</h5>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-modal-dark border border-danger-subtle">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title fw-bold" id="deleteConfirmModalLabel">¿Estás absolutamente seguro?</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
       <form (ngSubmit)="onDeleteAccount()">
-          <div class="modal-body">
-            <p style="color: #212121;">Esta acción <strong style="color: #C62828;">no se puede deshacer</strong>.</p>
-            <p style="color: #212121;">Para confirmar, escribe tu nombre de usuario (<strong>{{ currentUser?.username }}</strong>) abajo.</p>
+          <div class="modal-body p-4">
+            <p class="text-white">Esta acción <strong class="text-danger">no se puede deshacer</strong>.</p>
+            <p class="text-secondary small">Para confirmar, escribe tu nombre de usuario (<strong class="text-white">{{ currentUser?.username }}</strong>) abajo.</p>
             
-            <input type="text" class="form-control" name="confirmDeleteInput" 
+            <input type="text" class="form-control form-control-dark mt-3" name="confirmDeleteInput" 
                    placeholder="Escribe tu nombre de usuario" 
                    [(ngModel)]="confirmUsername" 
-                   autocomplete="off" style="border-radius: 0; border: 1px solid #E0E0E0;">
+                   autocomplete="off">
           </div>
-          <div class="modal-footer" style="border-top: 1px solid #E0E0E0;">
-            <button type="button" class="btn" style="background-color: #757575; color: #FFFFFF; border-radius: 0;" data-bs-dismiss="modal">Cancelar</button>
+          <div class="modal-footer border-top border-dark-subtle">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
             
-            <button type="submit" class="btn" style="background-color: #C62828; color: #FFFFFF; border-radius: 0;"
+            <button type="submit" class="btn btn-danger btn-sm"
                     [disabled]="confirmUsername !== currentUser?.username">
                 Entiendo, dar de baja mi cuenta
             </button>
