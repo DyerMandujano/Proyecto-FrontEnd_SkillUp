@@ -78,7 +78,7 @@ body {
   font-weight: 700;
   padding: 6px 12px;
   border-radius: 6px;
-  text-transform: uppercase;
+
 }
 
 .badge-aprobado {
@@ -215,7 +215,7 @@ h1 {
   display: block;
   font-size: 0.8rem;
   color: #94a3b8;
-  text-transform: uppercase;
+
   font-weight: 600;
   margin-bottom: 6px;
 }

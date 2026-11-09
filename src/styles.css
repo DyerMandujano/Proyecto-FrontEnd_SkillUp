@@ -312,7 +312,7 @@ select:focus {
   color: var(--sk-text-muted) !important;
   font-size: 0.8rem;
   font-weight: 600;
-  text-transform: uppercase;
+
   letter-spacing: 0.05em;
   border-bottom: 1px solid var(--sk-border) !important;
   border-top: none;

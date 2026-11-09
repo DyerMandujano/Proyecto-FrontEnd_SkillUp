@@ -9,7 +9,7 @@
     <div class="header-right">
       <div class="user-info">
         <span class="user-greeting">Hola, <strong>{{ adminActual?.nombreCompleto || adminActual?.username || 'Administrador' }}</strong></span>
-        <span class="badge-role">ADMIN</span>
+        <span class="badge-role">Admin</span>
       </div>
       <button class="btn-logout" (click)="cerrarSesion()" title="Cerrar Sesión">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -283,7 +283,7 @@
                 <td>{{ u.username }}</td>
                 <td>
                   <span class="badge-role-tag" [ngClass]="'role-' + u.rol.toLowerCase()">
-                    {{ u.rol | uppercase }}
+                    {{ u.rol | titlecase }}
                   </span>
                 </td>
                 <td>
