@@ -564,7 +564,7 @@
                     <i class="bi me-1" [ngClass]="passValidations.hasNumber ? 'bi-check-circle-fill text-success' : 'bi-circle'"></i> Al menos un número (0-9)
                   </span>
                   <span [class.text-success]="passValidations.hasSpecial" [class.text-white-50]="!passValidations.hasSpecial">
-                    <i class="bi me-1" [ngClass]="passValidations.hasSpecial ? 'bi-check-circle-fill text-success' : 'bi-circle'"></i> Al menos un símbolo especial (!@#$%...)
+                    <i class="bi me-1" [ngClass]="passValidations.hasSpecial ? 'bi-check-circle-fill text-success' : 'bi-circle'"></i> Al menos un símbolo especial (!&#64;#$%...)
                   </span>
                   <span [class.text-success]="passValidations.match" [class.text-white-50]="!passValidations.match">
                     <i class="bi me-1" [ngClass]="passValidations.match ? 'bi-check-circle-fill text-success' : 'bi-circle'"></i> Las contraseñas coinciden
@@ -594,7 +594,7 @@
         <div class="modal-footer border-top border-dark-subtle">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
           <button type="submit" class="btn btn-primary btn-sm" 
-                  [disabled]="guardandoPerfil || !profileData || !profileData.nombres?.trim() || !profileData.apellidos?.trim() || !profileData.fechaDeNacimiento || fechaNacimientoError || !esMayorDeEdad(profileData.fechaDeNacimiento)">
+                  [disabled]="guardandoPerfil || !profileData || !profileData.nombres.trim() || !profileData.apellidos.trim() || !profileData.fechaDeNacimiento || fechaNacimientoError || !esMayorDeEdad(profileData.fechaDeNacimiento)">
             <span *ngIf="guardandoPerfil" class="spinner-border spinner-border-sm me-1"></span>
             Guardar Cambios
           </button>
