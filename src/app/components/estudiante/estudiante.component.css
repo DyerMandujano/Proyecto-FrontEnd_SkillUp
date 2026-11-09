@@ -1,18 +1,18 @@
 /* ==========================================================================
    SKILLUP - ESTUDIANTE DASHBOARD
-   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Dark Navy Slate (var(--sk-bg-body) / var(--sk-bg-surface) / var(--sk-bg-card))
    Sin sombras y 100% responsive
    ========================================================================== */
 
 .student-dashboard {
   min-height: 100vh;
-  background-color: #080c14;
-  color: #f8fafc;
+  background-color: var(--sk-bg-body);
+  color: var(--sk-text-primary);
 }
 
 .dashboard-navbar {
-  background-color: #080c14;
-  border-bottom: 1px solid #161f30;
+  background-color: var(--sk-bg-body);
+  border-bottom: 1px solid var(--sk-border);
   padding: 0.85rem 1.75rem;
   display: flex;
   align-items: center;
@@ -30,7 +30,7 @@
 .brand-text {
   font-size: 1.3rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--sk-text-primary);
   letter-spacing: -0.02em;
   text-decoration: none;
 }
@@ -43,9 +43,9 @@
 }
 
 .btn-profile {
-  background-color: #111b2e;
-  border: 1px solid #1e293b;
-  color: #cbd5e1;
+  background-color: var(--sk-bg-card-secondary);
+  border: 1px solid var(--sk-border);
+  color: var(--sk-text-secondary);
   padding: 7px 16px;
   font-size: 0.88rem;
   font-weight: 500;
@@ -60,9 +60,9 @@
 }
 
 .btn-profile:hover {
-  background-color: #172554;
-  border-color: #2563eb;
-  color: #ffffff;
+  background-color: var(--sk-primary-active);
+  border-color: var(--sk-primary);
+  color: var(--sk-text-primary);
 }
 
 .btn-logout {
@@ -84,7 +84,7 @@
 .btn-logout:hover {
   background-color: #ef4444;
   border-color: #ef4444;
-  color: #ffffff;
+  color: var(--sk-text-primary);
 }
 
 .dashboard-content {
@@ -94,20 +94,20 @@
 }
 
 .welcome-section h2 {
-  color: #ffffff;
+  color: var(--sk-text-primary);
   font-weight: 800;
   font-size: 1.85rem;
   margin-bottom: 0.35rem;
 }
 
 .welcome-section p {
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   font-size: 0.98rem;
 }
 
 .section-title {
   font-weight: 700;
-  color: #ffffff;
+  color: var(--sk-text-primary);
   margin: 28px 0 12px;
   font-size: 1.25rem;
 }
@@ -120,8 +120,8 @@
 }
 
 .course-card {
-  border: 1px solid #1e293b;
-  background-color: #0f172a;
+  border: 1px solid var(--sk-border);
+  background-color: var(--sk-bg-surface);
   border-radius: 12px;
   overflow: hidden;
   display: flex;
@@ -131,13 +131,13 @@
 }
 
 .course-card:hover {
-  border-color: #2563eb;
+  border-color: var(--sk-primary);
 }
 
 .card-image {
   position: relative;
   overflow: hidden;
-  background-color: #111b2e;
+  background-color: var(--sk-bg-card-secondary);
 }
 
 .card-image img {
@@ -150,8 +150,8 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #172554;
-  border: 1px solid #1e40af;
+  background-color: var(--sk-primary-active);
+  border: 1px solid var(--sk-primary-active);
   color: #93c5fd;
   padding: 4px 10px;
   font-size: 0.74rem;
@@ -175,14 +175,14 @@
 .card-title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--sk-text-primary);
   margin-bottom: 0.5rem;
   line-height: 1.35;
 }
 
 .card-description {
   font-size: 0.86rem;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   margin-bottom: 0.85rem;
   line-height: 1.5;
   display: -webkit-box;
@@ -196,14 +196,14 @@
   display: flex;
   gap: 1rem;
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--sk-text-dim);
   margin-bottom: 1rem;
 }
 
 .btn-continue {
   width: 100%;
-  background-color: #2563eb;
-  color: #ffffff;
+  background-color: var(--sk-primary);
+  color: var(--sk-text-primary);
   border: none;
   padding: 10px 16px;
   font-weight: 600;
@@ -215,21 +215,21 @@
 }
 
 .btn-continue:hover {
-  background-color: #1d4ed8;
+  background-color: var(--sk-primary-hover);
 }
 
 .empty-state {
   text-align: center;
   padding: 3.5rem 1rem;
-  background-color: #0b111e;
-  border: 1px dashed #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px dashed var(--sk-border);
   border-radius: 12px;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
 }
 
 .btn-explore {
-  background-color: #2563eb;
-  color: #ffffff;
+  background-color: var(--sk-primary);
+  color: var(--sk-text-primary);
   padding: 10px 24px;
   text-decoration: none;
   font-weight: 600;
@@ -240,8 +240,8 @@
 }
 
 .btn-explore:hover {
-  background-color: #1d4ed8;
-  color: #ffffff;
+  background-color: var(--sk-primary-hover);
+  color: var(--sk-text-primary);
 }
 
 /* Modal de Perfil */
@@ -260,13 +260,13 @@
 }
 
 .perfil-modal-card {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   padding: 2rem;
   width: 440px;
   max-width: 100%;
   border-radius: 14px;
-  color: #f8fafc;
+  color: var(--sk-text-primary);
   box-shadow: none !important;
 }
 
@@ -280,7 +280,7 @@
 .perfil-header h3 {
   margin: 0;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--sk-text-primary);
   font-size: 1.25rem;
 }
 
@@ -289,40 +289,40 @@
   border: none;
   font-size: 1.3rem;
   cursor: pointer;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   transition: color 0.15s;
 }
 
 .btn-close-perfil:hover {
-  color: #ffffff;
+  color: var(--sk-text-primary);
 }
 
 .perfil-info p {
   margin: 0.65rem 0;
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
   font-size: 0.92rem;
 }
 
 .perfil-info strong {
-  color: #ffffff;
+  color: var(--sk-text-primary);
 }
 
 /* Modal Bootstrap Configuración */
 .modal-content {
-  background-color: #0f172a !important;
-  border: 1px solid #1e293b !important;
-  color: #f8fafc !important;
+  background-color: var(--sk-bg-surface) !important;
+  border: 1px solid var(--sk-border) !important;
+  color: var(--sk-text-primary) !important;
   border-radius: 14px !important;
   box-shadow: none !important;
 }
 
 .modal-header {
-  background-color: #0b111e !important;
-  border-bottom: 1px solid #1e293b !important;
+  background-color: var(--sk-bg-card) !important;
+  border-bottom: 1px solid var(--sk-border) !important;
 }
 
 .modal-title {
-  color: #ffffff !important;
+  color: var(--sk-text-primary) !important;
   font-weight: 700;
 }
 
@@ -331,28 +331,28 @@
 }
 
 .text-primary-accent {
-  color: #60a5fa !important;
+  color: var(--sk-accent) !important;
 }
 
 .bg-modal-dark {
-  background-color: #0f172a !important;
-  border: 1px solid #1e293b !important;
+  background-color: var(--sk-bg-surface) !important;
+  border: 1px solid var(--sk-border) !important;
 }
 
 .border-dark-subtle {
-  border-color: #1e293b !important;
+  border-color: var(--sk-border) !important;
 }
 
 .form-control-dark {
-  background-color: #0b111e !important;
-  border: 1px solid #1e293b !important;
-  color: #f8fafc !important;
+  background-color: var(--sk-bg-card) !important;
+  border: 1px solid var(--sk-border) !important;
+  color: var(--sk-text-primary) !important;
   border-radius: 6px;
   box-shadow: none !important;
 }
 
 .form-control-dark:focus {
-  border-color: #2563eb !important;
+  border-color: var(--sk-primary) !important;
   outline: none !important;
 }
 

@@ -1,46 +1,46 @@
 /* ==========================================================================
    SKILLUP - ACTUALIZAR CURSO
-   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Dark Navy Slate (var(--sk-bg-body) / var(--sk-bg-surface) / var(--sk-bg-card))
    ========================================================================== */
 
 .card {
-  background-color: #0f172a !important;
-  border: 1px solid #1e293b !important;
+  background-color: var(--sk-bg-surface) !important;
+  border: 1px solid var(--sk-border) !important;
   border-radius: 12px;
   box-shadow: none !important;
 }
 
 .card-header {
-  background-color: #0b111e !important;
+  background-color: var(--sk-bg-card) !important;
   color: #ffffff !important;
-  border-bottom: 1px solid #1e293b !important;
+  border-bottom: 1px solid var(--sk-border) !important;
   font-weight: 700;
 }
 
 .form-label {
-  color: #cbd5e1 !important;
+  color: var(--sk-text-secondary) !important;
   font-weight: 600;
 }
 
 .form-control, .form-select {
-  border: 1px solid #1e293b !important;
-  background-color: #0b111e !important;
-  color: #f8fafc !important;
+  border: 1px solid var(--sk-border) !important;
+  background-color: var(--sk-bg-card) !important;
+  color: var(--sk-text-primary) !important;
   border-radius: 8px !important;
   box-shadow: none !important;
 }
 
 .form-control::placeholder {
-  color: #64748b !important;
+  color: var(--sk-text-dim) !important;
 }
 
 .form-control:focus, .form-select:focus {
-  border-color: #2563eb !important;
+  border-color: var(--sk-primary) !important;
   outline: none !important;
 }
 
 .btn-primary {
-  background-color: #2563eb !important;
+  background-color: var(--sk-primary) !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 8px !important;
@@ -49,28 +49,28 @@
 }
 
 .btn-primary:hover {
-  background-color: #1d4ed8 !important;
+  background-color: var(--sk-primary-hover) !important;
 }
 
 .btn-secondary {
-  background-color: #111b2e !important;
-  color: #cbd5e1 !important;
-  border: 1px solid #1e293b !important;
+  background-color: var(--sk-bg-card-secondary) !important;
+  color: var(--sk-text-secondary) !important;
+  border: 1px solid var(--sk-border) !important;
   border-radius: 8px !important;
   box-shadow: none !important;
 }
 
 .sidebar {
-  background-color: #0b111e !important;
-  border-right: 1px solid #1e293b !important;
+  background-color: var(--sk-bg-card) !important;
+  border-right: 1px solid var(--sk-border) !important;
   height: 100vh;
 }
 
 .nav-link {
-  color: #94a3b8 !important;
+  color: var(--sk-text-muted) !important;
 }
 
 .nav-link.active {
-  background-color: #172554 !important;
-  color: #60a5fa !important;
+  background-color: var(--sk-primary-active) !important;
+  color: var(--sk-accent) !important;
 }

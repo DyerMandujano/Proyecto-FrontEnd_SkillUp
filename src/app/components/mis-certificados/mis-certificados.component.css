@@ -1,32 +1,32 @@
 /* ==========================================================================
    SKILLUP - MIS CERTIFICADOS
-   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Dark Navy Slate (var(--sk-bg-body) / var(--sk-bg-surface) / var(--sk-bg-card))
    Sin sombras y 100% responsive
    ========================================================================== */
 
 :host {
   display: block;
   min-height: 100vh;
-  background-color: #080c14;
+  background-color: var(--sk-bg-body);
 }
 
 .certificados-wrapper {
-  background-color: #080c14;
+  background-color: var(--sk-bg-body);
   min-height: 100vh;
   width: 100%;
   padding: 2.5rem 1rem;
 }
 
 .dark-card {
-  background-color: #0f172a !important;
-  border: 1px solid #1e293b !important;
+  background-color: var(--sk-bg-surface) !important;
+  border: 1px solid var(--sk-border) !important;
   border-radius: 12px !important;
   overflow: hidden;
   box-shadow: none !important;
 }
 
 .btn-yellow {
-  background-color: #2563eb !important;
+  background-color: var(--sk-primary) !important;
   color: #ffffff !important;
   font-weight: 600;
   border: none !important;
@@ -38,34 +38,34 @@
 }
 
 .btn-yellow:hover {
-  background-color: #1d4ed8 !important;
+  background-color: var(--sk-primary-hover) !important;
 }
 
 .course-name {
-  color: #f8fafc !important;
+  color: var(--sk-text-primary) !important;
   font-weight: 700;
   font-size: 0.95rem;
 }
 
 .text-light-gray {
-  color: #94a3b8 !important;
+  color: var(--sk-text-muted) !important;
   font-size: 0.88rem;
 }
 
 .badge-code {
-  background-color: #111b2e !important;
-  color: #60a5fa !important;
+  background-color: var(--sk-bg-card-secondary) !important;
+  color: var(--sk-accent) !important;
   font-weight: 600;
   padding: 0.5em 0.8em;
-  border: 1px solid #1e293b !important;
+  border: 1px solid var(--sk-border) !important;
   border-radius: 6px;
   font-family: monospace;
 }
 
 .alert-dark-custom {
-  background-color: #0b111e !important;
-  border: 1px dashed #1e293b !important;
-  color: #94a3b8 !important;
+  background-color: var(--sk-bg-card) !important;
+  border: 1px dashed var(--sk-border) !important;
+  color: var(--sk-text-muted) !important;
   border-radius: 10px;
   padding: 2rem;
 }

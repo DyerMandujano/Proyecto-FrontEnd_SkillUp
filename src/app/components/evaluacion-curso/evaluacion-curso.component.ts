@@ -1,4 +1,5 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, inject } from '@angular/core';
+import { SpeechSynthesisService } from '../../services/speech-synthesis.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,6 +23,7 @@ import { CursoService } from '../../services/curso.service';
   styleUrl: './evaluacion-curso.component.css'
 })
 export class EvaluacionCursoComponent implements OnInit {
+  public readonly speech = inject(SpeechSynthesisService);
 
   evaluaciones: EvaluacionCurso[] = [];
   evaluacion: Evaluacion[] = [];
@@ -387,4 +389,23 @@ export class EvaluacionCursoComponent implements OnInit {
 
     doc.save(`Certificado_SkillUp_${datos.codigoCertificado}.pdf`);
   }
+
+  leerExamenEnVozAlta(): void {
+    if (this.speech.isSpeaking()) {
+      this.speech.stop();
+      return;
+    }
+    let texto = 'Evaluación: ' + (this.evaluacion[0]?.titulo || 'Evaluación de Curso') + '. ' + (this.nombreCurso || '') + '. ';
+    if (this.evaluaciones && this.evaluaciones.length > 0) {
+      this.evaluaciones.forEach((ev, i) => {
+        texto += 'Pregunta ' + (i + 1) + ': ' + ev.enunciado + '. ';
+        if (ev.opcion1) texto += 'Opción 1: ' + ev.opcion1 + '. ';
+        if (ev.opcion2) texto += 'Opción 2: ' + ev.opcion2 + '. ';
+        if (ev.opcion3) texto += 'Opción 3: ' + ev.opcion3 + '. ';
+        
+      });
+    }
+    this.speech.speak(texto);
+  }
+
 }

@@ -1,64 +1,64 @@
 /* ==========================================================================
    SKILLUP - SECCIONES DE CURSO
-   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
-   Acentos: Royal Blue (#2563eb) & Electric Sky (#60a5fa)
+   Dark Navy Slate (var(--sk-bg-body) / var(--sk-bg-surface) / var(--sk-bg-card))
+   Acentos: Royal Blue (var(--sk-primary)) & Electric Sky (var(--sk-accent))
    ========================================================================== */
 
 .container-custom {
-  background-color: #080c14;
-  color: #f8fafc;
+  background-color: var(--sk-bg-body);
+  color: var(--sk-text-primary);
 }
 
 .sidebar {
-  background-color: #0b111e;
-  border-right: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border-right: 1px solid var(--sk-border);
 }
 
 .text-custom {
-  color: #f8fafc;
+  color: var(--sk-text-primary);
 }
 
 .btn-sidebar {
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   border-radius: 8px;
   padding: 10px 14px;
 }
 
 .btn-sidebar.active {
-  background-color: #172554 !important;
-  color: #60a5fa !important;
-  border-left: 3px solid #2563eb;
+  background-color: var(--sk-primary-active) !important;
+  color: var(--sk-accent) !important;
+  border-left: 3px solid var(--sk-primary);
 }
 
 .main-content {
-  background-color: #080c14;
-  color: #cbd5e1;
+  background-color: var(--sk-bg-body);
+  color: var(--sk-text-secondary);
 }
 
 .custom-btn-primary {
-  background-color: #2563eb;
+  background-color: var(--sk-primary);
   color: #ffffff;
-  border: 1px solid #2563eb;
+  border: 1px solid var(--sk-primary);
   border-radius: 8px;
   font-weight: 600;
   box-shadow: none !important;
 }
 
 .custom-btn-primary:hover {
-  background-color: #1d4ed8;
+  background-color: var(--sk-primary-hover);
 }
 
 .custom-btn-info {
-  background-color: #111b2e;
-  color: #60a5fa;
-  border: 1px solid #1e3a8a;
+  background-color: var(--sk-bg-card-secondary);
+  color: var(--sk-accent);
+  border: 1px solid var(--sk-pill-border);
   border-radius: 8px;
   box-shadow: none !important;
 }
 
 .custom-btn-warning {
   background-color: #f59e0b;
-  color: #080c14;
+  color: var(--sk-bg-body);
   border: 1px solid #f59e0b;
   border-radius: 8px;
   font-weight: 600;
@@ -82,25 +82,25 @@
 }
 
 .custom-table {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 10px;
 }
 
 .custom-table th, .custom-table td {
-  border: 1px solid #1e293b;
-  color: #cbd5e1;
+  border: 1px solid var(--sk-border);
+  color: var(--sk-text-secondary);
 }
 
 .custom-table thead {
-  background-color: #0b111e;
-  color: #94a3b8;
+  background-color: var(--sk-bg-card);
+  color: var(--sk-text-muted);
 }
 
 .custom-alert-info {
-  background-color: #0b111e;
-  color: #94a3b8;
-  border: 1px dashed #1e293b;
+  background-color: var(--sk-bg-card);
+  color: var(--sk-text-muted);
+  border: 1px dashed var(--sk-border);
   border-radius: 10px;
   padding: 1.5rem;
 }
@@ -121,46 +121,46 @@
 }
 
 .bg-custom-dark {
-  background-color: #0b111e;
+  background-color: var(--sk-bg-card);
 }
 
 .custom-list-item {
-  border: 1px solid #1e293b;
+  border: 1px solid var(--sk-border);
   border-radius: 8px;
-  background-color: #0f172a;
-  color: #cbd5e1;
+  background-color: var(--sk-bg-surface);
+  color: var(--sk-text-secondary);
 }
 
 .custom-input {
-  border: 1px solid #1e293b;
+  border: 1px solid var(--sk-border);
   border-radius: 8px;
-  background-color: #0b111e;
-  color: #f8fafc;
+  background-color: var(--sk-bg-card);
+  color: var(--sk-text-primary);
   box-shadow: none !important;
 }
 
 .custom-input:focus {
-  border-color: #2563eb;
+  border-color: var(--sk-primary);
   outline: none;
 }
 
 .metric-card {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 10px;
   padding: 1.25rem;
   text-align: center;
 }
 
 .course-performance, .activity-card {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 10px;
   padding: 1.5rem;
 }
 
 .text-custom-muted {
-  color: #94a3b8 !important;
+  color: var(--sk-text-muted) !important;
 }
 
 .text-custom-success {
@@ -168,11 +168,11 @@
 }
 
 .text-custom-primary {
-  color: #60a5fa !important;
+  color: var(--sk-accent) !important;
 }
 
 .custom-progress {
   border-radius: 4px;
-  background-color: #1e293b;
+  background-color: var(--sk-border);
   height: 8px;
 }

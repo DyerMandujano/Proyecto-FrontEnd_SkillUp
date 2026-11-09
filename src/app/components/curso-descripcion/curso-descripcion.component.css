@@ -1,27 +1,27 @@
 /* ==========================================================================
    SKILLUP - DETALLE Y DESCRIPCIÓN DEL CURSO
-   Estilo: Dark Navy (#080C14 / #0B111E / #0F172A)
-   Acentos: Royal Blue (#2563EB) & Sky Blue (#60A5FA)
+   Estilo: Dark Navy (var(--sk-bg-body) / var(--sk-bg-card) / var(--sk-bg-surface))
+   Acentos: Royal Blue (var(--sk-primary)) & Sky Blue (var(--sk-accent))
    Sin sombras y 100% responsive
    ========================================================================== */
 
 :host {
   display: block;
-  background-color: #080c14;
-  color: #f8fafc;
+  background-color: var(--sk-bg-body);
+  color: var(--sk-text-primary);
   min-height: 100vh;
 }
 
 .curso-page-wrapper {
-  background-color: #080c14;
-  color: #f8fafc;
+  background-color: var(--sk-bg-body);
+  color: var(--sk-text-primary);
   min-height: 100vh;
 }
 
 /* NAVBAR SUPERIOR COHERENTE */
 .curso-nav {
-  background-color: #080c14;
-  border-bottom: 1px solid #1e293b;
+  background-color: var(--sk-bg-body);
+  border-bottom: 1px solid var(--sk-border);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -38,8 +38,8 @@
 
 /* HERO CARD DEL CURSO */
 .curso-hero-card {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 16px;
   padding: 2rem;
   box-shadow: none !important;
@@ -55,7 +55,7 @@
 
 .curso-hero-summary {
   font-size: 1.05rem;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   line-height: 1.6;
 }
 
@@ -71,21 +71,21 @@
 }
 
 .pill-badge-blue {
-  background-color: #101e38;
-  border: 1px solid #1e3a8a;
-  color: #60a5fa;
+  background-color: var(--sk-pill-bg);
+  border: 1px solid var(--sk-pill-border);
+  color: var(--sk-accent);
 }
 
 .pill-badge-slate {
-  background-color: #111b2e;
-  border: 1px solid #1e293b;
-  color: #cbd5e1;
+  background-color: var(--sk-bg-card-secondary);
+  border: 1px solid var(--sk-border);
+  color: var(--sk-text-secondary);
 }
 
 /* CAJA MULTIMEDIA & MATRÍCULA */
 .curso-media-box {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
   border-radius: 14px;
   padding: 18px;
   box-shadow: none !important;
@@ -96,8 +96,8 @@
   aspect-ratio: 16 / 9;
   border-radius: 10px;
   overflow: hidden;
-  background-color: #080c14;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-body);
+  border: 1px solid var(--sk-border);
 }
 
 .media-cover-img {
@@ -112,7 +112,7 @@
   height: 48px;
   object-fit: cover;
   border-radius: 6px;
-  border: 1px solid #1e293b;
+  border: 1px solid var(--sk-border);
   cursor: pointer;
   opacity: 0.65;
   transition: all 0.15s ease;
@@ -125,13 +125,13 @@
 
 .thumb-img.active-thumb {
   opacity: 1;
-  border: 2px solid #2563eb;
+  border: 2px solid var(--sk-primary);
 }
 
 /* TARJETAS DE CONTENIDO */
 .curso-content-card {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 14px;
   padding: 1.75rem;
   box-shadow: none !important;
@@ -146,7 +146,7 @@
 }
 
 .card-section-text {
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
   font-size: 0.98rem;
   line-height: 1.65;
 }
@@ -159,8 +159,8 @@
 }
 
 .module-item {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
   border-radius: 10px;
   overflow: hidden;
   box-shadow: none !important;
@@ -168,7 +168,7 @@
 
 .module-header {
   background-color: #0e1729;
-  border-bottom: 1px solid #162035;
+  border-bottom: 1px solid var(--sk-border);
 }
 
 .lesson-sublist {
@@ -178,7 +178,7 @@
 }
 
 .lesson-subitem {
-  border-top: 1px solid #162035;
+  border-top: 1px solid var(--sk-border);
   transition: background-color 0.15s ease;
 }
 
@@ -187,24 +187,24 @@
 }
 
 .lesson-subitem:hover {
-  background-color: #131d33;
+  background-color: var(--sk-bg-surface-hover);
 }
 
 .empty-syllabus {
-  background-color: #0b111e;
-  border: 1px dashed #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px dashed var(--sk-border);
   border-radius: 10px;
 }
 
 .syllabus-locked-banner {
-  background-color: #0b111e;
-  border: 1px dashed #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px dashed var(--sk-border);
   box-shadow: none !important;
 }
 
 .review-notice-box {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
   box-shadow: none !important;
 }
 
@@ -213,14 +213,14 @@
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background-color: #1e293b;
-  color: #60a5fa;
+  background-color: var(--sk-border);
+  color: var(--sk-accent);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
   flex-shrink: 0;
-  border: 1px solid #334155;
+  border: 1px solid var(--sk-border-light);
 }
 
 /* SIDEBAR DE RESEÑAS */
@@ -230,8 +230,8 @@
 }
 
 .review-form-box {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
   border-radius: 10px;
   box-shadow: none !important;
 }
@@ -247,17 +247,17 @@
 }
 
 .reviews-scroll-container::-webkit-scrollbar-track {
-  background: #080c14;
+  background: var(--sk-bg-body);
 }
 
 .reviews-scroll-container::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: var(--sk-border);
   border-radius: 3px;
 }
 
 .review-item-card {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
   border-radius: 8px;
   box-shadow: none !important;
 }

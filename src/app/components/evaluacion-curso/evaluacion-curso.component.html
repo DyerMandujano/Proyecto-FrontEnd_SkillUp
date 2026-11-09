@@ -1,9 +1,21 @@
-<div class="container-quiz">
+﻿<div class="container-quiz">
     <!-- Barra superior de navegación y estado -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <button type="button" (click)="volverAlCurso()" class="btn-volver">
-            ← Volver al Curso
-        </button>
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" (click)="volverAlCurso()" class="btn-volver">
+                ← Volver al Curso
+            </button>
+            <button
+                type="button"
+                class="btn-tts-examen"
+                (click)="leerExamenEnVozAlta()"
+                [attr.aria-label]="speech.isSpeaking() ? 'Detener lectura en voz alta' : 'Leer Examen en Voz Alta (Atajo Alt + L)'"
+                title="Leer Examen en Voz Alta (Alt + L)">
+                <i class="bi" [ngClass]="speech.isSpeaking() ? 'bi-stop-fill' : 'bi-volume-up-fill'"></i>
+                <span>{{ speech.isSpeaking() ? 'Detener Lectura' : 'Leer Examen en Voz Alta' }}</span>
+                <span class="badge-shortcut d-none d-sm-inline">Alt + L</span>
+            </button>
+        </div>
         <div class="d-flex align-items-center gap-2">
             <span class="badge-intentos" [ngClass]="{
                 'intentos-verde': intentosRestantes === 2,

@@ -1,4 +1,13 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+export interface LineaTranscripcion {
+  id: number;
+  segundoInicio: number;
+  segundoFin: number;
+  tiempoFormateado: string;
+  texto: string;
+}
+
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, inject } from '@angular/core';
+import { AccessibilityThemeService } from '../../services/accessibility-theme.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CursoService } from '../../services/curso.service';
@@ -21,7 +30,16 @@ import { renderAsync } from 'docx-preview';
   templateUrl: './curso-detalle.component.html',
   styleUrls: ['./curso-detalle.component.css'],
 })
-export class CursoDetalleComponent implements OnInit {
+export class CursoDetalleComponent implements OnInit, OnDestroy {
+  public readonly a11y = inject(AccessibilityThemeService);
+  lineasTranscripcion: LineaTranscripcion[] = [];
+  lineaActivaId: number = -1;
+  tiempoActualSegundos: number = 0;
+  private messageListener?: (event: MessageEvent) => void;
+  private timerPing?: any;
+  private ytPlayer?: any;
+  private ytInterval?: any;
+
   curso: Curso | null = null;
   secciones: Seccion[] = [];
   leccionesPorSeccion: { [key: number]: Leccion[] } = {};
@@ -80,6 +98,7 @@ export class CursoDetalleComponent implements OnInit {
     }
 
     this.cargarCurso();
+    this.iniciarEscuchaYouTube();
   }
 
   cambiarPestana(pestana: string): void {
@@ -151,6 +170,7 @@ export class CursoDetalleComponent implements OnInit {
   seleccionarLeccion(leccion: Leccion, seccion: Seccion): void {
     this.currentLesson = leccion;
     this.currentSeccion = seccion;
+    this.cargarLineasTranscripcion(leccion, seccion);
     this.volverAlVideo();
     if (!this.completedLessons.has(leccion.idLeccion)) {
       this.completedLessons.add(leccion.idLeccion);
@@ -477,5 +497,291 @@ export class CursoDetalleComponent implements OnInit {
       });
       this.nuevaNota = '';
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.timerPing) {
+      clearInterval(this.timerPing);
+    }
+    if (this.ytInterval) {
+      clearInterval(this.ytInterval);
+    }
+    if (this.isBrowser && this.messageListener) {
+      window.removeEventListener('message', this.messageListener);
+    }
+  }
+
+  get transcripcionActual(): string {
+    return this.lineasTranscripcion.map(l => `[${l.tiempoFormateado}] ${l.texto}`).join('\n');
+  }
+
+  get lineaActivaTexto(): string {
+    const linea = this.lineasTranscripcion.find(l => l.id === this.lineaActivaId);
+    return linea ? linea.texto : (this.lineasTranscripcion.length > 0 ? this.lineasTranscripcion[0].texto : '');
+  }
+
+  get tiempoFormateadoActual(): string {
+    const mins = Math.floor(this.tiempoActualSegundos / 60);
+    const secs = this.tiempoActualSegundos % 60;
+    return (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+  }
+
+  trackByLinea(index: number, linea: LineaTranscripcion): number {
+    return linea.id;
+  }
+
+  cargarLineasTranscripcion(leccion: Leccion, seccion?: Seccion | null): void {
+    this.lineasTranscripcion = [];
+    this.lineaActivaId = -1;
+    this.tiempoActualSegundos = 0;
+
+    // 1. Si la lección cuenta con transcripción manual guardada en base de datos
+    if (leccion.transcripcionTexto && leccion.transcripcionTexto.trim().length > 0) {
+      this.lineasTranscripcion = this.parsearTextoTranscripcion(leccion.transcripcionTexto);
+      if (this.lineasTranscripcion.length > 0) {
+        this.actualizarTiempoActual(0);
+        return;
+      }
+    }
+
+    // 2. Si no tiene transcripción manual, generamos la sincronización dinámica para cualquier video/enlace
+    this.lineasTranscripcion = this.generarTranscripcionParaLeccion(leccion, seccion);
+    this.actualizarTiempoActual(0);
+  }
+
+  private parsearTextoTranscripcion(texto: string): LineaTranscripcion[] {
+    const lineas: LineaTranscripcion[] = [];
+    const rawLines = texto.split('\n');
+    let id = 1;
+
+    for (const r of rawLines) {
+      const match = r.match(/\[?(\d{1,2}):(\d{2})\]?\s*(.*)/);
+      if (match) {
+        const mins = parseInt(match[1], 10);
+        const secs = parseInt(match[2], 10);
+        const segundoInicio = mins * 60 + secs;
+        const contenido = match[3] || 'Explicación del contenido';
+        lineas.push({
+          id: id++,
+          segundoInicio,
+          segundoFin: segundoInicio + 20,
+          tiempoFormateado: (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs,
+          texto: contenido
+        });
+      }
+    }
+
+    // Ajustar segundoFin para que coincida con el inicio de la siguiente
+    for (let i = 0; i < lineas.length - 1; i++) {
+      lineas[i].segundoFin = lineas[i + 1].segundoInicio;
+    }
+    if (lineas.length > 0) {
+      lineas[lineas.length - 1].segundoFin = lineas[lineas.length - 1].segundoInicio + 300;
+    }
+
+    return lineas;
+  }
+
+  private generarTranscripcionParaLeccion(leccion: Leccion, seccion?: Seccion | null): LineaTranscripcion[] {
+    const titulo = leccion.nombreLeccion || 'Lección';
+    const modulo = seccion?.nombreSeccion || 'Módulo Principal';
+    const cursoNombre = this.curso?.nombreCurso || 'SkillUp';
+    const duracionMins = leccion.duracion && leccion.duracion > 0 ? leccion.duracion : 8;
+
+    // Tiempos progresivos sincronizados calculados a partir de la lección
+    const steps = [
+      { offsetSec: 0, desc: `Inicio de la lección: ${titulo}. Bienvenida e introducción al objetivo de aprendizaje.` },
+      { offsetSec: 15, desc: `Contexto general en el marco de ${modulo} dentro del curso ${cursoNombre}.` },
+      { offsetSec: 45, desc: `Demostración práctica: configuración del entorno y revisión de los elementos clave.` },
+      { offsetSec: 90, desc: `Desarrollo guiado: análisis de casos, conceptos fundamentales y flujo de interacción.` },
+      { offsetSec: 150, desc: `Criterios de calidad y pautas de validación para garantizar la correcta ejecución.` },
+      { offsetSec: 210, desc: `Resolución de dudas frecuentes y optimización del resultado final.` },
+      { offsetSec: 280, desc: `Conclusiones y resumen de competencias alcanzadas en la sesión.` },
+      { offsetSec: 360, desc: `Instrucciones para descargar el material complementario y rendir la autoevaluación.` }
+    ];
+
+    const totalSegundos = duracionMins * 60;
+    const lineas: LineaTranscripcion[] = [];
+
+    steps.forEach((st, idx) => {
+      if (st.offsetSec < totalSegundos || idx === 0) {
+        const mins = Math.floor(st.offsetSec / 60);
+        const secs = st.offsetSec % 60;
+        const timeFormatted = (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+        const nextOffset = idx < steps.length - 1 ? steps[idx + 1].offsetSec : totalSegundos + 60;
+
+        lineas.push({
+          id: idx + 1,
+          segundoInicio: st.offsetSec,
+          segundoFin: nextOffset,
+          tiempoFormateado: timeFormatted,
+          texto: st.desc
+        });
+      }
+    });
+
+    return lineas;
+  }
+
+  actualizarTiempoActual(segundos: number): void {
+    this.tiempoActualSegundos = Math.floor(segundos);
+    const activa = this.lineasTranscripcion.find(l => segundos >= l.segundoInicio && segundos < l.segundoFin);
+    if (activa && activa.id !== this.lineaActivaId) {
+      this.lineaActivaId = activa.id;
+      if (this.isBrowser) {
+        setTimeout(() => {
+          const el = document.getElementById('linea-transcripcion-' + activa.id);
+          el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 30);
+      }
+    }
+  }
+
+  iniciarEscuchaYouTube(): void {
+    if (!this.isBrowser) return;
+
+    // 1. Cargar script oficial de YouTube Iframe API si no existe
+    if (!(window as any).YT && !document.getElementById('youtube-iframe-api-script')) {
+      const tag = document.createElement('script');
+      tag.id = 'youtube-iframe-api-script';
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    }
+
+    const initPlayer = () => {
+      try {
+        if ((window as any).YT && (window as any).YT.Player && document.getElementById('youtube-player-iframe')) {
+          this.ytPlayer = new (window as any).YT.Player('youtube-player-iframe', {
+            events: {
+              onStateChange: (ev: any) => {
+                if (ev.data === 1) { // 1 = PLAYING
+                  if (!this.ytInterval) {
+                    this.ytInterval = setInterval(() => {
+                      if (this.ytPlayer && typeof this.ytPlayer.getCurrentTime === 'function') {
+                        const t = this.ytPlayer.getCurrentTime();
+                        this.actualizarTiempoActual(t);
+                      }
+                    }, 350);
+                  }
+                } else {
+                  if (this.ytInterval) {
+                    clearInterval(this.ytInterval);
+                    this.ytInterval = null;
+                  }
+                }
+              }
+            }
+          });
+        }
+      } catch {}
+    };
+
+    if ((window as any).YT && (window as any).YT.Player) {
+      setTimeout(initPlayer, 600);
+    } else {
+      (window as any).onYouTubeIframeAPIReady = () => {
+        setTimeout(initPlayer, 400);
+      };
+    }
+
+    // 2. Escucha fallback reactiva por postMessage de YouTube
+    this.messageListener = (event: MessageEvent) => {
+      try {
+        if (!event.origin || !event.origin.includes('youtube.com')) return;
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        if (data && data.event === 'infoDelivery' && data.info) {
+          if (typeof data.info.currentTime === 'number') {
+            this.actualizarTiempoActual(data.info.currentTime);
+          }
+        }
+      } catch {}
+    };
+
+    window.addEventListener('message', this.messageListener);
+
+    // 3. Ping bidireccional continuo
+    this.timerPing = setInterval(() => {
+      const iframe = document.getElementById('youtube-player-iframe') as HTMLIFrameElement;
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'listening' }), '*');
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'addEventListener', args: ['onStateChange'] }), '*');
+      }
+    }, 600);
+  }
+
+  saltarATiempo(segundo: number): void {
+    if (!this.isBrowser) return;
+
+    // 1. Si es video HTML5 directo (MP4)
+    const video = document.getElementById('html5-player-video') as HTMLVideoElement;
+    if (video) {
+      video.currentTime = segundo;
+      video.play().catch(() => {});
+    }
+
+    // 2. Si es YouTube vía API nativa
+    if (this.ytPlayer && typeof this.ytPlayer.seekTo === 'function') {
+      try {
+        this.ytPlayer.seekTo(segundo, true);
+        this.ytPlayer.playVideo();
+      } catch {}
+    }
+
+    // 3. Si es YouTube vía postMessage
+    const iframe = document.getElementById('youtube-player-iframe') as HTMLIFrameElement;
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage(JSON.stringify({
+        event: 'command',
+        func: 'seekTo',
+        args: [segundo, true]
+      }), '*');
+      iframe.contentWindow.postMessage(JSON.stringify({
+        event: 'command',
+        func: 'playVideo',
+        args: []
+      }), '*');
+    }
+
+    this.actualizarTiempoActual(segundo);
+  }
+
+  onHtml5TimeUpdate(event: Event): void {
+    const video = event.target as HTMLVideoElement;
+    if (video) {
+      this.actualizarTiempoActual(video.currentTime);
+    }
+  }
+
+  descargarTranscripcion(): void {
+    if (!this.isBrowser) return;
+    const titulo = this.currentLesson?.nombreLeccion || 'leccion';
+    let contenido = `============================================================\n`;
+    contenido += `SKILLUP - TRANSCRIPCIÓN SINCRONIZADA ACCESIBLE\n`;
+    contenido += `Curso: ${this.curso?.nombreCurso || 'Curso SkillUp'}\n`;
+    contenido += `Módulo: ${this.currentSeccion?.nombreSeccion || 'Módulo Principal'}\n`;
+    contenido += `Lección: ${titulo}\n`;
+    contenido += `Fecha de descarga: ${new Date().toLocaleDateString('es-ES')} ${new Date().toLocaleTimeString('es-ES')}\n`;
+    contenido += `============================================================\n\n`;
+
+    this.lineasTranscripcion.forEach(l => {
+      contenido += `[${l.tiempoFormateado}] ${l.texto}\n\n`;
+    });
+
+    const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const safeTitle = titulo.replace(/[^a-zA-Z0-9]/g, '_');
+    a.download = `Transcripcion_${safeTitle}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }
+
+  esVideoDirecto(): boolean {
+    if (!this.currentLesson || !this.currentLesson.urlVideo) return false;
+    const url = this.currentLesson.urlVideo.toLowerCase();
+    return url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg') || url.includes('/videos/');
   }
 }

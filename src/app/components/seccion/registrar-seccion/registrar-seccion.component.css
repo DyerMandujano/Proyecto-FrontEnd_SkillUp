@@ -1,88 +1,88 @@
 /* ==========================================================================
    SKILLUP - REGISTRAR SECCIÓN
-   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Dark Navy Slate (var(--sk-bg-body) / var(--sk-bg-surface) / var(--sk-bg-card))
    ========================================================================== */
 
 .container-custom {
-  background-color: #080c14;
-  color: #f8fafc;
+  background-color: var(--sk-bg-body);
+  color: var(--sk-text-primary);
 }
 
 .sidebar {
-  background-color: #0b111e;
-  border-right: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border-right: 1px solid var(--sk-border);
 }
 
 .btn-sidebar {
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   border-radius: 8px;
 }
 
 .btn-sidebar.active {
-  background-color: #172554 !important;
-  color: #60a5fa !important;
-  border-left: 3px solid #2563eb;
+  background-color: var(--sk-primary-active) !important;
+  color: var(--sk-accent) !important;
+  border-left: 3px solid var(--sk-primary);
 }
 
 .main-content {
-  background-color: #080c14;
+  background-color: var(--sk-bg-body);
 }
 
 .custom-card {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 12px;
   box-shadow: none !important;
 }
 
 .custom-card-header {
-  background-color: #0b111e;
+  background-color: var(--sk-bg-card);
   color: #ffffff;
   padding: 1rem;
   text-align: center;
-  border-bottom: 1px solid #1e293b;
+  border-bottom: 1px solid var(--sk-border);
   font-weight: 700;
 }
 
 .custom-card-body {
   padding: 1.5rem;
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
 }
 
 .text-custom {
-  color: #f8fafc;
+  color: var(--sk-text-primary);
 }
 
 .custom-input {
-  border: 1px solid #1e293b;
+  border: 1px solid var(--sk-border);
   border-radius: 8px;
-  background-color: #0b111e;
-  color: #f8fafc;
+  background-color: var(--sk-bg-card);
+  color: var(--sk-text-primary);
   box-shadow: none !important;
 }
 
 .custom-input:focus {
-  border-color: #2563eb;
+  border-color: var(--sk-primary);
   outline: none;
 }
 
 .custom-btn-primary {
-  background-color: #2563eb;
+  background-color: var(--sk-primary);
   color: #ffffff;
-  border: 1px solid #2563eb;
+  border: 1px solid var(--sk-primary);
   border-radius: 8px;
   font-weight: 600;
   box-shadow: none !important;
 }
 
 .custom-btn-primary:hover {
-  background-color: #1d4ed8;
+  background-color: var(--sk-primary-hover);
 }
 
 .custom-btn-secondary {
-  background-color: #111b2e;
-  color: #cbd5e1;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card-secondary);
+  color: var(--sk-text-secondary);
+  border: 1px solid var(--sk-border);
   border-radius: 8px;
   box-shadow: none !important;
 }

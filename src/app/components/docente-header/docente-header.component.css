@@ -1,6 +1,5 @@
 /* ==========================================================================
    SKILLUP - DOCENTE HEADER
-   Dark Navy Slate (#080c14)
    ========================================================================== */
 
 :host {
@@ -8,8 +7,8 @@
 }
 
 .docente-subnav {
-  background-color: #080c14;
-  border-bottom: 1px solid #1e293b;
+  background-color: var(--sk-bg-body);
+  border-bottom: 1px solid var(--sk-border);
   box-shadow: none !important;
 }
 
@@ -18,5 +17,5 @@
 }
 
 .text-primary-accent {
-  color: #60a5fa !important;
+  color: var(--sk-accent) !important;
 }

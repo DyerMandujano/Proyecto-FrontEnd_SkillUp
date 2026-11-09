@@ -1,4 +1,4 @@
-<!-- ==========================================================================
+﻿<!-- ==========================================================================
      SKILLUP - AULA VIRTUAL Y REPRODUCTOR DE CLASES (CURSO DETALLE)
      Dark Navy Slate (#080C14 / #0F172A / #0B111E)
      Acentos: Royal Blue (#2563EB) & Electric Sky (#60A5FA)
@@ -28,7 +28,7 @@
   <div class="row g-4">
     
     <!-- COLUMNA IZQUIERDA: TEMARIO Y PROGRESO -->
-    <div class="col-lg-4 col-md-5">
+    <div class="col-lg-4 col-md-5 distractor-panel" [class.d-none]="a11y.focusMode()">
       
       <!-- TARJETA DE PROGRESO -->
       <div class="card dark-panel p-3 mb-3">
@@ -130,7 +130,7 @@
     </div>
 
     <!-- COLUMNA DERECHA: REPRODUCTOR Y RECURSOS -->
-    <div class="col-lg-8 col-md-7">
+    <div class="col-lg-8 col-md-7" [class.col-lg-12]="a11y.focusMode()" [class.col-md-12]="a11y.focusMode()">
       
       <!-- REPRODUCTOR / VISOR PRINCIPAL -->
       <div class="card dark-panel overflow-hidden mb-4">
@@ -161,15 +161,29 @@
           
           @if (vistaActiva === 'video') {
             @if (currentLesson && currentLesson.urlVideo) {
-              <div class="ratio ratio-16x9">
-                <iframe 
-                  [src]="currentLesson.urlVideo | safeUrl" 
-                  title="Reproductor de clase" 
-                  frameborder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  allowfullscreen>
-                </iframe>
-              </div>
+              @if (esVideoDirecto()) {
+                <div class="ratio ratio-16x9">
+                  <video id="html5-player-video" controls class="w-100 rounded" preload="metadata" style="background: #000;" (timeupdate)="onHtml5TimeUpdate($event)">
+                    <source [src]="currentLesson.urlVideo" type="video/mp4">
+                    <track
+                      *ngIf="a11y.subtitlesEnabled()"
+                      label="Español (Subtítulos)"
+                      kind="subtitles"
+                      srclang="es"
+                      [src]="currentLesson.urlSubtitulos || ''"
+                      default>
+                  </video>
+                </div>
+              } @else {
+                <div class="ratio ratio-16x9">
+                  <iframe id="youtube-player-iframe" [src]="currentLesson.urlVideo | safeUrl"
+                    title="Reproductor de clase"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                  </iframe>
+                </div>
+              }
             } @else {
               <div class="empty-player-state d-flex flex-column justify-content-center align-items-center text-center p-5">
                 <i class="bi bi-play-circle text-secondary" style="font-size: 4rem;"></i>
@@ -288,6 +302,58 @@
         </div>
 
       </div> 
+
+
+      <!-- Transcripción Textual Sincronizada (Inclusión Auditiva WCAG 1.2.8) -->
+      <div class="card dark-panel p-3 mb-4" *ngIf="a11y.transcriptionVisible() && currentLesson">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+          <div class="d-flex align-items-center gap-2">
+            <h6 class="fw-bold mb-0 text-white d-flex align-items-center gap-2">
+              <i class="bi bi-file-text-fill text-primary-accent"></i>
+              <span>Transcripción Textual Sincronizada</span>
+            </h6>
+            <span class="badge bg-secondary-subtle text-light small px-2 py-1" aria-label="Tiempo actual de reproducción">
+              <i class="bi bi-stopwatch me-1"></i>{{ tiempoFormateadoActual }}
+            </span>
+          </div>
+          <button class="btn btn-sm btn-primary" (click)="descargarTranscripcion()" aria-label="Descargar transcripción completa en archivo de texto plano">
+            <i class="bi bi-download me-1"></i> Descargar Transcripción (.txt)
+          </button>
+        </div>
+
+        <div class="transcripcion-scroll-box p-2 rounded border border-dark-subtle bg-dark-subtle-box" tabindex="0" aria-label="Lista interactiva de transcripción del video. Presiona Enter o haz clic para saltar al minuto exacto.">
+          <div
+            *ngFor="let linea of lineasTranscripcion; trackBy: trackByLinea"
+            [id]="'linea-transcripcion-' + linea.id"
+            class="transcripcion-linea d-flex align-items-start gap-3 p-2 rounded cursor-pointer mb-1"
+            [class.linea-activa]="linea.id === lineaActivaId"
+            (click)="saltarATiempo(linea.segundoInicio)"
+            role="button"
+            tabindex="0"
+            (keydown.enter)="saltarATiempo(linea.segundoInicio)"
+            (keydown.space)="saltarATiempo(linea.segundoInicio); $event.preventDefault()"
+            [attr.aria-current]="linea.id === lineaActivaId ? 'true' : null"
+            [attr.aria-label]="'Saltar al minuto ' + linea.tiempoFormateado + ': ' + linea.texto">
+            
+            <button
+              type="button"
+              class="badge-tiempo btn btn-sm py-0 px-2 flex-shrink-0"
+              [class.badge-tiempo-activo]="linea.id === lineaActivaId"
+              [attr.aria-label]="'Minuto ' + linea.tiempoFormateado">
+              <i class="bi bi-play-fill me-1" *ngIf="linea.id === lineaActivaId"></i>
+              {{ linea.tiempoFormateado }}
+            </button>
+
+            <span class="transcripcion-texto small flex-grow-1" [class.fw-bold]="linea.id === lineaActivaId" [class.text-white]="linea.id === lineaActivaId" [class.text-secondary]="linea.id !== lineaActivaId">
+              {{ linea.texto }}
+            </span>
+
+            <span *ngIf="linea.id === lineaActivaId" class="badge bg-primary text-white small px-2 py-1 flex-shrink-0 align-self-center badge-en-vivo">
+              <i class="bi bi-broadcast me-1"></i> EN REPRODUCCIÓN
+            </span>
+          </div>
+        </div>
+      </div>
 
       <!-- PESTAÑAS: DESCRIPCIÓN, PREGUNTAS Y NOTAS -->
       <div class="card dark-panel overflow-hidden" *ngIf="currentLesson">

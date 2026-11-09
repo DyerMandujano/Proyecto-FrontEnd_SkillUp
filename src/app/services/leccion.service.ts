@@ -21,7 +21,7 @@ export class LeccionService {
     return this.http.get<Leccion>(`${this.apiUrl}/${id}`);
   }
 
-insertarLeccion(leccion: Leccion): Observable<string> {
+insertarLeccion(leccion: Leccion, archivoSubtitulos?: File): Observable<string> {
     const formData = new FormData();
     formData.append('leccion', new Blob([JSON.stringify(leccion)], { type: 'application/json' }));
 
@@ -32,10 +32,13 @@ insertarLeccion(leccion: Leccion): Observable<string> {
         }
       });
     }
+        if (archivoSubtitulos) {
+      formData.append('subtitulos', archivoSubtitulos, archivoSubtitulos.name);
+    }
     return this.http.post(`${this.apiUrl}`, formData, { responseType: 'text' });
   }
 
-  actualizarLeccion(id: number, leccion: Leccion): Observable<string> {
+  actualizarLeccion(id: number, leccion: Leccion, archivoSubtitulos?: File): Observable<string> {
     const formData = new FormData();
     
     formData.append('leccion', new Blob([JSON.stringify(leccion)], { type: 'application/json' }));
@@ -48,6 +51,9 @@ insertarLeccion(leccion: Leccion): Observable<string> {
       });
     }
 
+        if (archivoSubtitulos) {
+      formData.append('subtitulos', archivoSubtitulos, archivoSubtitulos.name);
+    }
     return this.http.put(`${this.apiUrl}/${id}`, formData, { responseType: 'text' });
   }
 

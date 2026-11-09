@@ -8,5 +8,7 @@ export interface Leccion {
   ordenLeccion: number;
   estado: number;
   urlVideo: string;
-  materiales: Material[]; 
+  materiales: Material[];
+  urlSubtitulos?: string;
+  transcripcionTexto?: string;
 }

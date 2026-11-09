@@ -1,14 +1,14 @@
 /* ==========================================================================
    SKILLUP - LISTADO DE DOCENTES
-   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Dark Navy Slate (var(--sk-bg-body) / var(--sk-bg-surface) / var(--sk-bg-card))
    Sin sombras y 100% responsive
    ========================================================================== */
 
 :host {
   display: block;
   min-height: 100vh;
-  background-color: #080c14;
-  color: #f8fafc;
+  background-color: var(--sk-bg-body);
+  color: var(--sk-text-primary);
 }
 
 .tracking-wider {
@@ -16,8 +16,8 @@
 }
 
 .dark-card {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: none !important;
@@ -29,24 +29,24 @@
 }
 
 .custom-dark-table th {
-  background-color: #0b111e;
-  color: #94a3b8;
+  background-color: var(--sk-bg-card);
+  color: var(--sk-text-muted);
   font-weight: 700;
 
   font-size: 0.78rem;
   letter-spacing: 0.05em;
   padding: 14px 16px;
-  border-bottom: 1px solid #1e293b;
+  border-bottom: 1px solid var(--sk-border);
 }
 
 .custom-dark-table td {
-  background-color: #0f172a;
-  color: #cbd5e1;
+  background-color: var(--sk-bg-surface);
+  color: var(--sk-text-secondary);
   padding: 14px 16px;
-  border-top: 1px solid #162035;
+  border-top: 1px solid var(--sk-border);
   border-bottom: none;
 }
 
 .custom-dark-table tbody tr:hover td {
-  background-color: #131d33;
+  background-color: var(--sk-bg-surface-hover);
 }

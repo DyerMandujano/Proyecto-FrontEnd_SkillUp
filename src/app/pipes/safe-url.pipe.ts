@@ -19,6 +19,14 @@ export class SafeUrlPipe implements PipeTransform {
       finalUrl = finalUrl.split('&')[0];
     } else if (url.includes('youtu.be/')) {
       finalUrl = url.replace('youtu.be/', 'youtube.com/embed/');
+      finalUrl = finalUrl.split('?')[0];
+    }
+
+    // Habilitar JS API y forzar subtítulos automáticos en español (CC) en YouTube
+    if (finalUrl.includes('youtube.com/embed/')) {
+      const separator = finalUrl.includes('?') ? '&' : '?';
+      const origin = typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'http://localhost:4200';
+      finalUrl += `${separator}enablejsapi=1&origin=${encodeURIComponent(origin)}&cc_load_policy=1&hl=es`;
     }
 
     return this.sanitizer.bypassSecurityTrustResourceUrl(finalUrl);

@@ -1,10 +1,10 @@
 /* ==========================================================================
    SKILLUP - ACTUALIZAR LECCIÓN
-   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Dark Navy Slate (var(--sk-bg-body) / var(--sk-bg-surface) / var(--sk-bg-card))
    ========================================================================== */
 
 .form-container-main {
-  background-color: #080c14;
+  background-color: var(--sk-bg-body);
   min-height: 100vh;
   padding: 40px 16px;
   display: flex;
@@ -12,8 +12,8 @@
 }
 
 .form-card {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 14px;
   width: 100%;
   max-width: 900px;
@@ -22,11 +22,11 @@
 }
 
 .form-header {
-  background-color: #0b111e;
+  background-color: var(--sk-bg-card);
   color: #ffffff;
   padding: 24px;
   text-align: center;
-  border-bottom: 1px solid #1e293b;
+  border-bottom: 1px solid var(--sk-border);
 }
 
 .form-header h2 {
@@ -38,7 +38,7 @@
 
 .form-body {
   padding: 30px;
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
 }
 
 .form-grid {
@@ -60,25 +60,25 @@
 }
 
 .form-label {
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
   font-weight: 600;
   margin-bottom: 8px;
 }
 
 .text-primary {
-  color: #60a5fa;
+  color: var(--sk-accent);
 }
 
 .text-muted {
-  color: #64748b;
+  color: var(--sk-text-dim);
   font-size: 12px;
   margin-top: 4px;
 }
 
 .form-control {
-  background-color: #0b111e !important;
-  color: #f8fafc !important;
-  border: 1px solid #1e293b !important;
+  background-color: var(--sk-bg-card) !important;
+  color: var(--sk-text-primary) !important;
+  border: 1px solid var(--sk-border) !important;
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 14px;
@@ -87,14 +87,14 @@
 
 .form-control:focus {
   outline: none;
-  border-color: #2563eb !important;
+  border-color: var(--sk-primary) !important;
 }
 
 .material-section {
-  border: 1px solid #1e293b;
+  border: 1px solid var(--sk-border);
   border-radius: 10px;
   padding: 20px;
-  background-color: #0b111e;
+  background-color: var(--sk-bg-card);
 }
 
 .material-row {
@@ -119,10 +119,10 @@
 }
 
 .preview-section {
-  border: 1px solid #1e293b;
+  border: 1px solid var(--sk-border);
   border-radius: 10px;
   padding: 20px;
-  background-color: #0b111e;
+  background-color: var(--sk-bg-card);
 }
 
 .video-container {
@@ -145,7 +145,7 @@
   gap: 15px;
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid #1e293b;
+  border-top: 1px solid var(--sk-border);
 }
 
 .btn {
@@ -159,22 +159,22 @@
 }
 
 .btn-primary {
-  background-color: #2563eb;
+  background-color: var(--sk-primary);
   color: #ffffff;
 }
 
 .btn-primary:hover {
-  background-color: #1d4ed8;
+  background-color: var(--sk-primary-hover);
 }
 
 .btn-secondary {
-  background-color: #111b2e;
-  color: #cbd5e1;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card-secondary);
+  color: var(--sk-text-secondary);
+  border: 1px solid var(--sk-border);
 }
 
 .btn-secondary:hover {
-  background-color: #172554;
+  background-color: var(--sk-primary-active);
   color: #ffffff;
 }
 

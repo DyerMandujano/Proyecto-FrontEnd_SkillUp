@@ -1,12 +1,21 @@
 /* ==========================================================================
-   SKILLUP - DESIGN SYSTEM & THEME GLOBAL
-   Paleta: Dark Navy Slate (#080c14, #0b111e, #0f172a)
-   Acentos: Royal Blue (#2563eb) & Electric Sky (#60a5fa, #38bdf8)
-   Sin sombras (No box-shadows) - Estilo limpio, profesional y 100% responsive
+   SKILLUP - DESIGN SYSTEM, ACCESSIBILITY & GLOBAL THEMING (WCAG 2.1/2.2 AA/AAA)
+   Nomenclatura técnica (EN): light, dark, system, colorblind
+   Capa visual y de accesibilidad (ES): Modo claro, Modo oscuro, Tema del sistema, Modo daltónico
+   Sin sombras (Zero Drop Shadows) - 100% Responsive y tipografía fluida
    ========================================================================== */
 
-:root {
-  /* Fondos principales */
+/* ==========================================================================
+   1. DESIGN TOKENS Y VARIABLES SEMÁNTICAS (EN)
+   ========================================================================== */
+
+/* DARK THEME (Tema oscuro predeterminado) */
+:root,
+[data-theme="dark"] {
+  /* Escala tipográfica */
+  --sk-font-scale: 1;
+
+  /* Fondos */
   --sk-bg-body: #080c14;
   --sk-bg-surface: #0f172a;
   --sk-bg-surface-hover: #131d31;
@@ -14,16 +23,17 @@
   --sk-bg-card-secondary: #111b2e;
   --sk-bg-card-subtle: #162035;
 
-  /* Bordes nítidos (sin sombras) */
+  /* Bordes */
   --sk-border: #1e293b;
   --sk-border-subtle: #172338;
   --sk-border-light: #26354d;
-  --sk-border-focus: #2563eb;
+  --sk-border-focus: #38bdf8;
 
   /* Acentos de color */
   --sk-primary: #2563eb;
   --sk-primary-hover: #1d4ed8;
   --sk-primary-active: #1e40af;
+  --sk-primary-contrast: #ffffff;
   --sk-accent: #60a5fa;
   --sk-accent-cyan: #38bdf8;
 
@@ -35,20 +45,24 @@
 
   /* Estados semánticos */
   --sk-success: #10b981;
-  --sk-success-bg: rgba(16, 185, 129, 0.12);
-  --sk-success-border: rgba(16, 185, 129, 0.35);
+  --sk-success-bg: rgba(16, 185, 129, 0.14);
+  --sk-success-border: rgba(16, 185, 129, 0.4);
+  --sk-success-text: #34d399;
 
   --sk-warning: #f59e0b;
-  --sk-warning-bg: rgba(245, 158, 11, 0.12);
-  --sk-warning-border: rgba(245, 158, 11, 0.35);
+  --sk-warning-bg: rgba(245, 158, 11, 0.14);
+  --sk-warning-border: rgba(245, 158, 11, 0.4);
+  --sk-warning-text: #fbbf24;
 
   --sk-danger: #ef4444;
-  --sk-danger-bg: rgba(239, 68, 68, 0.12);
-  --sk-danger-border: rgba(239, 68, 68, 0.35);
+  --sk-danger-bg: rgba(239, 68, 68, 0.14);
+  --sk-danger-border: rgba(239, 68, 68, 0.4);
+  --sk-danger-text: #f87171;
 
   --sk-info: #0ea5e9;
-  --sk-info-bg: rgba(14, 165, 233, 0.12);
-  --sk-info-border: rgba(14, 165, 233, 0.35);
+  --sk-info-bg: rgba(14, 165, 233, 0.14);
+  --sk-info-border: rgba(14, 165, 233, 0.4);
+  --sk-info-text: #38bdf8;
 
   /* Insignia / Pill */
   --sk-pill-bg: #101e38;
@@ -61,10 +75,182 @@
   --sk-radius-lg: 16px;
   --sk-radius-xl: 20px;
   --sk-radius-full: 9999px;
+
+  /* Foco accesible */
+  --sk-focus-ring: 2px solid #38bdf8;
+  --sk-focus-offset: 2px;
+}
+
+/* LIGHT THEME (Modo claro - WCAG 2.1 AA/AAA) */
+[data-theme="light"] {
+  /* Fondos */
+  --sk-bg-body: #f8fafc;
+  --sk-bg-surface: #ffffff;
+  --sk-bg-surface-hover: #f1f5f9;
+  --sk-bg-card: #ffffff;
+  --sk-bg-card-secondary: #f8fafc;
+  --sk-bg-card-subtle: #f1f5f9;
+
+  /* Bordes */
+  --sk-border: #cbd5e1;
+  --sk-border-subtle: #e2e8f0;
+  --sk-border-light: #94a3b8;
+  --sk-border-focus: #1d4ed8;
+
+  /* Acentos de color */
+  --sk-primary: #1d4ed8;
+  --sk-primary-hover: #1e40af;
+  --sk-primary-active: #172554;
+  --sk-primary-contrast: #ffffff;
+  --sk-accent: #2563eb;
+  --sk-accent-cyan: #0284c7;
+
+  /* Textos y contraste */
+  --sk-text-primary: #0f172a;
+  --sk-text-secondary: #334155;
+  --sk-text-muted: #475569;
+  --sk-text-dim: #64748b;
+
+  /* Estados semánticos */
+  --sk-success: #047857;
+  --sk-success-bg: #ecfdf5;
+  --sk-success-border: #a7f3d0;
+  --sk-success-text: #065f46;
+
+  --sk-warning: #b45309;
+  --sk-warning-bg: #fffbeb;
+  --sk-warning-border: #fde68a;
+  --sk-warning-text: #92400e;
+
+  --sk-danger: #b91c1c;
+  --sk-danger-bg: #fef2f2;
+  --sk-danger-border: #fecaca;
+  --sk-danger-text: #991b1b;
+
+  --sk-info: #0369a1;
+  --sk-info-bg: #f0f9ff;
+  --sk-info-border: #bae6fd;
+  --sk-info-text: #075985;
+
+  /* Insignia / Pill */
+  --sk-pill-bg: #eff6ff;
+  --sk-pill-border: #bfdbfe;
+  --sk-pill-text: #1d4ed8;
+
+  /* Foco accesible */
+  --sk-focus-ring: 2px solid #1d4ed8;
+  --sk-focus-offset: 2px;
+}
+
+/* COLORBLIND THEME (Alto Contraste Inclusivo & Paleta Okabe-Ito - WCAG AAA 13.36:1) */
+[data-theme="colorblind"] {
+  /* Fondos (Frame C del diseño) */
+  --sk-bg-body: #121212;
+  --sk-bg-surface: #1a1a1a;
+  --sk-bg-surface-hover: #242424;
+  --sk-bg-card: #161616;
+  --sk-bg-card-secondary: #202020;
+  --sk-bg-card-subtle: #282828;
+
+  /* Bordes de alto contraste (Cian #00E5FF y Blanco) */
+  --sk-border: #00E5FF;
+  --sk-border-subtle: #0099cc;
+  --sk-border-light: #FFD700;
+  --sk-border-focus: #FFD700;
+
+  /* Acentos con Paleta Segura Okabe-Ito */
+  --sk-primary: #0072B2; /* Azul Okabe-Ito */
+  --sk-primary-hover: #005a8c;
+  --sk-primary-active: #004366;
+  --sk-primary-contrast: #ffffff;
+  --sk-accent: #00E5FF;
+  --sk-accent-cyan: #38bdf8;
+
+  /* Textos de máxima legibilidad (Amarillo #FFD700 y Blanco) */
+  --sk-text-primary: #FFD700;
+  --sk-text-secondary: #ffffff;
+  --sk-text-muted: #e5e5e5;
+  --sk-text-dim: #d4d4d4;
+
+  /* Estados semánticos reforzados con Okabe-Ito y símbolos */
+  --sk-success: #009E73; /* Verde Azulado Okabe-Ito */
+  --sk-success-bg: #002b1c;
+  --sk-success-border: #00E5FF;
+  --sk-success-text: #00E5FF;
+
+  --sk-warning: #F0E442; /* Amarillo Okabe-Ito */
+  --sk-warning-bg: #2b2800;
+  --sk-warning-border: #FFD700;
+  --sk-warning-text: #FFD700;
+
+  --sk-danger: #D55E00; /* Naranja Bermellón Okabe-Ito */
+  --sk-danger-bg: #331500;
+  --sk-danger-border: #D55E00;
+  --sk-danger-text: #ff7f24;
+
+  --sk-info: #0072B2;
+  --sk-info-bg: #001f33;
+  --sk-info-border: #00E5FF;
+  --sk-info-text: #00E5FF;
+
+  /* Insignia / Pill */
+  --sk-pill-bg: #002244;
+  --sk-pill-border: #00E5FF;
+  --sk-pill-text: #FFD700;
+
+  /* Foco en amarillo de alto contraste (3px) */
+  --sk-focus-ring: 3px solid #FFD700;
+  --sk-focus-offset: 3px;
+}
+
+/* SYSTEM THEME (Media query reactiva cuando data-theme="system") */
+@media (prefers-color-scheme: light) {
+  [data-theme="system"] {
+    --sk-bg-body: #f8fafc;
+    --sk-bg-surface: #ffffff;
+    --sk-bg-surface-hover: #f1f5f9;
+    --sk-bg-card: #ffffff;
+    --sk-bg-card-secondary: #f8fafc;
+    --sk-bg-card-subtle: #f1f5f9;
+    --sk-border: #cbd5e1;
+    --sk-border-subtle: #e2e8f0;
+    --sk-border-light: #94a3b8;
+    --sk-border-focus: #1d4ed8;
+    --sk-primary: #1d4ed8;
+    --sk-primary-hover: #1e40af;
+    --sk-primary-active: #172554;
+    --sk-primary-contrast: #ffffff;
+    --sk-accent: #2563eb;
+    --sk-accent-cyan: #0284c7;
+    --sk-text-primary: #0f172a;
+    --sk-text-secondary: #334155;
+    --sk-text-muted: #475569;
+    --sk-text-dim: #64748b;
+    --sk-success: #047857;
+    --sk-success-bg: #ecfdf5;
+    --sk-success-border: #a7f3d0;
+    --sk-success-text: #065f46;
+    --sk-warning: #b45309;
+    --sk-warning-bg: #fffbeb;
+    --sk-warning-border: #fde68a;
+    --sk-warning-text: #92400e;
+    --sk-danger: #b91c1c;
+    --sk-danger-bg: #fef2f2;
+    --sk-danger-border: #fecaca;
+    --sk-danger-text: #991b1b;
+    --sk-info: #0369a1;
+    --sk-info-bg: #f0f9ff;
+    --sk-info-border: #bae6fd;
+    --sk-info-text: #075985;
+    --sk-pill-bg: #eff6ff;
+    --sk-pill-border: #bfdbfe;
+    --sk-pill-text: #1d4ed8;
+    --sk-focus-ring: 2px solid #1d4ed8;
+  }
 }
 
 /* ==========================================================================
-   REGLA ESTRICTA: NO SOMBRAS (Zero Drop Shadows)
+   2. REGLA ESTRICTA: CERO SOMBRAS (Zero Drop Shadows)
    ========================================================================== */
 *,
 *::before,
@@ -74,15 +260,31 @@
 }
 
 /* ==========================================================================
-   RESET & TIPOGRAFÍA BASE
+   3. RESET, TIPOGRAFÍA BASE Y ESCALADO DINÁMICO DE FUENTES
    ========================================================================== */
-html, body {
+html {
+  font-size: calc(16px * var(--sk-font-scale, 1));
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
   background-color: var(--sk-bg-body) !important;
   color: var(--sk-text-primary) !important;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  font-size: 1rem;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  word-break: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -91,6 +293,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--sk-text-primary);
   font-weight: 700;
   letter-spacing: -0.02em;
+  overflow-wrap: break-word;
 }
 
 p {
@@ -108,9 +311,45 @@ a:hover {
   color: var(--sk-accent-cyan);
 }
 
+/* Clases de texto utilitarias adaptadas a variables */
+.text-white {
+  color: var(--sk-text-primary) !important;
+}
+
+.text-secondary {
+  color: var(--sk-text-secondary) !important;
+}
+
+.text-muted {
+  color: var(--sk-text-muted) !important;
+}
+
+.text-dim {
+  color: var(--sk-text-dim) !important;
+}
+
+.text-primary-accent {
+  color: var(--sk-accent) !important;
+}
+
+.text-success-accent {
+  color: var(--sk-success) !important;
+}
+
 /* ==========================================================================
-   ESTRUCTURA Y CONTENEDORES
+   4. ESTRUCTURA Y CONTENEDORES FLUIDOS
    ========================================================================== */
+.container,
+.container-fluid,
+.admin-wrapper,
+.student-dashboard,
+.home-header,
+.card,
+.modal-content {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
 .bg-skillup-estudiante {
   background-color: var(--sk-bg-body) !important;
 }
@@ -141,12 +380,12 @@ a:hover {
 }
 
 /* ==========================================================================
-   BOTONES (Limpios, nítidos, sin sombras)
+   5. BOTONES
    ========================================================================== */
 .btn {
   font-weight: 600;
   border-radius: var(--sk-radius-sm);
-  padding: 8px 18px;
+  padding: 0.5rem 1.125rem;
   font-size: 0.92rem;
   transition: all 0.15s ease-in-out;
   display: inline-flex;
@@ -158,13 +397,13 @@ a:hover {
 .btn-primary {
   background-color: var(--sk-primary) !important;
   border: 1px solid var(--sk-primary) !important;
-  color: #ffffff !important;
+  color: var(--sk-primary-contrast) !important;
 }
 
 .btn-primary:hover, .btn-primary:focus {
   background-color: var(--sk-primary-hover) !important;
   border-color: var(--sk-primary-hover) !important;
-  color: #ffffff !important;
+  color: var(--sk-primary-contrast) !important;
 }
 
 .btn-secondary {
@@ -181,18 +420,18 @@ a:hover {
 
 .btn-outline-primary {
   background-color: transparent !important;
-  border: 1px solid var(--sk-primary) !important;
+  border: 1.5px solid var(--sk-primary) !important;
   color: var(--sk-accent) !important;
 }
 
 .btn-outline-primary:hover {
   background-color: var(--sk-primary) !important;
-  color: #ffffff !important;
+  color: var(--sk-primary-contrast) !important;
 }
 
 .btn-outline-light {
   background-color: transparent !important;
-  border: 1px solid var(--sk-border) !important;
+  border: 1.5px solid var(--sk-border) !important;
   color: var(--sk-text-secondary) !important;
 }
 
@@ -205,7 +444,7 @@ a:hover {
 .btn-light {
   background-color: var(--sk-primary) !important;
   border: 1px solid var(--sk-primary) !important;
-  color: #ffffff !important;
+  color: var(--sk-primary-contrast) !important;
 }
 
 .btn-light:hover {
@@ -220,8 +459,7 @@ a:hover {
 }
 
 .btn-success:hover {
-  background-color: #059669 !important;
-  border-color: #059669 !important;
+  filter: brightness(0.9);
 }
 
 .btn-danger {
@@ -231,8 +469,7 @@ a:hover {
 }
 
 .btn-danger:hover {
-  background-color: #dc2626 !important;
-  border-color: #dc2626 !important;
+  filter: brightness(0.9);
 }
 
 .btn-warning {
@@ -243,13 +480,11 @@ a:hover {
 }
 
 .btn-warning:hover {
-  background-color: #d97706 !important;
-  border-color: #d97706 !important;
-  color: #080c14 !important;
+  filter: brightness(0.9);
 }
 
 /* ==========================================================================
-   FORMULARIOS E INPUTS
+   6. FORMULARIOS E INPUTS
    ========================================================================== */
 .form-control,
 .form-select,
@@ -264,7 +499,7 @@ select {
   border: 1px solid var(--sk-border) !important;
   color: var(--sk-text-primary) !important;
   border-radius: var(--sk-radius-sm);
-  padding: 10px 14px;
+  padding: 0.625rem 0.875rem;
   font-size: 0.95rem;
   transition: border-color 0.15s ease-in-out;
 }
@@ -281,7 +516,7 @@ input:focus,
 textarea:focus,
 select:focus {
   background-color: var(--sk-bg-card) !important;
-  border-color: var(--sk-primary) !important;
+  border-color: var(--sk-border-focus) !important;
   color: var(--sk-text-primary) !important;
   outline: none !important;
 }
@@ -299,7 +534,7 @@ select:focus {
 }
 
 /* ==========================================================================
-   TABLAS
+   7. TABLAS ACCESIBLES Y FLUIDAS
    ========================================================================== */
 .table {
   color: var(--sk-text-secondary) !important;
@@ -312,11 +547,10 @@ select:focus {
   color: var(--sk-text-muted) !important;
   font-size: 0.8rem;
   font-weight: 600;
-
   letter-spacing: 0.05em;
   border-bottom: 1px solid var(--sk-border) !important;
   border-top: none;
-  padding: 12px 16px;
+  padding: 0.75rem 1rem;
 }
 
 .table tbody tr {
@@ -330,7 +564,7 @@ select:focus {
 }
 
 .table tbody td {
-  padding: 14px 16px;
+  padding: 0.875rem 1rem;
   border-color: var(--sk-border) !important;
   color: var(--sk-text-secondary) !important;
   vertical-align: middle;
@@ -340,12 +574,14 @@ select:focus {
   border: 1px solid var(--sk-border);
   border-radius: var(--sk-radius-md);
   overflow-x: auto;
+  width: 100%;
 }
 
 /* ==========================================================================
-   SIDEBAR & NAVEGACIÓN LATERAL
+   8. SIDEBAR Y NAVEGACIÓN
    ========================================================================== */
-.sidebar {
+.sidebar,
+.admin-sidebar {
   background-color: var(--sk-bg-card) !important;
   border-right: 1px solid var(--sk-border) !important;
   min-height: 100vh;
@@ -354,7 +590,7 @@ select:focus {
 .sidebar .nav-link {
   color: var(--sk-text-secondary) !important;
   font-weight: 500;
-  padding: 10px 16px;
+  padding: 0.625rem 1rem;
   border-radius: var(--sk-radius-sm);
   margin-bottom: 0.25rem;
   transition: all 0.15s ease;
@@ -367,13 +603,14 @@ select:focus {
 
 .sidebar .nav-link.active {
   background-color: var(--sk-primary) !important;
-  color: #ffffff !important;
+  color: var(--sk-primary-contrast) !important;
 }
 
 /* ==========================================================================
-   MODALES Y DROPDOWNS
+   9. MODALES Y DROPDOWNS
    ========================================================================== */
-.modal-content {
+.modal-content,
+.bg-modal-dark {
   background-color: var(--sk-bg-surface) !important;
   border: 1px solid var(--sk-border) !important;
   border-radius: var(--sk-radius-lg) !important;
@@ -390,17 +627,29 @@ select:focus {
   background-color: var(--sk-bg-card) !important;
 }
 
+.btn-close-white {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+[data-theme="light"] .btn-close-white {
+  filter: none !important;
+}
+
+[data-theme="colorblind"] .btn-close-white {
+  filter: invert(1) !important;
+}
+
 .dropdown-menu {
   background-color: var(--sk-bg-surface) !important;
   border: 1px solid var(--sk-border) !important;
   border-radius: var(--sk-radius-md) !important;
-  padding: 6px;
+  padding: 0.375rem;
 }
 
 .dropdown-item {
   color: var(--sk-text-secondary) !important;
   border-radius: var(--sk-radius-sm);
-  padding: 8px 12px;
+  padding: 0.5rem 0.75rem;
   font-size: 0.9rem;
 }
 
@@ -414,48 +663,228 @@ select:focus {
 }
 
 /* ==========================================================================
-   ALERTAS & BADGES
+   10. ALERTAS Y BADGES
    ========================================================================== */
 .alert {
   border-radius: var(--sk-radius-md);
-  padding: 12px 18px;
+  padding: 0.75rem 1.125rem;
   font-size: 0.92rem;
 }
 
 .alert-success {
   background-color: var(--sk-success-bg) !important;
   border: 1px solid var(--sk-success-border) !important;
-  color: #34d399 !important;
+  color: var(--sk-success-text) !important;
 }
 
 .alert-danger {
   background-color: var(--sk-danger-bg) !important;
   border: 1px solid var(--sk-danger-border) !important;
-  color: #f87171 !important;
+  color: var(--sk-danger-text) !important;
 }
 
 .alert-warning {
   background-color: var(--sk-warning-bg) !important;
   border: 1px solid var(--sk-warning-border) !important;
-  color: #fbbf24 !important;
+  color: var(--sk-warning-text) !important;
 }
 
 .alert-info {
   background-color: var(--sk-info-bg) !important;
   border: 1px solid var(--sk-info-border) !important;
-  color: #38bdf8 !important;
+  color: var(--sk-info-text) !important;
 }
 
 .badge {
   font-weight: 600;
-  padding: 5px 10px;
+  padding: 0.3rem 0.625rem;
   border-radius: var(--sk-radius-sm);
   font-size: 0.78rem;
   letter-spacing: 0.02em;
 }
 
+.badge-role {
+  background-color: var(--sk-pill-bg) !important;
+  border: 1px solid var(--sk-pill-border) !important;
+  color: var(--sk-pill-text) !important;
+}
+
 /* ==========================================================================
-   SCROLLBAR SLEEK & ACCESIBILIDAD
+   11. PATRONES REDUNDANTES Y REFORZADOS EN MODO DALTÓNICO / ALTO CONTRASTE
+   (WCAG 2.1/2.2 Nivel AAA)
+   ========================================================================== */
+[data-theme="colorblind"] a {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  font-weight: 700;
+}
+
+[data-theme="colorblind"] .alert {
+  border-width: 2px !important;
+}
+
+[data-theme="colorblind"] .alert-success {
+  border-style: solid !important;
+  border-color: var(--sk-success) !important;
+}
+
+[data-theme="colorblind"] .alert-success::before {
+  content: "✓ [ÉXITO] ";
+  font-weight: 800;
+  color: var(--sk-success-text);
+}
+
+[data-theme="colorblind"] .alert-danger {
+  border-style: dashed !important;
+  border-width: 2px !important;
+  border-color: var(--sk-danger) !important;
+}
+
+[data-theme="colorblind"] .alert-danger::before {
+  content: "✕ [ERROR] ";
+  font-weight: 800;
+  color: var(--sk-danger-text);
+}
+
+[data-theme="colorblind"] .alert-warning {
+  border-style: double !important;
+  border-width: 4px !important;
+  border-color: var(--sk-warning) !important;
+}
+
+[data-theme="colorblind"] .alert-warning::before {
+  content: "⚠ [ALERTA] ";
+  font-weight: 800;
+  color: var(--sk-warning-text);
+}
+
+[data-theme="colorblind"] .alert-info {
+  border-style: solid !important;
+  border-color: var(--sk-info) !important;
+}
+
+[data-theme="colorblind"] .alert-info::before {
+  content: "ℹ [INFO] ";
+  font-weight: 800;
+  color: var(--sk-info-text);
+}
+
+[data-theme="colorblind"] .card,
+[data-theme="colorblind"] .modal-content {
+  border-width: 2px !important;
+}
+
+/* ==========================================================================
+   12. FOCO VISIBLE Y NAVEGACIÓN ASISTIDA POR TECLADO
+   ========================================================================== */
+:focus-visible {
+  outline: var(--sk-focus-ring) !important;
+  outline-offset: var(--sk-focus-offset) !important;
+}
+
+/* Skip Link accesible para teclado (WCAG 2.4.1) */
+.skip-link {
+  position: fixed;
+  top: -999px;
+  left: 20px;
+  background-color: #FFD700 !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  padding: 12px 20px !important;
+  border-radius: var(--sk-radius-sm);
+  z-index: 999999;
+  text-decoration: underline !important;
+  border: 2px solid #000000;
+  transition: top 0.15s ease-in-out;
+}
+
+.skip-link:focus {
+  top: 16px;
+  outline: 3px solid #00E5FF !important;
+  outline-offset: 2px;
+}
+
+/* Áreas de pulsación mínimas de 44x44px en controles principales (WCAG 2.5.5) */
+.btn, .nav-item, .search-btn, .a11y-trigger-btn {
+  min-height: 44px;
+}
+
+/* ==========================================================================
+   13. PREFERENCIAS ADICIONALES DE ACCESIBILIDAD
+   ========================================================================== */
+/* Subrayado permanente de enlaces */
+[data-underline-links="true"] a {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+
+/* Tipografía Lexend para dislexia y fluidez lectora */
+[data-font-family="lexend"],
+[data-font-family="lexend"] body,
+[data-font-family="lexend"] h1,
+[data-font-family="lexend"] h2,
+[data-font-family="lexend"] h3,
+[data-font-family="lexend"] h4,
+[data-font-family="lexend"] h5,
+[data-font-family="lexend"] h6,
+[data-font-family="lexend"] p,
+[data-font-family="lexend"] button,
+[data-font-family="lexend"] input,
+[data-font-family="lexend"] select,
+[data-font-family="lexend"] textarea {
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Silenciar animaciones y transiciones (TDAH / Vestibular) */
+[data-reduced-motion="true"] *,
+[data-reduced-motion="true"] *::before,
+[data-reduced-motion="true"] *::after {
+  animation-duration: 0.001s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001s !important;
+  scroll-behavior: auto !important;
+}
+
+/* Modo Concentración (oculta distractores laterales) */
+[data-focus-mode="true"] .sidebar,
+[data-focus-mode="true"] .admin-sidebar,
+[data-focus-mode="true"] .header-links,
+[data-focus-mode="true"] .nav-links,
+[data-focus-mode="true"] .distractor-panel {
+  display: none !important;
+}
+
+[data-focus-mode="true"] .admin-main {
+  grid-template-columns: 1fr !important;
+}
+
+/* ==========================================================================
+   14. SUBTÍTULOS ACCESIBLES DE VIDEO (WebVTT)
+   ========================================================================== */
+::cue {
+  background-color: rgba(18, 18, 18, 0.95);
+  color: #FFD700;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+[data-theme="light"] ::cue {
+  background-color: rgba(0, 0, 0, 0.88);
+  color: #ffffff;
+}
+
+/* Elementos interactivos sin truncamiento */
+button, a, input, select, textarea {
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   13. SCROLLBAR
    ========================================================================== */
 ::-webkit-scrollbar {
   width: 8px;
@@ -475,17 +904,12 @@ select:focus {
   background: var(--sk-border-light);
 }
 
-:focus-visible {
-  outline: 2px solid var(--sk-primary) !important;
-  outline-offset: 2px;
-}
-
 /* ==========================================================================
-   RESPONSIVE UTILITIES
+   14. AJUSTES RESPONSIVOS MÓVIL Y TABLET
    ========================================================================== */
 @media (max-width: 768px) {
   .btn {
-    padding: 7px 14px;
+    padding: 0.44rem 0.875rem;
     font-size: 0.88rem;
   }
 }

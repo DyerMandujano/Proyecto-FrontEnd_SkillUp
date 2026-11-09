@@ -1,7 +1,7 @@
 /* ==========================================================================
    SKILLUP - AUTENTICACIÓN (LOGIN & REGISTRO)
-   Paleta: Dark Navy Slate (#080c14 / #0f172a / #0b111e)
-   Acentos: Royal Blue (#2563eb) & Electric Sky (#60a5fa)
+   Paleta: Dark Navy Slate (var(--sk-bg-body) / var(--sk-bg-surface) / var(--sk-bg-card))
+   Acentos: Royal Blue (var(--sk-primary)) & Electric Sky (var(--sk-accent))
    Sin sombras y 100% responsive
    ========================================================================== */
 
@@ -11,14 +11,14 @@
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  background-color: #080c14;
+  background-color: var(--sk-bg-body);
   padding: 20px;
   box-sizing: border-box;
 }
 
 .contenedorPrincipal {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 20px;
   position: relative;
   width: 840px;
@@ -50,7 +50,7 @@
 }
 
 form {
-  background-color: #0f172a;
+  background-color: var(--sk-bg-surface);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,7 +75,7 @@ form {
   width: 6px;
 }
 .contenedor-registro form::-webkit-scrollbar-thumb {
-  background-color: #1e293b;
+  background-color: var(--sk-border);
   border-radius: 6px;
 }
 
@@ -91,13 +91,13 @@ form {
   font-weight: 800;
   margin: 0 0 6px;
   font-size: 1.65rem;
-  color: #ffffff;
+  color: var(--sk-text-primary);
   letter-spacing: -0.02em;
 }
 
 .subtitulo-formulario {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   margin: 0;
 }
 
@@ -123,7 +123,7 @@ form {
 .campo-etiqueta {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
   margin: 0;
 }
 
@@ -135,20 +135,20 @@ form {
 .opcional-tag {
   font-size: 0.72rem;
   font-weight: 500;
-  color: #64748b;
+  color: var(--sk-text-dim);
   margin-left: 4px;
 }
 
 /* Inputs y Selects */
 input.input-formulario,
 select.input-formulario {
-  background-color: #0b111e !important;
-  border: 1px solid #1e293b !important;
+  background-color: var(--sk-bg-card) !important;
+  border: 1px solid var(--sk-border) !important;
   padding: 10px 14px;
   width: 100%;
   border-radius: 8px;
   font-size: 0.88rem;
-  color: #f8fafc !important;
+  color: var(--sk-text-primary) !important;
   box-sizing: border-box;
   transition: border-color 0.15s ease;
   font-family: inherit;
@@ -156,7 +156,7 @@ select.input-formulario {
 }
 
 input.input-formulario::placeholder {
-  color: #64748b !important;
+  color: var(--sk-text-dim) !important;
   opacity: 1;
   font-size: 0.85rem;
 }
@@ -164,8 +164,8 @@ input.input-formulario::placeholder {
 input.input-formulario:focus,
 select.input-formulario:focus {
   outline: none !important;
-  border-color: #2563eb !important;
-  background-color: #0b111e !important;
+  border-color: var(--sk-primary) !important;
+  background-color: var(--sk-bg-card) !important;
   box-shadow: none !important;
 }
 
@@ -206,7 +206,7 @@ select.input-formulario.input-error {
 
 .indicacion-campo {
   font-size: 0.72rem;
-  color: #64748b;
+  color: var(--sk-text-dim);
   text-align: left;
   margin-top: 4px;
   margin-left: 2px;
@@ -247,13 +247,13 @@ select.input-formulario.input-error {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   border-radius: 6px;
   transition: color 0.15s;
 }
 
 .btn-toggle-ojito:hover {
-  color: #60a5fa;
+  color: var(--sk-accent);
 }
 
 .icono-ojo {
@@ -264,8 +264,8 @@ select.input-formulario.input-error {
 /* Requisitos de seguridad de contraseña */
 .requisitos-contrasenia {
   width: 100%;
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
   border-radius: 8px;
   padding: 8px 12px;
   margin-top: 6px;
@@ -282,7 +282,7 @@ select.input-formulario.input-error {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #64748b;
+  color: var(--sk-text-dim);
   transition: color 0.15s ease;
 }
 
@@ -315,19 +315,19 @@ select.input-formulario.input-error {
   cursor: pointer;
   padding: 9px 12px;
   border-radius: 8px;
-  border: 1px solid #1e293b;
-  background: #0b111e;
+  border: 1px solid var(--sk-border);
+  background: var(--sk-bg-card);
   transition: all 0.15s ease;
 }
 
 .radio-opcion:hover {
-  border-color: #334155;
-  background: #111b2e;
+  border-color: var(--sk-border-light);
+  background: var(--sk-bg-card-secondary);
 }
 
 .radio-opcion input[type="radio"] {
   cursor: pointer;
-  accent-color: #2563eb;
+  accent-color: var(--sk-primary);
   width: 16px;
   height: 16px;
 }
@@ -335,7 +335,7 @@ select.input-formulario.input-error {
 .radio-texto {
   font-size: 0.84rem;
   font-weight: 600;
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
 }
 
 /* Mensajes de error general */
@@ -412,8 +412,8 @@ select.input-formulario.input-error {
    ======================================================== */
 button.btn {
   border: none;
-  background-color: #2563eb;
-  color: #ffffff;
+  background-color: var(--sk-primary);
+  color: var(--sk-text-primary);
   font-size: 0.84rem;
   font-weight: 700;
   padding: 12px 36px;
@@ -427,13 +427,13 @@ button.btn {
 }
 
 button.btn:hover:not(:disabled) {
-  background-color: #1d4ed8;
-  color: #ffffff;
+  background-color: var(--sk-primary-hover);
+  color: var(--sk-text-primary);
 }
 
 button.btn:disabled {
-  background-color: #1e293b;
-  color: #64748b;
+  background-color: var(--sk-border);
+  color: var(--sk-text-dim);
   cursor: not-allowed;
 }
 
@@ -453,7 +453,7 @@ button.btn:disabled {
 
 .enlace-olvido-contrasenia {
   font-size: 0.82rem;
-  color: #60a5fa;
+  color: var(--sk-accent);
   text-decoration: none;
   font-weight: 500;
   cursor: pointer;
@@ -461,13 +461,13 @@ button.btn:disabled {
 }
 
 .enlace-olvido-contrasenia:hover {
-  color: #38bdf8;
+  color: var(--sk-accent-cyan);
   text-decoration: underline;
 }
 
 .enlace-deshabilitado {
   font-size: 0.78rem;
-  color: #64748b;
+  color: var(--sk-text-dim);
   font-weight: 500;
   cursor: not-allowed;
   user-select: none;
@@ -488,9 +488,9 @@ button.btn:disabled {
 }
 
 .superposicion {
-  background: #101c38;
-  border-left: 1px solid #1e3a8a;
-  color: #ffffff;
+  background: var(--sk-pill-bg);
+  border-left: 1px solid var(--sk-pill-border);
+  color: var(--sk-text-primary);
   position: relative;
   left: -100%;
   height: 100%;
@@ -528,26 +528,26 @@ button.btn:disabled {
   font-size: 1.85rem;
   font-weight: 800;
   margin-bottom: 12px;
-  color: #ffffff;
+  color: var(--sk-text-primary);
 }
 
 .panel-superposicion p {
   font-size: 0.92rem;
   line-height: 1.6;
   margin-bottom: 24px;
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
 }
 
 button.transparente {
   background-color: transparent !important;
-  border: 1.5px solid #60a5fa !important;
+  border: 1.5px solid var(--sk-accent) !important;
   color: #ffffff !important;
   box-shadow: none !important;
 }
 
 button.transparente:hover {
-  background-color: #2563eb !important;
-  border-color: #2563eb !important;
+  background-color: var(--sk-primary) !important;
+  border-color: var(--sk-primary) !important;
   color: #ffffff !important;
 }
 
@@ -593,8 +593,8 @@ button.transparente:hover {
    CAPTCHA
    ======================================================== */
 .campo-captcha-wrapper {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
   border-radius: 8px;
   padding: 12px 14px;
   margin: 10px 0;
@@ -605,7 +605,7 @@ button.transparente:hover {
 .etiqueta-captcha {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
   display: block;
   margin-bottom: 6px;
   text-align: left;
@@ -621,10 +621,10 @@ button.transparente:hover {
 
 .canvas-captcha {
   position: relative;
-  background-color: #111b2e;
+  background-color: var(--sk-bg-card-secondary);
   padding: 8px 18px;
   border-radius: 6px;
-  border: 1px solid #1e293b;
+  border: 1px solid var(--sk-border);
   letter-spacing: 6px;
   user-select: none;
   overflow: hidden;
@@ -635,7 +635,7 @@ button.transparente:hover {
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.35rem;
   font-weight: 900;
-  color: #60a5fa;
+  color: var(--sk-accent);
   text-decoration: line-through;
   display: inline-block;
   transform: skew(-6deg);
@@ -662,22 +662,22 @@ button.transparente:hover {
 }
 
 .btn-recargar-captcha {
-  background: #111b2e;
-  border: 1px solid #1e293b;
+  background: var(--sk-bg-card-secondary);
+  border: 1px solid var(--sk-border);
   border-radius: 6px;
   padding: 8px 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   transition: all 0.15s;
 }
 
 .btn-recargar-captcha:hover:not(:disabled) {
-  background: #172554;
-  color: #60a5fa;
-  border-color: #2563eb;
+  background: var(--sk-primary-active);
+  color: var(--sk-accent);
+  border-color: var(--sk-primary);
 }
 
 .icono-refresco {
@@ -722,8 +722,8 @@ button.transparente:hover {
 }
 
 .modal-card-recuperar {
-  background: #0f172a;
-  border: 1px solid #1e293b;
+  background: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 14px;
   width: 90%;
   max-width: 440px;
@@ -746,13 +746,13 @@ button.transparente:hover {
   border: none;
   font-size: 1.8rem;
   line-height: 1;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   cursor: pointer;
   transition: color 0.15s ease;
 }
 
 .btn-cerrar-modal:hover {
-  color: #ffffff;
+  color: var(--sk-text-primary);
 }
 
 .modal-recuperar-header {
@@ -764,15 +764,15 @@ button.transparente:hover {
   display: inline-flex;
   padding: 12px;
   border-radius: 50%;
-  background: #101e38;
-  border: 1px solid #1e3a8a;
-  color: #60a5fa;
+  background: var(--sk-pill-bg);
+  border: 1px solid var(--sk-pill-border);
+  color: var(--sk-accent);
   margin-bottom: 12px;
 }
 
 .modal-recuperar-header h2 {
   font-size: 1.35rem;
-  color: #ffffff;
+  color: var(--sk-text-primary);
   font-weight: 700;
   margin: 0;
 }
@@ -785,7 +785,7 @@ button.transparente:hover {
 
 .instruccion-modal {
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   line-height: 1.45;
   margin: 0;
   text-align: center;
@@ -811,7 +811,7 @@ button.transparente:hover {
 .campo-recuperar label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
 }
 
 .campo-recuperar .input-formulario {
@@ -840,7 +840,7 @@ button.transparente:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   padding: 4px;
 }
 
@@ -856,13 +856,13 @@ button.transparente:hover {
 }
 
 .btn-secundario {
-  background-color: #111b2e !important;
-  color: #cbd5e1 !important;
-  border: 1px solid #1e293b !important;
+  background-color: var(--sk-bg-card-secondary) !important;
+  color: var(--sk-text-secondary) !important;
+  border: 1px solid var(--sk-border) !important;
 }
 
 .btn-secundario:hover {
-  background-color: #172554 !important;
+  background-color: var(--sk-primary-active) !important;
   color: #ffffff !important;
 }
 

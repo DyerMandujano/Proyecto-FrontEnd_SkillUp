@@ -1,20 +1,20 @@
 /* ==========================================================================
    SKILLUP - ESTADO DE SOLICITUD
-   Dark Navy Slate (#080c14 / #0f172a / #0b111e)
+   Dark Navy Slate (var(--sk-bg-body) / var(--sk-bg-surface) / var(--sk-bg-card))
    Sin sombras y 100% responsive
    ========================================================================== */
 
 .tracking-page {
   min-height: 100vh;
-  background-color: #080c14;
-  color: #f8fafc;
+  background-color: var(--sk-bg-body);
+  color: var(--sk-text-primary);
   display: flex;
   flex-direction: column;
 }
 
 .page-header {
-  background-color: #080c14;
-  border-bottom: 1px solid #161f30;
+  background-color: var(--sk-bg-body);
+  border-bottom: 1px solid var(--sk-border);
   padding: 0.85rem 2rem;
   box-shadow: none !important;
 }
@@ -38,7 +38,7 @@
 }
 
 .brand-link span {
-  color: #60a5fa;
+  color: var(--sk-accent);
 }
 
 .header-actions {
@@ -47,7 +47,7 @@
 }
 
 .btn-new-request {
-  background-color: #2563eb;
+  background-color: var(--sk-primary);
   color: #ffffff;
   padding: 0.5rem 1rem;
   font-weight: 600;
@@ -62,14 +62,14 @@
 }
 
 .btn-new-request:hover {
-  background-color: #1d4ed8;
+  background-color: var(--sk-primary-hover);
   color: #ffffff;
 }
 
 .btn-back {
   background-color: transparent;
-  color: #94a3b8;
-  border: 1px solid #1e293b;
+  color: var(--sk-text-muted);
+  border: 1px solid var(--sk-border);
   padding: 0.5rem 1rem;
   font-weight: 500;
   font-size: 0.88rem;
@@ -83,7 +83,7 @@
 }
 
 .btn-back:hover {
-  background-color: #111b2e;
+  background-color: var(--sk-bg-card-secondary);
   color: #ffffff;
 }
 
@@ -118,15 +118,15 @@
 }
 
 .subtitle {
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   font-size: 0.95rem;
   margin: 0;
 }
 
 .btn-refresh {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
-  color: #cbd5e1;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
+  color: var(--sk-text-secondary);
   padding: 0.45rem 0.9rem;
   border-radius: 8px;
   cursor: pointer;
@@ -140,9 +140,9 @@
 }
 
 .btn-refresh:hover {
-  background-color: #172554;
-  color: #60a5fa;
-  border-color: #2563eb;
+  background-color: var(--sk-primary-active);
+  color: var(--sk-accent);
+  border-color: var(--sk-primary);
 }
 
 .summary-cards {
@@ -153,8 +153,8 @@
 }
 
 .summary-card {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 12px;
   padding: 1.25rem;
   display: flex;
@@ -174,9 +174,9 @@
 }
 
 .card-total .card-icon {
-  background-color: #101e38;
-  border: 1px solid #1e3a8a;
-  color: #60a5fa;
+  background-color: var(--sk-pill-bg);
+  border: 1px solid var(--sk-pill-border);
+  color: var(--sk-accent);
 }
 
 .card-pending .card-icon {
@@ -211,17 +211,17 @@
 
 .card-info .title {
   font-size: 0.82rem;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   font-weight: 500;
 }
 
 .loading-state, .empty-card {
   text-align: center;
   padding: 3rem 1.5rem;
-  background-color: #0f172a;
-  border: 1px dashed #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px dashed var(--sk-border);
   border-radius: 12px;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
 }
 
 .solicitudes-list {
@@ -231,8 +231,8 @@
 }
 
 .solicitud-card {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-left-width: 5px;
   border-radius: 12px;
   padding: 1.5rem;
@@ -257,7 +257,7 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #1e293b;
+  border-bottom: 1px solid var(--sk-border);
   margin-bottom: 1rem;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -277,7 +277,7 @@
 
 .solicitud-date {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
 }
 
 .badge-status {
@@ -322,7 +322,7 @@
 
 .data-label {
   font-size: 0.78rem;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
 
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -331,15 +331,15 @@
 
 .data-val {
   font-size: 0.95rem;
-  color: #f8fafc;
+  color: var(--sk-text-primary);
   font-weight: 600;
 }
 
 .data-val.code {
   font-family: monospace;
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
-  color: #60a5fa;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
+  color: var(--sk-accent);
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   display: inline-block;
@@ -357,12 +357,12 @@
 }
 
 .notes-box {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
   border-radius: 8px;
   padding: 0.75rem 1rem;
   font-size: 0.88rem;
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
   margin-bottom: 0.85rem;
 }
 
@@ -421,16 +421,16 @@
   font-size: 0.88rem;
   margin-top: 0.75rem;
   padding-top: 0.75rem;
-  border-top: 1px dashed #1e293b;
+  border-top: 1px dashed var(--sk-border);
 }
 
 .voucher-label {
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   font-weight: 500;
 }
 
 .voucher-link {
-  color: #60a5fa;
+  color: var(--sk-accent);
   text-decoration: none;
   font-weight: 600;
   display: inline-flex;
@@ -439,6 +439,6 @@
 }
 
 .voucher-link:hover {
-  color: #38bdf8;
+  color: var(--sk-accent-cyan);
   text-decoration: underline;
 }

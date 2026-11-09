@@ -1,29 +1,29 @@
 /* ==========================================================================
    SKILLUP - AULA VIRTUAL Y REPRODUCTOR DE CLASES (CURSO DETALLE)
-   Dark Navy Slate (#080C14 / #0F172A / #0B111E)
-   Acentos: Royal Blue (#2563EB) & Electric Sky (#60A5FA)
+   Dark Navy Slate (var(--sk-bg-body) / var(--sk-bg-surface) / var(--sk-bg-card))
+   Acentos: Royal Blue (var(--sk-primary)) & Electric Sky (var(--sk-accent))
    Sin sombras y 100% responsive
    ========================================================================== */
 
 :host {
   display: block;
-  background-color: #080c14;
-  color: #f8fafc;
+  background-color: var(--sk-bg-body);
+  color: var(--sk-text-primary);
   min-height: 100vh;
 }
 
 .aula-wrapper {
-  background-color: #080c14;
-  color: #f8fafc;
+  background-color: var(--sk-bg-body);
+  color: var(--sk-text-primary);
   min-height: 100vh;
 }
 
 .border-dark-subtle {
-  border-color: #1e293b !important;
+  border-color: var(--sk-border) !important;
 }
 
 .text-primary-accent {
-  color: #60a5fa !important;
+  color: var(--sk-accent) !important;
 }
 
 .tracking-wider {
@@ -37,23 +37,23 @@
 .brand-logo-small {
   width: 38px;
   height: 38px;
-  background-color: #101e38;
-  border: 1px solid #1e3a8a;
+  background-color: var(--sk-pill-bg);
+  border: 1px solid var(--sk-pill-border);
   border-radius: 8px;
   font-size: 1.25rem;
 }
 
 /* TARJETAS PANEL DARK */
 .dark-panel {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-surface);
+  border: 1px solid var(--sk-border);
   border-radius: 12px;
   box-shadow: none !important;
 }
 
 /* BARRA DE PROGRESO */
 .progress-dark {
-  background-color: #1e293b;
+  background-color: var(--sk-border);
   height: 8px;
   border-radius: 4px;
   overflow: hidden;
@@ -71,17 +71,17 @@
 }
 
 .syllabus-scroll-box::-webkit-scrollbar-track {
-  background: #080c14;
+  background: var(--sk-bg-body);
 }
 
 .syllabus-scroll-box::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: var(--sk-border);
   border-radius: 3px;
 }
 
 .module-group {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: none !important;
@@ -90,7 +90,7 @@
 .module-group-header {
   cursor: pointer;
   background-color: #0e1729;
-  border-bottom: 1px solid #162035;
+  border-bottom: 1px solid var(--sk-border);
   transition: background-color 0.15s ease;
 }
 
@@ -105,7 +105,7 @@
 }
 
 .lesson-accordion-item {
-  border-top: 1px solid #162035;
+  border-top: 1px solid var(--sk-border);
   transition: background-color 0.15s ease;
   box-shadow: none !important;
 }
@@ -119,16 +119,16 @@
 }
 
 .lesson-accordion-item.lesson-active {
-  background-color: #101e38;
-  border-left: 3px solid #2563eb;
+  background-color: var(--sk-pill-bg);
+  border-left: 3px solid var(--sk-primary);
 }
 
 .btn-resources-pill {
   font-size: 0.75rem;
   padding: 3px 8px;
-  background-color: #111b2e;
-  border: 1px solid #1e293b;
-  color: #60a5fa;
+  background-color: var(--sk-bg-card-secondary);
+  border: 1px solid var(--sk-border);
+  color: var(--sk-accent);
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -136,52 +136,52 @@
 }
 
 .btn-resources-pill:hover {
-  background-color: #2563eb;
+  background-color: var(--sk-primary);
   color: #ffffff;
 }
 
 .resource-doc-link {
-  color: #cbd5e1;
+  color: var(--sk-text-secondary);
   font-size: 0.8rem;
   transition: color 0.15s ease;
 }
 
 .resource-doc-link:hover {
-  color: #60a5fa;
+  color: var(--sk-accent);
 }
 
 /* REPRODUCTOR */
 .player-header {
-  background-color: #0b111e;
-  border-bottom: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border-bottom: 1px solid var(--sk-border);
 }
 
 .player-footer {
-  background-color: #0b111e;
-  border-top: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border-top: 1px solid var(--sk-border);
 }
 
 .empty-player-state {
   min-height: 450px;
-  background-color: #080c14;
+  background-color: var(--sk-bg-body);
 }
 
 .bg-dark-subtle-box {
-  background-color: #0b111e;
-  color: #cbd5e1;
+  background-color: var(--sk-bg-card);
+  color: var(--sk-text-secondary);
 }
 
 /* PESTAÑAS */
 .tabs-header {
-  background-color: #0b111e;
-  border-bottom: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border-bottom: 1px solid var(--sk-border);
 }
 
 .tab-item-btn {
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
-  color: #94a3b8;
+  color: var(--sk-text-muted);
   padding: 8px 16px;
   font-size: 0.9rem;
   font-weight: 500;
@@ -190,48 +190,169 @@
 }
 
 .tab-item-btn:hover {
-  color: #f8fafc;
+  color: var(--sk-text-primary);
 }
 
 .tab-item-btn.active {
-  color: #60a5fa;
-  border-bottom: 2px solid #2563eb;
+  color: var(--sk-accent);
+  border-bottom: 2px solid var(--sk-primary);
   font-weight: 600;
 }
 
 /* INPUTS DARK */
 .form-control-dark {
-  background-color: #0b111e !important;
-  border: 1px solid #1e293b !important;
-  color: #f8fafc !important;
+  background-color: var(--sk-bg-card) !important;
+  border: 1px solid var(--sk-border) !important;
+  color: var(--sk-text-primary) !important;
   border-radius: 6px;
   box-shadow: none !important;
 }
 
 .form-control-dark:focus {
-  border-color: #2563eb !important;
+  border-color: var(--sk-primary) !important;
   outline: none !important;
 }
 
 .form-control-dark::placeholder {
-  color: #64748b !important;
+  color: var(--sk-text-dim) !important;
 }
 
 .empty-panel {
-  background-color: #0b111e;
-  border: 1px dashed #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px dashed var(--sk-border);
 }
 
 .forum-item {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--sk-bg-card);
+  border: 1px solid var(--sk-border);
   box-shadow: none !important;
 }
 
 /* DOCX PREVIEW WRAPPER EN TEMA OSCURO */
 .docx-preview-dark {
   background: #ffffff;
-  color: #1e293b;
+  color: var(--sk-border);
   border-radius: 6px;
   padding: 10px;
+}
+
+
+/* ==========================================================================
+   TRANSCRIPCIÓN TEXTUAL SINCRONIZADA & CONTROLES INTERACTIVOS (WCAG 1.2.8)
+   ========================================================================== */
+.transcripcion-scroll-box {
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color, #334155) !important;
+  background-color: var(--card-bg, #0b111e);
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-accent, #2563eb) transparent;
+}
+
+.transcripcion-linea {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  border: 1px solid transparent;
+  outline: none;
+}
+
+.transcripcion-linea:hover {
+  background-color: var(--hover-bg, rgba(255, 255, 255, 0.05));
+}
+
+.transcripcion-linea:focus-visible {
+  outline: 3px solid var(--primary-accent, #2563eb) !important;
+  outline-offset: 2px;
+}
+
+.transcripcion-linea.linea-activa {
+  background-color: var(--active-bg, rgba(37, 99, 235, 0.15)) !important;
+  border-left: 4px solid var(--primary-accent, #2563eb) !important;
+}
+
+.badge-tiempo {
+  background: var(--input-bg, #1e293b);
+  color: var(--text-secondary, #94a3b8);
+  border: 1px solid var(--border-color, #475569);
+  font-family: monospace;
+  font-weight: 600;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+
+.badge-tiempo-activo {
+  background: var(--primary-accent, #2563eb) !important;
+  color: #ffffff !important;
+  border-color: var(--primary-accent, #2563eb) !important;
+}
+
+.badge-en-vivo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  animation: pulse-live 2s infinite ease-in-out;
+}
+
+@keyframes pulse-live {
+  0% { opacity: 0.85; }
+  50% { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 0.85; }
+}
+
+[data-reduced-motion="reduce"] .badge-en-vivo {
+  animation: none !important;
+}
+
+/* Modo Alto Contraste (Colorblind) para transcripción */
+[data-theme="colorblind"] .transcripcion-linea.linea-activa {
+  background-color: #000000 !important;
+  border: 2px solid #00e5ff !important;
+  border-left: 6px solid #ffd700 !important;
+}
+
+[data-theme="colorblind"] .transcripcion-linea.linea-activa .transcripcion-texto {
+  color: #ffd700 !important;
+}
+
+[data-theme="colorblind"] .badge-tiempo-activo {
+  background: #ffd700 !important;
+  color: #000000 !important;
+  border: 2px solid #ffd700 !important;
+  font-weight: bold;
+}
+
+[data-theme="colorblind"] .badge-en-vivo {
+  background-color: #00e5ff !important;
+  color: #000000 !important;
+  font-weight: 800;
+}
+
+
+/* ==========================================================================
+   SUBTÍTULOS ACCESIBLES EN TIEMPO REAL (WCAG 1.2.2)
+   ========================================================================== */
+.subtitulo-overlay-flotante {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 15, 26, 0.92);
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  max-width: 90%;
+  text-align: center;
+  z-index: 25;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+  line-height: 1.4;
+}
+
+[data-theme="colorblind"] .subtitulo-overlay-flotante {
+  background: #000000 !important;
+  color: #ffd700 !important;
+  border: 3px solid #00e5ff !important;
+  font-size: 1.25rem;
 }

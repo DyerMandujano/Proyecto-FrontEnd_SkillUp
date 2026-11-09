@@ -63,7 +63,7 @@ export class RegistrarLeccionComponent implements OnInit {
   }
 
   registrarSeccion() {
-    this.leccionService.insertarLeccion(this.nuevaLeccion).subscribe({
+    this.leccionService.insertarLeccion(this.nuevaLeccion, this.archivoSubtitulos).subscribe({
       next: (mensaje) => {
         alert('Leccion creada correctamente');
         const idSeccionGuardado = localStorage.getItem('idSeccionActual') || this.idSeccion;
@@ -100,4 +100,47 @@ export class RegistrarLeccionComponent implements OnInit {
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
   }
+
+  archivoSubtitulos?: File;
+
+  onSubtitulosSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.archivoSubtitulos = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result as string;
+        if (text && (!this.nuevaLeccion.transcripcionTexto || this.nuevaLeccion.transcripcionTexto.trim().length === 0)) {
+          this.nuevaLeccion.transcripcionTexto = text;
+        }
+      };
+      reader.readAsText(file);
+    }
+  }
+
+  autogenerarMarcasDeTiempo() {
+    const titulo = this.nuevaLeccion.nombreLeccion || 'Lección';
+    const duracion = this.nuevaLeccion.duracion && this.nuevaLeccion.duracion > 0 ? this.nuevaLeccion.duracion : 8;
+    const duracionSegundos = duracion * 60;
+
+    const milestones = [
+      { pct: 0, text: `Bienvenida e introducción: ${titulo}` },
+      { pct: 0.1, text: 'Objetivos de aprendizaje y conceptos fundamentales de la sesión' },
+      { pct: 0.25, text: 'Demostración práctica: configuración del entorno y herramientas' },
+      { pct: 0.5, text: 'Desarrollo guiado: análisis detallado y ejecución de casos' },
+      { pct: 0.75, text: 'Puntos críticos de validación y control de calidad' },
+      { pct: 0.9, text: 'Resumen ejecutivo, buenas prácticas y preparación para la autoevaluación' }
+    ];
+
+    const lines = milestones.map(m => {
+      const sec = Math.floor(m.pct * duracionSegundos);
+      const mins = Math.floor(sec / 60);
+      const remSec = sec % 60;
+      const fmt = (mins < 10 ? '0' : '') + mins + ':' + (remSec < 10 ? '0' : '') + remSec;
+      return `[${fmt}] ${m.text}`;
+    });
+
+    this.nuevaLeccion.transcripcionTexto = lines.join('\n');
+  }
+
 }

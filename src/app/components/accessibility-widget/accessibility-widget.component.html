@@ -1,0 +1,413 @@
+<!-- ==========================================================================
+     BOTÓN FLOTANTE ACTIVADOR DE ACCESIBILIDAD Y TEMAS
+     Accesible por teclado con foco visible y atajo Alt + A
+     ========================================================================== -->
+<aside class="a11y-widget-container" aria-label="Controles globales de accesibilidad">
+  <button 
+    #toggleBtn
+    type="button" 
+    class="a11y-trigger-btn" 
+    [attr.aria-expanded]="isOpen" 
+    aria-controls="a11y-drawer-panel"
+    aria-label="Abrir opciones de accesibilidad y apariencia (Atajo: Alt + A)"
+    title="Accesibilidad y Temas (Alt + A)"
+    (click)="togglePanel()"
+  >
+    <i class="bi bi-universal-access a11y-icon" aria-hidden="true"></i>
+    <span class="a11y-btn-text d-none d-sm-inline">Accesibilidad</span>
+    <span class="visually-hidden">Presiona Alt + A para activar o desactivar este menú</span>
+  </button>
+
+  <!-- ==========================================================================
+       TELÓN DE FONDO (BACKDROP)
+       ========================================================================== -->
+  <div 
+    class="a11y-backdrop" 
+    *ngIf="isOpen" 
+    (click)="onBackdropClick($event)"
+    aria-hidden="true"
+  ></div>
+
+  <!-- ==========================================================================
+       PANEL MODAL / DRAWER ACCESIBLE
+       ========================================================================== -->
+  <div 
+    #panelRef
+    id="a11y-drawer-panel"
+    class="a11y-drawer" 
+    [class.open]="isOpen"
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="a11y-panel-title"
+    *ngIf="isOpen"
+  >
+    <!-- Encabezado del Panel -->
+    <header class="a11y-header">
+      <div class="a11y-title-group">
+        <i class="bi bi-sliders2-vertical me-2 text-primary-accent" aria-hidden="true"></i>
+        <h2 id="a11y-panel-title" class="a11y-title">Preferencias de Accesibilidad</h2>
+      </div>
+      <button 
+        #closeBtn
+        type="button" 
+        class="a11y-close-btn" 
+        aria-label="Cerrar panel de accesibilidad (Escape)" 
+        title="Cerrar panel"
+        (click)="closePanel()"
+      >
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </header>
+
+    <div class="a11y-body">
+      <!-- Pestañas de Navegación Rápida de Secciones -->
+      <nav class="a11y-tabs" role="tablist" aria-label="Secciones de accesibilidad">
+        <button 
+          type="button" 
+          class="a11y-tab-btn" 
+          [class.active]="activeTab === 'vision'"
+          role="tab" 
+          [attr.aria-selected]="activeTab === 'vision'"
+          (click)="setTab('vision')"
+        >
+          <i class="bi bi-eye-fill me-1" aria-hidden="true"></i> Visión
+        </button>
+        <button 
+          type="button" 
+          class="a11y-tab-btn" 
+          [class.active]="activeTab === 'audicion'"
+          role="tab" 
+          [attr.aria-selected]="activeTab === 'audicion'"
+          (click)="setTab('audicion')"
+        >
+          <i class="bi bi-ear-fill me-1" aria-hidden="true"></i> Audición
+        </button>
+        <button 
+          type="button" 
+          class="a11y-tab-btn" 
+          [class.active]="activeTab === 'lectura'"
+          role="tab" 
+          [attr.aria-selected]="activeTab === 'lectura'"
+          (click)="setTab('lectura')"
+        >
+          <i class="bi bi-book-half me-1" aria-hidden="true"></i> Lectura
+        </button>
+        <button 
+          type="button" 
+          class="a11y-tab-btn" 
+          [class.active]="activeTab === 'teclado'"
+          role="tab" 
+          [attr.aria-selected]="activeTab === 'teclado'"
+          (click)="setTab('teclado')"
+        >
+          <i class="bi bi-keyboard-fill me-1" aria-hidden="true"></i> Teclado
+        </button>
+      </nav>
+
+      <!-- ==================================================================== -->
+      <!-- SECCIÓN 1: VISIÓN                                                    -->
+      <!-- ==================================================================== -->
+      <section *ngIf="activeTab === 'vision'" class="a11y-tab-content" aria-labelledby="sec-vision-title">
+        <div class="section-heading">
+          <h3 id="sec-vision-title" class="section-title">
+            <i class="bi bi-palette-fill me-2 text-primary-accent" aria-hidden="true"></i>Sección 1: Visión
+          </h3>
+          <span class="current-badge" aria-live="polite">
+            {{ a11yService.resolvedTheme() === 'dark' ? 'Oscuro activo' : a11yService.resolvedTheme() === 'light' ? 'Claro activo' : 'Alto contraste' }}
+          </span>
+        </div>
+
+        <p class="section-hint">Selecciona la paleta de contraste adecuada para tu visión:</p>
+
+        <!-- Selector de Tema Visual -->
+        <div class="themes-grid" role="radiogroup" aria-label="Seleccionar tema visual">
+          <button 
+            *ngFor="let t of themes; let i = index"
+            type="button"
+            class="theme-btn"
+            [class.active]="a11yService.theme() === t.id"
+            role="radio"
+            [attr.aria-checked]="a11yService.theme() === t.id"
+            [attr.aria-label]="t.label + ': ' + t.description"
+            (click)="selectTheme(t.id)"
+            (keydown)="onThemeKeydown($event, i)"
+          >
+            <div class="theme-btn-header">
+              <i class="bi {{ t.icon }} theme-btn-icon" aria-hidden="true"></i>
+              <span class="theme-btn-label">{{ t.label }}</span>
+              <i *ngIf="a11yService.theme() === t.id" class="bi bi-check-circle-fill check-indicator" aria-hidden="true"></i>
+            </div>
+            <p class="theme-btn-desc">{{ t.description }}</p>
+          </button>
+        </div>
+
+        <!-- Escalador tipográfico hasta 200% -->
+        <div class="mt-4">
+          <div class="section-heading">
+            <h4 class="section-subtitle">
+              <i class="bi bi-fonts me-2" aria-hidden="true"></i>Tamaño de texto (100% a 200%)
+            </h4>
+            <span class="scale-badge" aria-live="polite">{{ a11yService.fontScalePercentage() }}%</span>
+          </div>
+          <p class="section-hint">Escalado adaptable con diseño Reflow (WCAG 1.4.10) sin scroll horizontal:</p>
+
+          <div class="font-preset-buttons" role="radiogroup" aria-label="Nivel de escala tipográfica">
+            <button 
+              *ngFor="let fs of fontScales"
+              type="button"
+              class="preset-btn"
+              [class.active]="a11yService.fontScale() === fs.scale"
+              role="radio"
+              [attr.aria-checked]="a11yService.fontScale() === fs.scale"
+              [attr.aria-label]="'Tamaño de fuente ' + fs.label"
+              (click)="selectFontScale(fs.scale)"
+            >
+              {{ fs.label }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Switch: Subrayado permanente de enlaces -->
+        <div class="toggle-row mt-4">
+          <div class="toggle-info">
+            <span class="toggle-label">Subrayar siempre los enlaces</span>
+            <span class="toggle-desc">Evidencia visual permanente para hipervínculos sin depender del color</span>
+          </div>
+          <button 
+            type="button" 
+            class="switch-btn" 
+            [class.checked]="a11yService.underlineLinks()"
+            role="switch" 
+            [attr.aria-checked]="a11yService.underlineLinks()"
+            aria-label="Subrayar siempre los enlaces"
+            (click)="toggleUnderline()"
+          >
+            <span class="switch-thumb"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================================================================== -->
+      <!-- SECCIÓN 2: AUDICIÓN                                                  -->
+      <!-- ==================================================================== -->
+      <section *ngIf="activeTab === 'audicion'" class="a11y-tab-content" aria-labelledby="sec-audicion-title">
+        <div class="section-heading">
+          <h3 id="sec-audicion-title" class="section-title">
+            <i class="bi bi-ear-fill me-2 text-primary-accent" aria-hidden="true"></i>Sección 2: Audición
+          </h3>
+          <span class="current-badge">Inclusión CC</span>
+        </div>
+
+        <p class="section-hint">Alternativas accesibles para videoclases y eventos sonoros:</p>
+
+        <!-- Switch: Subtítulos CC -->
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-label">Subtítulos activados por defecto</span>
+            <span class="toggle-desc">Inicia automáticamente subtítulos CC sincronizados en los videos de clase</span>
+          </div>
+          <button 
+            type="button" 
+            class="switch-btn" 
+            [class.checked]="a11yService.subtitlesEnabled()"
+            role="switch" 
+            [attr.aria-checked]="a11yService.subtitlesEnabled()"
+            aria-label="Subtítulos activados por defecto"
+            (click)="toggleSubtitles()"
+          >
+            <span class="switch-thumb"></span>
+          </button>
+        </div>
+
+        <!-- Switch: Transcripción textual -->
+        <div class="toggle-row mt-3">
+          <div class="toggle-info">
+            <span class="toggle-label">Transcripción visible por defecto</span>
+            <span class="toggle-desc">Muestra el texto completo sincronizado con opción de descarga (.txt)</span>
+          </div>
+          <button 
+            type="button" 
+            class="switch-btn" 
+            [class.checked]="a11yService.transcriptionVisible()"
+            role="switch" 
+            [attr.aria-checked]="a11yService.transcriptionVisible()"
+            aria-label="Transcripción visible por defecto"
+            (click)="toggleTranscription()"
+          >
+            <span class="switch-thumb"></span>
+          </button>
+        </div>
+
+        <!-- Alertas visuales -->
+        <div class="info-card mt-3">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <i class="bi bi-bell-fill text-primary-accent" aria-hidden="true"></i>
+            <strong class="text-primary-accent">Alertas visuales flotantes (Toast)</strong>
+          </div>
+          <p class="mb-0 text-secondary small">
+            Todas las notificaciones del sistema muestran íconos explícitos y texto descriptivo sin emitir sonidos que puedan perderse.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================================================================== -->
+      <!-- SECCIÓN 3: LECTURA Y CONCENTRACIÓN                                   -->
+      <!-- ==================================================================== -->
+      <section *ngIf="activeTab === 'lectura'" class="a11y-tab-content" aria-labelledby="sec-lectura-title">
+        <div class="section-heading">
+          <h3 id="sec-lectura-title" class="section-title">
+            <i class="bi bi-book-half me-2 text-primary-accent" aria-hidden="true"></i>Sección 3: Lectura y Concentración
+          </h3>
+          <span class="current-badge">Neurodivergencia</span>
+        </div>
+
+        <p class="section-hint">Herramientas optimizadas para TDAH, dislexia y fatiga cognitiva:</p>
+
+        <!-- Switch: Tipografía Lexend -->
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-label">Tipografía accesible (Lexend)</span>
+            <span class="toggle-desc">Tipografía con espaciado optimizado para facilitar la fluidez y reducir la dislexia</span>
+          </div>
+          <button 
+            type="button" 
+            class="switch-btn" 
+            [class.checked]="a11yService.lexendFont()"
+            role="switch" 
+            [attr.aria-checked]="a11yService.lexendFont()"
+            aria-label="Activar tipografía Lexend"
+            (click)="toggleLexend()"
+          >
+            <span class="switch-thumb"></span>
+          </button>
+        </div>
+
+        <!-- Switch: Modo Concentración -->
+        <div class="toggle-row mt-3">
+          <div class="toggle-info">
+            <span class="toggle-label">Modo Concentración</span>
+            <span class="toggle-desc">Oculta paneles laterales y elementos secundarios para focalizar el contenido</span>
+          </div>
+          <button 
+            type="button" 
+            class="switch-btn" 
+            [class.checked]="a11yService.focusMode()"
+            role="switch" 
+            [attr.aria-checked]="a11yService.focusMode()"
+            aria-label="Activar Modo Concentración"
+            (click)="toggleFocusMode()"
+          >
+            <span class="switch-thumb"></span>
+          </button>
+        </div>
+
+        <!-- Switch: Reducción de animaciones -->
+        <div class="toggle-row mt-3">
+          <div class="toggle-info">
+            <span class="toggle-label">Reducir movimiento y animaciones</span>
+            <span class="toggle-desc">Silencia transiciones (prefers-reduced-motion) para evitar mareos o fatiga</span>
+          </div>
+          <button 
+            type="button" 
+            class="switch-btn" 
+            [class.checked]="a11yService.reducedMotion()"
+            role="switch" 
+            [attr.aria-checked]="a11yService.reducedMotion()"
+            aria-label="Reducir movimiento y animaciones"
+            (click)="toggleReducedMotion()"
+          >
+            <span class="switch-thumb"></span>
+          </button>
+        </div>
+
+        <!-- Lector de Texto a Voz -->
+        <div class="info-card mt-3">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <strong><i class="bi bi-volume-up-fill me-2 text-primary-accent" aria-hidden="true"></i>Lectura en voz alta (Text-to-Speech)</strong>
+            <button 
+              type="button" 
+              class="btn-tts" 
+              (click)="toggleSpeechReading()"
+              [attr.aria-label]="speechService.isSpeaking() ? 'Detener lectura' : 'Escuchar página'"
+            >
+              <i class="bi" [ngClass]="speechService.isSpeaking() ? 'bi-stop-fill' : 'bi-play-fill'"></i>
+              <span>{{ speechService.isSpeaking() ? 'Detener' : 'Escuchar' }}</span>
+            </button>
+          </div>
+          <p class="mb-0 text-secondary small">
+            Pulsa <span class="badge-kbd">Alt + L</span> en cualquier momento para activar o detener la lectura asistida por voz nativa.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================================================================== -->
+      <!-- SECCIÓN 4: TECLADO Y MOVILIDAD                                       -->
+      <!-- ==================================================================== -->
+      <section *ngIf="activeTab === 'teclado'" class="a11y-tab-content" aria-labelledby="sec-teclado-title">
+        <div class="section-heading">
+          <h3 id="sec-teclado-title" class="section-title">
+            <i class="bi bi-keyboard-fill me-2 text-primary-accent" aria-hidden="true"></i>Sección 4: Teclado y Movilidad
+          </h3>
+          <span class="current-badge">100% Sin Mouse</span>
+        </div>
+
+        <p class="section-hint">Navegación asistida para personas con movilidad reducida:</p>
+
+        <div class="shortcut-list">
+          <div class="shortcut-item">
+            <span class="badge-kbd">Alt + A</span>
+            <div>
+              <strong>Abrir / Cerrar Menú de Accesibilidad</strong>
+              <p class="mb-0 text-secondary small">Alterna este panel centralizado desde cualquier pantalla.</p>
+            </div>
+          </div>
+
+          <div class="shortcut-item mt-2">
+            <span class="badge-kbd">Alt + L</span>
+            <div>
+              <strong>Leer contenido en voz alta</strong>
+              <p class="mb-0 text-secondary small">Lee preguntas de examen o texto de lecciones con voz en español.</p>
+            </div>
+          </div>
+
+          <div class="shortcut-item mt-2">
+            <span class="badge-kbd">Tab / Shift + Tab</span>
+            <div>
+              <strong>Navegación secuencial lógica</strong>
+              <p class="mb-0 text-secondary small">Recorrido por todos los controles con foco visible reforzado de 3px.</p>
+            </div>
+          </div>
+
+          <div class="shortcut-item mt-2">
+            <span class="badge-kbd">Escape</span>
+            <div>
+              <strong>Cerrar modales y paneles</strong>
+              <p class="mb-0 text-secondary small">Cierra el diálogo y retorna el foco al botón de origen.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card mt-3">
+          <strong><i class="bi bi-bullseye me-2 text-primary-accent" aria-hidden="true"></i>Áreas de interacción mínimas</strong>
+          <p class="mb-0 text-secondary small mt-1">
+            Todos los botones y enlaces cumplen con el área mínima recomendada de <strong>44×44 px</strong> para facilitar el acierto motor.
+          </p>
+        </div>
+      </section>
+
+      <!-- Botón de Restablecimiento General -->
+      <div class="reset-wrapper mt-4 pt-3 border-top">
+        <button 
+          type="button" 
+          class="btn-reset-all" 
+          (click)="resetAllDefaults()"
+          aria-label="Restablecer todas las preferencias de accesibilidad a sus valores originales"
+        >
+          <i class="bi bi-arrow-counterclockwise me-2" aria-hidden="true"></i>
+          Restablecer Valores
+        </button>
+      </div>
+
+    </div>
+  </div>
+</aside>
