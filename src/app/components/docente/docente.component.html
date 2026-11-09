@@ -419,39 +419,85 @@
         <div class="modal-body p-4">
           <ul class="nav nav-tabs border-bottom border-dark-subtle mb-3">
             <li class="nav-item">
-              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#perfil">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#perfil" type="button">
                 <i class="bi bi-person-vcard me-1"></i> Editar Perfil
               </button>
             </li>
             <li class="nav-item">
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#password">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#password" type="button">
                 <i class="bi bi-key me-1"></i> Cambiar Contraseña
               </button>
             </li>
             <li class="nav-item">
-              <button class="nav-link text-danger" data-bs-toggle="tab" data-bs-target="#danger">
+              <button class="nav-link text-danger" data-bs-toggle="tab" data-bs-target="#danger" type="button">
                 <i class="bi bi-exclamation-triangle me-1"></i> Zona de Peligro
               </button>
             </li>
           </ul>
+
           <div class="tab-content pt-2">
+            <!-- TAB 1: EDITAR PERFIL -->
             <div class="tab-pane fade show active" id="perfil">
+              <div *ngIf="errorMessage" class="alert alert-danger py-2 px-3 small mb-3">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ errorMessage }}
+              </div>
+              <div *ngIf="successMessage" class="alert alert-success py-2 px-3 small mb-3">
+                <i class="bi bi-check-circle-fill me-1"></i> {{ successMessage }}
+              </div>
+
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label text-secondary small">Nombres</label>
-                  <input type="text" class="form-control form-control-dark" [(ngModel)]="profileData.nombres" name="nombres">
+                  <label class="form-label text-secondary small">Nombres <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control form-control-dark" 
+                         [(ngModel)]="profileData.nombres" 
+                         name="nombres"
+                         (input)="validarNombres()"
+                         [class.is-invalid]="nombresError"
+                         placeholder="Ingresa tus nombres"
+                         required>
+                  <div *ngIf="nombresError" class="text-danger small mt-1">
+                    {{ nombresError }}
+                  </div>
                 </div>
+
                 <div class="col-md-6">
-                  <label class="form-label text-secondary small">Apellidos</label>
-                  <input type="text" class="form-control form-control-dark" [(ngModel)]="profileData.apellidos" name="apellidos">
+                  <label class="form-label text-secondary small">Apellidos <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control form-control-dark" 
+                         [(ngModel)]="profileData.apellidos" 
+                         name="apellidos"
+                         (input)="validarApellidos()"
+                         [class.is-invalid]="apellidosError"
+                         placeholder="Ingresa tus apellidos"
+                         required>
+                  <div *ngIf="apellidosError" class="text-danger small mt-1">
+                    {{ apellidosError }}
+                  </div>
                 </div>
+
                 <div class="col-md-6">
-                  <label class="form-label text-secondary small">Fecha de Nacimiento</label>
-                  <input type="date" class="form-control form-control-dark" [(ngModel)]="profileData.fechaDeNacimiento" name="fechaNacimiento">
+                  <label class="form-label text-secondary small">Fecha de Nacimiento <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control form-control-dark" 
+                         [(ngModel)]="profileData.fechaDeNacimiento" 
+                         name="fechaNacimiento"
+                         [max]="maxFechaNacimiento"
+                         [min]="minFechaNacimiento"
+                         (change)="onFechaNacimientoChange()"
+                         (input)="onFechaNacimientoChange()"
+                         (blur)="onFechaNacimientoChange()"
+                         [class.is-invalid]="fechaNacimientoError"
+                         required>
+                  <div *ngIf="fechaNacimientoError" class="text-danger small mt-1 d-flex align-items-center gap-1">
+                    <i class="bi bi-exclamation-circle-fill"></i>
+                    <span>{{ fechaNacimientoError }}</span>
+                  </div>
+                  <div *ngIf="!fechaNacimientoError" class="text-secondary small mt-1">
+                    * Debes tener al menos 12 años de edad
+                  </div>
                 </div>
+
                 <div class="col-md-6">
-                  <label class="form-label text-secondary small">Género</label>
-                  <select class="form-select form-control-dark" [(ngModel)]="profileData.genero" name="genero">
+                  <label class="form-label text-secondary small">Género <span class="text-danger">*</span></label>
+                  <select class="form-select form-control-dark" [(ngModel)]="profileData.genero" name="genero" required>
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino">Femenino</option>
                     <option value="Otro">Otro</option>
@@ -459,13 +505,84 @@
                 </div>
               </div>
             </div>
+
+            <!-- TAB 2: CAMBIAR CONTRASEÑA -->
             <div class="tab-pane fade" id="password">
-              <p class="text-secondary small">Esta función de actualización directa se gestiona a través del panel de seguridad.</p>
+              <h6 class="mb-3 text-white fw-semibold">Actualizar Contraseña de Acceso</h6>
+              <div *ngIf="passwordSuccess" class="alert alert-success py-2 px-3 small mb-3">
+                <i class="bi bi-check-circle-fill me-1"></i> {{ passwordSuccess }}
+              </div>
+              <div *ngIf="passwordError" class="alert alert-danger py-2 px-3 small mb-3">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ passwordError }}
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label text-secondary small">Nueva Contraseña <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <input [type]="mostrarNuevaPassword ? 'text' : 'password'" 
+                         class="form-control form-control-dark" 
+                         [(ngModel)]="nuevaPassword" 
+                         name="nuevaPassword" 
+                         (input)="validarPasswordCambio()" 
+                         placeholder="Ingresa tu nueva contraseña" 
+                         autocomplete="new-password">
+                  <button type="button" class="btn btn-outline-secondary" (click)="mostrarNuevaPassword = !mostrarNuevaPassword">
+                    <i class="bi" [ngClass]="mostrarNuevaPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label text-secondary small">Confirmar Nueva Contraseña <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <input [type]="mostrarConfirmarPassword ? 'text' : 'password'" 
+                         class="form-control form-control-dark" 
+                         [(ngModel)]="confirmarNuevaPassword" 
+                         name="confirmarNuevaPassword" 
+                         (input)="validarPasswordCambio()" 
+                         placeholder="Repite tu nueva contraseña" 
+                         autocomplete="new-password">
+                  <button type="button" class="btn btn-outline-secondary" (click)="mostrarConfirmarPassword = !mostrarConfirmarPassword">
+                    <i class="bi" [ngClass]="mostrarConfirmarPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="password-reqs mb-3 p-3 rounded bg-dark border border-secondary border-opacity-25 small">
+                <p class="text-white-50 fw-semibold mb-2">Requisitos de seguridad:</p>
+                <div class="d-flex flex-column gap-1">
+                  <span [class.text-success]="passValidations.minLength" [class.text-white-50]="!passValidations.minLength">
+                    <i class="bi me-1" [ngClass]="passValidations.minLength ? 'bi-check-circle-fill text-success' : 'bi-circle'"></i> Mínimo 8 caracteres
+                  </span>
+                  <span [class.text-success]="passValidations.hasUpper" [class.text-white-50]="!passValidations.hasUpper">
+                    <i class="bi me-1" [ngClass]="passValidations.hasUpper ? 'bi-check-circle-fill text-success' : 'bi-circle'"></i> Al menos una letra mayúscula (A-Z)
+                  </span>
+                  <span [class.text-success]="passValidations.hasLower" [class.text-white-50]="!passValidations.hasLower">
+                    <i class="bi me-1" [ngClass]="passValidations.hasLower ? 'bi-check-circle-fill text-success' : 'bi-circle'"></i> Al menos una letra minúscula (a-z)
+                  </span>
+                  <span [class.text-success]="passValidations.hasNumber" [class.text-white-50]="!passValidations.hasNumber">
+                    <i class="bi me-1" [ngClass]="passValidations.hasNumber ? 'bi-check-circle-fill text-success' : 'bi-circle'"></i> Al menos un número (0-9)
+                  </span>
+                  <span [class.text-success]="passValidations.hasSpecial" [class.text-white-50]="!passValidations.hasSpecial">
+                    <i class="bi me-1" [ngClass]="passValidations.hasSpecial ? 'bi-check-circle-fill text-success' : 'bi-circle'"></i> Al menos un símbolo especial (!@#$%...)
+                  </span>
+                  <span [class.text-success]="passValidations.match" [class.text-white-50]="!passValidations.match">
+                    <i class="bi me-1" [ngClass]="passValidations.match ? 'bi-check-circle-fill text-success' : 'bi-circle'"></i> Las contraseñas coinciden
+                  </span>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-primary btn-sm" (click)="onCambiarPassword()" [disabled]="!isPasswordCambioValida || guardandoPassword">
+                <span *ngIf="guardandoPassword" class="spinner-border spinner-border-sm me-1"></span>
+                Actualizar Contraseña
+              </button>
             </div>
+
+            <!-- TAB 3: ZONA DE PELIGRO -->
             <div class="tab-pane fade" id="danger">
               <div class="p-3 danger-box rounded-2">
                 <h6 class="text-danger fw-bold mb-2">Dar de baja la cuenta</h6>
-                <p class="text-secondary small mb-3">Si solicitas la baja de tu cuenta docente, se deshabilitará el acceso a la creación y gestión de cursos.</p>
+                <p class="text-secondary small mb-3">Si solicitas la baja de tu cuenta docente, se deshabilitará el acceso a la plataforma, tus cursos y tus credenciales.</p>
                 <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
                   Solicitar baja de mi cuenta
                 </button>
@@ -473,9 +590,14 @@
             </div>
           </div>
         </div>
+
         <div class="modal-footer border-top border-dark-subtle">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary btn-sm">Guardar Cambios</button>
+          <button type="submit" class="btn btn-primary btn-sm" 
+                  [disabled]="guardandoPerfil || !profileData || !profileData.nombres?.trim() || !profileData.apellidos?.trim() || !profileData.fechaDeNacimiento || fechaNacimientoError || !esMayorDeEdad(profileData.fechaDeNacimiento)">
+            <span *ngIf="guardandoPerfil" class="spinner-border spinner-border-sm me-1"></span>
+            Guardar Cambios
+          </button>
         </div>
       </form>
     </div>
@@ -492,13 +614,14 @@
       </div>
       <form (ngSubmit)="onDeleteAccount()">
         <div class="modal-body p-4">
-          <p class="text-white">Esta acción <strong class="text-danger">no se puede deshacer</strong>.</p>
+          <p class="text-white">Esta acción <strong class="text-danger">deshabilitará tu cuenta de acceso</strong>.</p>
           <p class="text-secondary small">Escribe tu nombre de usuario (<strong class="text-white">{{ currentUser?.username }}</strong>) abajo para confirmar:</p>
           <input type="text" class="form-control form-control-dark mt-3" [(ngModel)]="confirmUsername" name="confirmUsername" placeholder="Escribe tu nombre de usuario">
         </div>
         <div class="modal-footer border-top border-dark-subtle">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-danger btn-sm" [disabled]="confirmUsername !== currentUser?.username">
+          <button type="submit" class="btn btn-danger btn-sm" [disabled]="eliminandoCuenta || confirmUsername !== currentUser?.username">
+            <span *ngIf="eliminandoCuenta" class="spinner-border spinner-border-sm me-1"></span>
             Entiendo, dar de baja mi cuenta
           </button>
         </div>

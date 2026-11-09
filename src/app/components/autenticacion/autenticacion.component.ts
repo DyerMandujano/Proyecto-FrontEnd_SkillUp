@@ -100,6 +100,7 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
 
   // Fecha máxima para asegurar edad mínima (12 años)
   maxFechaNacimiento: string = '';
+  minFechaNacimiento: string = '1900-01-01';
 
   private dniErrorTimeout: any = null;
   private registroErrorTimeout: any = null;
@@ -116,8 +117,10 @@ export class AutenticacionComponent implements AfterViewInit, OnDestroy {
     @Inject(PLATFORM_ID) private platformId: Object 
   ) {
     const hoy = new Date();
-    hoy.setFullYear(hoy.getFullYear() - 12);
-    this.maxFechaNacimiento = hoy.toISOString().split('T')[0];
+    const anioMax = hoy.getFullYear() - 12;
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoy.getDate()).padStart(2, '0');
+    this.maxFechaNacimiento = `${anioMax}-${mes}-${dia}`;
   }
 
   ngOnDestroy(): void {

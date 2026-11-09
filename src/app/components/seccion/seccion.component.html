@@ -7,7 +7,7 @@
       <h5 class="fw-bold mb-4 text-custom">Panel Docente</h5>
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         <button class="nav-link active btn-sidebar" id="v-pills-cursos-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cursos" type="button" role="tab">Cursos Dictados</button>
-        <button class="nav-link btn-sidebar" id="v-pills-comunicacion-tab" data-bs-toggle="pill" data-bs-target="#v-pills-comunicacion" type="button" role="tab">Comunicacion</button>
+        <button class="nav-link btn-sidebar" id="v-pills-comunicacion-tab" data-bs-toggle="pill" data-bs-target="#v-pills-comunicacion" type="button" role="tab">Comunicación</button>
         <button class="nav-link btn-sidebar" id="v-pills-rendimiento-tab" data-bs-toggle="pill" data-bs-target="#v-pills-rendimiento" type="button" role="tab">Rendimiento</button>
       </div>
     </nav>
@@ -15,25 +15,26 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4 main-content">
       <div class="tab-content" id="v-pills-tabContent">
 
+        <!-- PESTAÑA: SECCIONES DEL CURSO -->
         <div class="tab-pane fade show active" id="v-pills-cursos" role="tabpanel">
           <h4 class="mb-4 text-custom">Secciones del Curso</h4>
           <div class="d-flex gap-3 mb-4">
-            <button class="btn custom-btn-primary mt-3" (click)="navegarRegistrarSeccion()">Ingresar nueva seccion</button>
+            <button class="btn custom-btn-primary mt-3" (click)="navegarRegistrarSeccion()">Ingresar nueva sección</button>
             <button class="btn custom-btn-info mt-3" (click)="volverAlPanelDeCursos()">Volver al Panel de Cursos</button>
           </div>
           
           <div class="table-responsive">
 
             <div *ngIf="secciones.length === 0" class="mt-3 alert custom-alert-info text-center">
-              Actualmente el curso no cuenta con SECCIONES.
+              Actualmente el curso no cuenta con secciones registradas.
             </div>
 
-            <table *ngIf="secciones.length > 0" class="table custom-table align-middle">
+            <table *ngIf="secciones.length > 0" class="table table-dark custom-table align-middle">
               <thead>
                 <tr>
-                  <th>Id Seccion</th>
-                  <th>Nombre Seccion</th>
-                  <th>Orden Seccion</th>
+                  <th>ID Sección</th>
+                  <th>Nombre Sección</th>
+                  <th>Orden Sección</th>
                   <th>Estado</th>
                   <th>Acciones</th>
                 </tr>
@@ -52,7 +53,7 @@
                     <div class="d-flex gap-2">
                       <button class="btn custom-btn-warning" (click)="navegarActualizarSeccion(seccion.idSeccion)">Actualizar</button>
                       <button class="btn custom-btn-danger" (click)="eliminarSeccion(seccion.idSeccion)">Eliminar</button>
-                      <button class="btn custom-btn-primary" (click)="navegarLeccion(seccion.idSeccion)">Ingresar Leccion</button>
+                      <button class="btn custom-btn-primary" (click)="navegarLeccion(seccion.idSeccion)">Ingresar Lección</button>
                     </div>
                   </td>
                 </tr>
@@ -62,75 +63,44 @@
           
         </div>
 
+        <!-- PESTAÑA: COMUNICACIÓN -->
         <div class="tab-pane fade" id="v-pills-comunicacion" role="tabpanel">
-          <h4 class="mb-4 text-custom">Comunicacion</h4>
-          <div class="list-group">
-            <div class="list-group-item custom-list-item">
-              <h6 class="text-custom"><strong>Estudiante:</strong> Juan Perez</h6>
-              <p class="text-custom">Como se utiliza la herramienta en la practica de carpinteria?</p>
-              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm custom-btn-success">Responder</button>
-            </div>
-            <div class="list-group-item custom-list-item">
-              <h6 class="text-custom"><strong>Estudiante:</strong> Maria Lopez</h6>
-              <p class="text-custom">Cual es el tiempo estimado de duracion del curso de electricidad?</p>
-              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm custom-btn-success">Responder</button>
-            </div>
-             <div class="list-group-item custom-list-item">
-              <h6 class="text-custom"><strong>Estudiante:</strong> Juan Riquelme </h6>
-              <p class="text-custom">Cual es el tiempo estimado de duracion del curso de electricidad?</p>
-              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm custom-btn-success">Responder</button>
-            </div>
-             <div class="list-group-item custom-list-item">
-              <h6 class="text-custom"><strong>Estudiante:</strong> Pedro Lopez</h6>
-              <p class="text-custom">Cual es el tiempo estimado de duracion del curso de electricidad?</p>
-              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm custom-btn-success">Responder</button>
-            </div>
-             <div class="list-group-item custom-list-item">
-              <h6 class="text-custom"><strong>Estudiante:</strong> Lorena Cardona</h6>
-              <p class="text-custom">Cual es el tiempo estimado de duracion del curso de electricidad?</p>
-              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm custom-btn-success">Responder</button>
-            </div>
-             <div class="list-group-item custom-list-item">
-              <h6 class="text-custom"><strong>Estudiante:</strong> Soledad Machaca</h6>
-              <p class="text-custom">Cual es el tiempo estimado de duracion del curso de electricidad?</p>
-              <textarea class="form-control custom-input mb-2" placeholder="Responder..."></textarea>
-              <button class="btn btn-sm custom-btn-success">Responder</button>
-            </div>
+          <h4 class="mb-4 text-custom">Comunicación</h4>
+          <div class="p-5 text-center" style="background-color: #0b111e; border: 1px dashed #1e293b; border-radius: 10px;">
+            <i class="bi bi-chat-square-dots fs-1 text-secondary mb-3 d-block"></i>
+            <h5 class="text-white fw-bold mb-1">Sin consultas pendientes</h5>
+            <p class="text-secondary small mb-0">Tus estudiantes aún no han formulado consultas o dudas en tus cursos.</p>
           </div>
         </div>
 
+        <!-- PESTAÑA: RENDIMIENTO (DATOS REALES) -->
         <div class="tab-pane fade" id="v-pills-rendimiento" role="tabpanel">
           <div class="container-fluid py-4">
             <h3 class="fw-bold mb-3 text-custom">Rendimiento</h3>
-            <p class="text-custom-muted">Metricas y estadisticas de tu desempeno como instructor</p>
+            <p class="text-custom-muted">Métricas y estadísticas de tu desempeño como instructor</p>
 
             <div class="row g-3 mb-4">
               <div class="col-md-3">
                 <div class="metric-card">
-                  <h4 class="text-custom">490</h4>
+                  <h4 class="text-custom">{{ totalEstudiantes }}</h4>
                   <small class="text-custom">Estudiantes Totales</small>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="metric-card">
-                  <h4 class="text-custom">4.8</h4>
-                  <small class="text-custom">Calificacion Promedio</small>
+                  <h4 class="text-custom">{{ calificacionPromedio > 0 ? (calificacionPromedio | number:'1.1-1') : '0.0' }}</h4>
+                  <small class="text-custom">Calificación Promedio</small>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="metric-card">
-                  <h4 class="text-custom text-custom-success">48</h4>
+                  <h4 class="text-custom text-custom-success">{{ certificadosEmitidos }}</h4>
                   <small class="text-custom">Certificados Emitidos</small>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="metric-card">
-                  <h4 class="text-custom text-custom-primary">3500</h4>
+                  <h4 class="text-custom text-custom-primary">{{ visualizacionesTotales }}</h4>
                   <small class="text-custom">Visualizaciones Totales</small>
                 </div>
               </div>
@@ -141,39 +111,21 @@
                 <div class="course-performance">
                   <h5 class="fw-bold mb-3 text-custom">Rendimiento por Curso</h5>
                   
-                  <div class="mb-4">
-                    <p class="mb-1 fw-semibold text-custom">Gasfiteria Basica: Instalacion y Reparacion de Tuberias</p>
-                    <div class="d-flex justify-content-between small mb-1">
-                      <span class="text-custom">4.8</span>
-                      <span class="text-custom">245 estudiantes</span>
-                      <span class="text-custom">2000</span>
-                    </div>
-                    <div class="progress custom-progress">
-                      <div class="progress-bar bg-custom-dark" style="width: 80%"></div>
-                    </div>
+                  <div *ngIf="cursosRendimiento.length === 0" class="p-4 text-center" style="background-color: #0b111e; border: 1px dashed #1e293b; border-radius: 8px;">
+                    <i class="bi bi-journal-x fs-2 text-secondary mb-2 d-block"></i>
+                    <span class="text-custom small d-block">No tienes cursos registrados</span>
+                    <span class="text-secondary small">Crea tu primer curso para visualizar estadísticas de rendimiento.</span>
                   </div>
 
-                  <div class="mb-4">
-                    <p class="mb-1 fw-semibold text-custom">Gasfiteria Avanzada: Sistemas de Calefaccion</p>
+                  <div *ngFor="let c of cursosRendimiento" class="mb-4">
+                    <p class="mb-1 fw-semibold text-custom">{{ c.nombreCurso }}</p>
                     <div class="d-flex justify-content-between small mb-1">
-                      <span class="text-custom">4.9</span>
-                      <span class="text-custom">89 estudiantes</span>
-                      <span class="text-custom">500</span>
+                      <span class="text-custom">{{ c.calificacion > 0 ? (c.calificacion | number:'1.1-1') : '0.0' }}</span>
+                      <span class="text-custom">{{ c.totalEstudiantes }} estudiante{{ c.totalEstudiantes === 1 ? '' : 's' }}</span>
+                      <span class="text-custom">{{ c.visualizaciones }}</span>
                     </div>
                     <div class="progress custom-progress">
-                      <div class="progress-bar bg-custom-dark" style="width: 60%"></div>
-                    </div>
-                  </div>
-
-                  <div class="mb-2">
-                    <p class="mb-1 fw-semibold text-custom">Reparacion de Tuberias Especializadas</p>
-                    <div class="d-flex justify-content-between small mb-1">
-                      <span class="text-custom">4.7</span>
-                      <span class="text-custom">156 estudiantes</span>
-                      <span class="text-custom">1000</span>
-                    </div>
-                    <div class="progress custom-progress">
-                      <div class="progress-bar bg-custom-dark" style="width: 70%"></div>
+                      <div class="progress-bar bg-custom-dark" [style.width.%]="c.porcentaje"></div>
                     </div>
                   </div>
                 </div>
@@ -182,22 +134,17 @@
               <div class="col-md-5">
                 <div class="activity-card">
                   <h5 class="fw-bold mb-3 text-custom">Actividades Recientes</h5>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item custom-list-item px-0">
-                      <strong class="text-custom">Ana Torres</strong> <span class="text-custom">se inscribio en</span> <em class="text-custom">Gasfiteria Basica</em>  
-                      <div class="text-custom-muted small">hace 30 min</div>
-                    </li>
-                    <li class="list-group-item custom-list-item px-0">
-                      <strong class="text-custom">Miguel Santos</strong> <span class="text-custom">completo el modulo de soldadura</span>  
-                      <div class="text-custom-muted small">hace 1 hora</div>
-                    </li>
-                    <li class="list-group-item custom-list-item px-0">
-                      <span class="text-custom">Nueva pregunta en</span> <em class="text-custom">Gasfiteria Avanzada</em>  
-                      <div class="text-custom-muted small">hace 2 horas</div>
-                    </li>
-                    <li class="list-group-item custom-list-item px-0">
-                      <strong class="text-custom">Juan Perez</strong> <span class="text-custom">obtuvo certificado en</span> <em class="text-custom">Gasfiteria Basica</em>  
-                      <div class="text-custom-muted small">hace 4 horas</div>
+                  
+                  <div *ngIf="actividadesRecientes.length === 0" class="p-4 text-center" style="background-color: #0b111e; border: 1px dashed #1e293b; border-radius: 8px;">
+                    <i class="bi bi-person-x fs-2 text-secondary mb-2 d-block"></i>
+                    <span class="text-custom small d-block">Sin actividades recientes</span>
+                    <span class="text-secondary small">Aún no hay inscripciones ni actividades de estudiantes en tus cursos.</span>
+                  </div>
+
+                  <ul *ngIf="actividadesRecientes.length > 0" class="list-group list-group-flush">
+                    <li *ngFor="let act of actividadesRecientes" class="list-group-item custom-list-item px-0">
+                      <strong class="text-custom">{{ act.estudiante }}</strong> <span class="text-custom">{{ act.accion }}</span> <em class="text-custom">{{ act.curso }}</em>
+                      <div class="text-custom-muted small">{{ act.tiempo }}</div>
                     </li>
                   </ul>
                 </div>

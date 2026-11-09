@@ -213,6 +213,7 @@
                 <input class="input-formulario" id="fecha_nac" type="date" 
                        [(ngModel)]="registerData.fecha_nacimiento" name="fecha_nacimiento" 
                        [max]="maxFechaNacimiento"
+                       [min]="minFechaNacimiento"
                        (change)="onFechaNacimientoChange()"
                        (input)="onFechaNacimientoChange()"
                        (blur)="onFechaNacimientoChange()"
